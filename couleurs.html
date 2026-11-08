@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Les couleurs — Révisions de première</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F5F6F9; --card:#FFFFFF; --ink:#1B1F2A; --ink-soft:#586072; --line:#D5D9E2;
+  --stage:#101218;
+  --ok:#2F7D4A; --ok-pale:#E2F1E7; --ko:#B8325A; --ko-pale:#F8E3EA; --focus:#C2185B;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#12141A; --card:#1B1E27; --ink:#E8EAF0; --ink-soft:#A1A8B8; --line:#2E3342;
+    --stage:#07080B; --ok:#7CCB95; --ok-pale:#173222; --ko:#F08AAB; --ko-pale:#3A1824; --focus:#F06BA0;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#12141A; --card:#1B1E27; --ink:#E8EAF0; --ink-soft:#A1A8B8; --line:#2E3342;
+  --stage:#07080B; --ok:#7CCB95; --ok-pale:#173222; --ko:#F08AAB; --ko-pale:#3A1824; --focus:#F06BA0;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:'Atkinson Hyperlegible','Segoe UI',system-ui,sans-serif;background:var(--paper);color:var(--ink);font-size:17px;line-height:1.5;min-height:100vh}
+.wrap{max-width:720px;margin:0 auto;padding:24px 18px 60px}
+
+/* En-tête : trois projecteurs */
+.hero{position:relative;background:var(--stage);border-radius:14px;height:170px;overflow:hidden;display:flex;align-items:flex-end;padding:18px 22px}
+.spot{position:absolute;width:150px;height:150px;border-radius:50%;mix-blend-mode:screen;top:10px;left:calc(100% - 250px);transition:transform 1.6s cubic-bezier(.2,.7,.2,1)}
+.spot.r{background:#FF1E1E;transform:translate(-120px,-10px)}
+.spot.v{background:#1EFF3C;transform:translate(90px,-30px)}
+.spot.b{background:#1E3CFF;transform:translate(10px,70px)}
+.hero.on .spot.r{transform:translate(0,-6px)}
+.hero.on .spot.v{transform:translate(-44px,24px)}
+.hero.on .spot.b{transform:translate(44px,24px)}
+.hero h1{position:relative;margin:0;color:#fff;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(40px,9vw,64px);line-height:.95;letter-spacing:-0.02em}
+@media (max-width:520px){ .spot{width:110px;height:110px;left:calc(100% - 170px)} }
+.lead{color:var(--ink-soft);margin:12px 0 0}
+
+nav{display:flex;gap:6px;flex-wrap:wrap;margin:22px 0 20px;border-bottom:2px solid var(--ink)}
+nav button{font:inherit;font-weight:700;font-size:15px;background:transparent;color:var(--ink-soft);border:2px solid transparent;border-bottom:none;padding:9px 14px;border-radius:8px 8px 0 0;cursor:pointer;margin-bottom:-2px}
+nav button[aria-selected="true"]{background:var(--card);color:var(--ink);border-color:var(--ink);border-bottom:2px solid var(--card)}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+
+.panel{background:var(--card);border:2px solid var(--ink);border-radius:0 10px 10px 10px;padding:22px}
+.panel[hidden]{display:none}
+.meta{font-size:14px;color:var(--ink-soft);display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:12px;align-items:center}
+.bar{height:8px;background:var(--line);border-radius:99px;overflow:hidden;margin-bottom:16px}
+.bar i{display:block;height:100%;background:var(--ink);transition:width .3s}
+
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.chip{font:inherit;font-size:14px;border:1.5px solid var(--line);background:transparent;color:var(--ink);padding:5px 12px;border-radius:99px;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--card);border-color:var(--ink)}
+
+.flash{width:100%;min-height:220px;border:2px dashed var(--line);border-radius:10px;background:var(--paper);color:var(--ink);font:inherit;cursor:pointer;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:24px 20px}
+.flash.shown{border-style:solid;border-color:var(--ink)}
+.flash .q,.flash .a{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:23px;line-height:1.25}
+.flash .x{color:var(--ink-soft);font-size:15px;margin-top:10px;max-width:46ch}
+.flash .tap{margin-top:14px;font-size:13px;color:var(--ink-soft)}
+.row{display:flex;gap:10px;justify-content:space-between;align-items:center;margin-top:16px;flex-wrap:wrap}
+.btn{font:inherit;font-weight:700;font-size:15px;padding:10px 18px;border-radius:8px;cursor:pointer;border:2px solid var(--ink);background:var(--card);color:var(--ink)}
+.btn.primary{background:var(--ink);color:var(--card)}
+.btn.good{border-color:var(--ok);color:var(--ok)}
+.btn.again{border-color:var(--ko);color:var(--ko)}
+.btn:disabled{opacity:.35;cursor:default}
+
+.qtext{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:22px;line-height:1.3;margin:0 0 16px}
+.opt{display:block;width:100%;text-align:left;font:inherit;background:var(--card);color:var(--ink);border:2px solid var(--line);border-radius:8px;padding:12px 14px;margin-bottom:9px;cursor:pointer}
+.opt:hover:not(:disabled){border-color:var(--ink)}
+.opt.right{border-color:var(--ok);background:var(--ok-pale);font-weight:700}
+.opt.wrong{border-color:var(--ko);background:var(--ko-pale)}
+.fb{border-left:4px solid;padding:10px 14px;margin-top:12px;border-radius:0 8px 8px 0;font-size:15.5px}
+.fb.ok{border-color:var(--ok);background:var(--ok-pale)}
+.fb.ko{border-color:var(--ko);background:var(--ko-pale)}
+.steps{margin:6px 0 0;padding-left:20px}
+.score{text-align:center;padding:14px 0}
+.score .big{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:72px;line-height:1}
+.note{font-size:14px;color:var(--ink-soft)}
+
+/* Pastilles de couleur */
+.sw{display:inline-block;width:14px;height:14px;border-radius:50%;vertical-align:-2px;margin-right:4px;border:1.5px solid var(--line)}
+.palette{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:6px}
+@media (max-width:480px){.palette{grid-template-columns:repeat(2,1fr)}}
+.pick{font:inherit;font-weight:700;font-size:15px;display:flex;align-items:center;gap:8px;padding:10px;border-radius:8px;border:2px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer}
+.pick .sw{width:22px;height:22px;margin:0}
+.pick.right{border-color:var(--ok);background:var(--ok-pale)}
+.pick.wrong{border-color:var(--ko);background:var(--ko-pale)}
+.pick:disabled{cursor:default}
+.problem{font-size:18px;margin:0 0 12px}
+.answer{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.answer input{font:inherit;font-size:18px;width:150px;padding:10px 12px;border-radius:8px;border:2px solid var(--line);background:var(--paper);color:var(--ink)}
+select{font:inherit;font-size:15px;padding:8px 10px;border-radius:8px;border:2px solid var(--line);background:var(--card);color:var(--ink)}
+
+/* Labo */
+.lab h2{font-family:'Bricolage Grotesque',sans-serif;font-size:21px;margin:0 0 6px}
+.lab + .lab{margin-top:28px;padding-top:22px;border-top:2px dashed var(--line)}
+.mixer{display:grid;grid-template-columns:220px 1fr;gap:18px;align-items:center}
+@media (max-width:560px){.mixer{grid-template-columns:1fr}}
+.screen{position:relative;width:220px;height:200px;background:#000;border-radius:10px;overflow:hidden;margin:0 auto}
+.screen div{position:absolute;width:110px;height:110px;border-radius:50%;mix-blend-mode:screen}
+.sl label{display:flex;justify-content:space-between;font-weight:700;font-size:15px;margin-top:6px}
+.sl input{width:100%}
+.result{margin-top:12px;padding:12px 14px;border-radius:8px;background:var(--paper);font-size:17px;display:flex;align-items:center;gap:10px}
+.result .sw{width:28px;height:28px;margin:0}
+.scene{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:10px 0}
+@media (max-width:480px){.scene{grid-template-columns:1fr}}
+.scene label{display:block;font-weight:700;font-size:15px;margin-bottom:4px}
+.scene select{width:100%}
+.stagebox{background:var(--stage);border-radius:10px;padding:16px;display:flex;justify-content:center;align-items:center;min-height:190px;position:relative}
+.stagebox .beam{position:absolute;top:0;left:50%;transform:translateX(-50%);width:0;height:0;border-left:90px solid transparent;border-right:90px solid transparent;opacity:.28;border-top:0 solid}
+footer{margin-top:22px;font-size:13px;color:var(--ink-soft);text-align:center}
+@media (prefers-reduced-motion: reduce){ .spot,.bar i{transition:none} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="hero" id="hero" aria-hidden="false">
+      <div class="spot r" aria-hidden="true"></div><div class="spot v" aria-hidden="true"></div><div class="spot b" aria-hidden="true"></div>
+      <h1>Les couleurs</h1>
+    </div>
+    <p class="lead">Révisions de physique-chimie, classe de première : vision, synthèses additive et soustractive, couleur des objets et des solutions.</p>
+  </header>
+
+  <nav role="tablist">
+    <button role="tab" aria-selected="true" data-tab="cards">Flashcards</button>
+    <button role="tab" aria-selected="false" data-tab="quiz">Quiz</button>
+    <button role="tab" aria-selected="false" data-tab="ex">Exercices</button>
+    <button role="tab" aria-selected="false" data-tab="lab">Labo</button>
+  </nav>
+
+  <section class="panel" id="cards"></section>
+  <section class="panel" id="quiz" hidden></section>
+  <section class="panel" id="ex" hidden></section>
+  <section class="panel" id="lab" hidden></section>
+
+  <footer>Va avec le cours PDF « Les couleurs ». Réflexe à garder : toujours décomposer en rouge, vert, bleu.</footer>
+</div>
+
+<script>
+/* ---------- Modèle des couleurs : R=4, V=2, B=1 ---------- */
+const NAME = {0:"noir",4:"rouge",2:"vert",1:"bleu",6:"jaune",5:"magenta",3:"cyan",7:"blanc"};
+const HEX  = {0:"#000000",4:"#E8262B",2:"#2DB84A",1:"#2346E0",6:"#FFD21F",5:"#D61FA0",3:"#18C3DC",7:"#FFFFFF"};
+const RVB  = m => m===0 ? "rien" : [4,2,1].filter(b=>m&b).map(b=>({4:"R",2:"V",1:"B"})[b]).join(" + ");
+const sw = m => `<span class="sw" style="background:${HEX[m]}"></span>`;
+const COLORS = [4,2,1,6,5,3,7,0];
+
+/* ---------- Données ---------- */
+const CARDS = [
+ {t:"Lumière", q:"Qu'est-ce qu'une lumière polychromatique ?", a:"Une lumière composée de plusieurs radiations", x:"Exemple : la lumière blanche du Soleil. Un laser, lui, est monochromatique."},
+ {t:"Lumière", q:"Dans quel ordre de longueurs d'onde trouve-t-on bleu, vert, rouge ?", a:"Bleu ≈ 400-500 nm, vert ≈ 500-600 nm, rouge ≈ 600-800 nm", x:"Le violet est vers 400 nm, le rouge vers 800 nm."},
+ {t:"Œil", q:"Quelles cellules de la rétine permettent de voir les couleurs ?", a:"Les cônes", x:"Il en existe trois types : sensibles au rouge, au vert et au bleu."},
+ {t:"Œil", q:"À quoi servent les bâtonnets ?", a:"À voir quand la lumière est faible, sans distinguer les couleurs", x:"C'est pourquoi la nuit tout paraît gris."},
+ {t:"Œil", q:"Que signifie « vision trichrome » ?", a:"Le cerveau reconstruit les couleurs à partir de trois types de cônes (R, V, B)", x:"C'est pour ça qu'un écran n'a besoin que de trois couleurs de pixels."},
+ {t:"Additive", q:"Quelles sont les trois couleurs primaires de la synthèse additive ?", a:"Rouge, vert, bleu", x:"On superpose des lumières : écrans, projecteurs, spots de scène."},
+ {t:"Additive", q:"Lumière rouge + lumière verte = ?", a:"Jaune", x:"Surprenant mais vrai : c'est une addition de lumières, pas un mélange de peinture."},
+ {t:"Additive", q:"Lumière rouge + lumière bleue = ?", a:"Magenta", x:"R + B = magenta."},
+ {t:"Additive", q:"Lumière verte + lumière bleue = ?", a:"Cyan", x:"V + B = cyan."},
+ {t:"Additive", q:"Rouge + vert + bleu (en lumières) = ?", a:"Blanc", x:"Les trois primaires additives réunies donnent du blanc."},
+ {t:"Additive", q:"Définition de deux couleurs complémentaires ?", a:"Leur synthèse additive donne du blanc", x:"Elles sont opposées sur le cercle chromatique."},
+ {t:"Additive", q:"Les trois paires de couleurs complémentaires ?", a:"Rouge / cyan · vert / magenta · bleu / jaune", x:"Astuce : la complémentaire, c'est ce qui manque pour faire du blanc."},
+ {t:"Soustractive", q:"Quelles sont les trois couleurs primaires de la synthèse soustractive ?", a:"Cyan, magenta, jaune", x:"Filtres, encres, peintures : les cartouches CMJ des imprimantes."},
+ {t:"Soustractive", q:"Que fait un filtre coloré ?", a:"Il transmet sa couleur et absorbe sa couleur complémentaire", x:"Un filtre cyan absorbe le rouge et laisse passer vert + bleu."},
+ {t:"Soustractive", q:"Quelle lumière absorbe un filtre jaune ?", a:"Le bleu", x:"Jaune = R + V : il laisse passer le rouge et le vert."},
+ {t:"Soustractive", q:"Quelle lumière absorbe un filtre magenta ?", a:"Le vert", x:"Magenta = R + B : il laisse passer le rouge et le bleu."},
+ {t:"Soustractive", q:"Cyan + magenta + jaune superposés (filtres) = ?", a:"Noir", x:"Toutes les lumières sont absorbées."},
+ {t:"Soustractive", q:"Filtre cyan + filtre jaune en lumière blanche = ?", a:"Vert", x:"Cyan retire R, jaune retire B : il reste V."},
+ {t:"Objets", q:"De quoi dépend la couleur perçue d'un objet ?", a:"De la lumière qui l'éclaire et des lumières que l'objet absorbe", x:"On voit les lumières qu'il reçoit ET qu'il diffuse."},
+ {t:"Objets", q:"Un objet blanc éclairé en lumière rouge paraît…", a:"Rouge", x:"Un objet blanc diffuse toutes les lumières qu'il reçoit."},
+ {t:"Objets", q:"Un objet vert éclairé en lumière rouge paraît…", a:"Noir", x:"Il ne diffuse que le vert, et il ne reçoit pas de vert."},
+ {t:"Solutions", q:"Couleur perçue d'une solution qui absorbe surtout le vert ?", a:"Magenta", x:"On voit la couleur complémentaire de la couleur absorbée."},
+ {t:"Solutions", q:"Qu'est-ce que l'absorbance A ?", a:"Une grandeur sans unité, mesurée au spectrophotomètre, qui indique combien la solution absorbe", x:"Plus A est grande, plus la solution absorbe."},
+ {t:"Solutions", q:"Loi de Beer-Lambert ?", a:"A = k × c", x:"L'absorbance est proportionnelle à la concentration (solutions peu concentrées)."}
+];
+
+const QUIZ = [
+ {q:"Sur un écran, un pixel a ses sous-pixels rouge et vert allumés. On voit :", o:["du marron","du jaune","du blanc","du orange"], c:1, x:"Écran = synthèse additive : R + V = jaune."},
+ {q:"Les trois couleurs primaires de la synthèse soustractive sont :", o:["rouge, vert, bleu","rouge, jaune, bleu","cyan, magenta, jaune","noir, blanc, gris"], c:2, x:"Cyan, magenta, jaune : les encres des imprimantes."},
+ {q:"La couleur complémentaire du rouge est :", o:["le vert","le cyan","le magenta","le jaune"], c:1, x:"R + cyan (V + B) = blanc."},
+ {q:"Un filtre rouge éclairé en lumière blanche transmet :", o:["le rouge seulement","le vert et le bleu","toutes les couleurs sauf le rouge","rien"], c:0, x:"Un filtre transmet sa propre couleur."},
+ {q:"On superpose un filtre magenta et un filtre cyan en lumière blanche. On voit :", o:["du rouge","du vert","du bleu","du noir"], c:2, x:"Magenta retire V, cyan retire R : il reste B."},
+ {q:"Une tomate rouge éclairée uniquement en lumière bleue paraît :", o:["rouge","violette","bleue","noire"], c:3, x:"Elle ne diffuse que le rouge et ne reçoit que du bleu : rien n'est renvoyé."},
+ {q:"Une feuille blanche éclairée en lumière cyan paraît :", o:["blanche","cyan","noire","rouge"], c:1, x:"Le blanc diffuse tout ce qu'il reçoit : ici V + B = cyan."},
+ {q:"Un pull jaune éclairé par une lumière verte paraît :", o:["jaune","vert","noir","rouge"], c:1, x:"Jaune diffuse R + V ; il reçoit V ; il renvoie V."},
+ {q:"Les cellules de l'œil qui permettent de voir les couleurs sont :", o:["les bâtonnets","les cônes","le cristallin","la pupille"], c:1, x:"Trois types de cônes : rouge, vert, bleu."},
+ {q:"La nuit, on distingue mal les couleurs car…", o:["les cônes ne fonctionnent plus bien, seuls les bâtonnets travaillent","le cristallin se ferme","la lumière est polychromatique","les couleurs disparaissent réellement"], c:0, x:"Les bâtonnets sont sensibles mais ne distinguent pas les couleurs."},
+ {q:"Une solution absorbe surtout le rouge. Elle paraît :", o:["rouge","cyan (bleu-vert)","jaune","noire"], c:1, x:"On voit la complémentaire de la couleur absorbée : cyan."},
+ {q:"Le sirop de menthe est vert. Quelle couleur absorbe-t-il surtout ?", o:["le vert","le magenta (rouge et bleu)","le jaune","aucune"], c:1, x:"Il transmet le vert et absorbe sa complémentaire, le magenta."},
+ {q:"Selon Beer-Lambert, si on double la concentration, l'absorbance :", o:["reste la même","double","est divisée par deux","est multipliée par quatre"], c:1, x:"A = k × c : A est proportionnelle à c."},
+ {q:"L'absorbance A s'exprime en :", o:["mol/L","nm","sans unité","lux"], c:2, x:"A est un nombre sans unité."},
+ {q:"Pour mesurer une absorbance, on règle le spectrophotomètre sur :", o:["λmax, où la solution absorbe le plus","400 nm toujours","la couleur de la solution","800 nm toujours"], c:0, x:"C'est à λmax que la mesure est la plus précise."},
+ {q:"Mélanger de la peinture jaune et de la peinture cyan donne :", o:["du blanc","du vert","du rouge","du magenta"], c:1, x:"Synthèse soustractive : jaune retire B, cyan retire R, il reste V."},
+ {q:"Les projecteurs d'une scène de théâtre utilisent :", o:["la synthèse additive","la synthèse soustractive","aucune synthèse","l'absorbance"], c:0, x:"On superpose des lumières : c'est additif."},
+ {q:"Un objet noir en lumière blanche :", o:["diffuse toutes les lumières","absorbe toutes les lumières","transmet le noir","diffuse le bleu"], c:1, x:"Il ne renvoie rien : on le voit noir."}
+];
+
+/* ---------- Outils ---------- */
+const $ = (s,r=document)=>r.querySelector(s);
+const shuffle = a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
+const pick = a=>a[Math.floor(Math.random()*a.length)];
+const store={get(k,d){try{const v=localStorage.getItem(k);return v===null?d:JSON.parse(v);}catch(e){return d;}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}};
+const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const nb = (x,d=2)=>Number(x.toFixed(d)).toLocaleString('fr-FR');
+
+/* ---------- En-tête ---------- */
+if(reduce) $('#hero').classList.add('on'); else setTimeout(()=>$('#hero').classList.add('on'),250);
+
+/* ---------- Onglets ---------- */
+const tabs=document.querySelectorAll('nav button');
+tabs.forEach(b=>b.addEventListener('click',()=>{
+  tabs.forEach(x=>x.setAttribute('aria-selected',x===b?'true':'false'));
+  document.querySelectorAll('.panel').forEach(p=>p.hidden=p.id!==b.dataset.tab);
+}));
+
+/* ---------- Flashcards ---------- */
+const topics=["Tout",...new Set(CARDS.map(c=>c.t))];
+let fTopic="Tout",fDeck=[],fIdx=0,fShown=false,fKnown=0;
+function buildDeck(){fDeck=shuffle(fTopic==="Tout"?CARDS:CARDS.filter(c=>c.t===fTopic));fIdx=0;fShown=false;fKnown=0;}
+function renderCards(){
+  const el=$('#cards');
+  if(fIdx>=fDeck.length){
+    el.innerHTML=`<div class="score"><div class="big">${fKnown}/${fDeck.length}</div><p>cartes sues du premier coup.</p><button class="btn primary" id="fR">Mélanger et recommencer</button></div>`;
+    $('#fR').onclick=()=>{buildDeck();renderCards();};return;
+  }
+  const c=fDeck[fIdx];
+  el.innerHTML=`<div class="chips">${topics.map(t=>`<button class="chip" aria-pressed="${t===fTopic}" data-t="${t}">${t}</button>`).join("")}</div>
+    <div class="meta"><span>Carte ${fIdx+1} sur ${fDeck.length}</span><span>${c.t}</span></div>
+    <div class="bar"><i style="width:${fIdx/fDeck.length*100}%"></i></div>
+    <button class="flash ${fShown?'shown':''}" id="flash" aria-live="polite">
+      ${fShown?`<span class="a">${c.a}</span><span class="x">${c.x}</span>`:`<span class="q">${c.q}</span><span class="tap">Réponds dans ta tête, puis touche la carte</span>`}
+    </button>
+    <div class="row">${fShown?`<button class="btn again" id="fA">Je ne savais pas</button><button class="btn good" id="fG">Je savais</button>`:`<span></span><button class="btn primary" id="fS">Voir la réponse</button>`}</div>`;
+  el.querySelectorAll('.chip').forEach(ch=>ch.onclick=()=>{fTopic=ch.dataset.t;buildDeck();renderCards();});
+  $('#flash').onclick=()=>{fShown=!fShown;renderCards();};
+  if(fShown){ $('#fG').onclick=()=>{fKnown++;fIdx++;fShown=false;renderCards();}; $('#fA').onclick=()=>{fDeck.push(c);fDeck.splice(fIdx,1);fShown=false;renderCards();}; }
+  else $('#fS').onclick=()=>{fShown=true;renderCards();};
+}
+buildDeck();renderCards();
+
+/* ---------- Quiz ---------- */
+let qL=[],qI=0,qS=0,qDone=false,qA=false,qM=[];
+function startQuiz(){qL=shuffle(QUIZ).slice(0,12).map(q=>({...q,order:shuffle(q.o.map((t,i)=>({t,i})))}));qI=0;qS=0;qDone=false;qA=false;qM=[];renderQuiz();}
+function renderQuiz(){
+  const el=$('#quiz');
+  if(qDone){
+    const best=Math.max(store.get('couleurs-best',0),qS);store.set('couleurs-best',best);
+    el.innerHTML=`<div class="score"><div class="big">${qS}/${qL.length}</div><p>${qS===qL.length?"Parfait, rien à revoir.":qS>=9?"Très bien. Relis juste les points ci-dessous.":"Reprends les flashcards sur les points ci-dessous, puis refais le quiz."}</p><p class="note">Meilleur score : ${best}/${qL.length}</p></div>
+      ${qM.length?`<div class="fb ko"><b>À revoir :</b><ul class="steps">${qM.map(m=>`<li>${m}</li>`).join("")}</ul></div>`:""}
+      <div class="row"><span></span><button class="btn primary" id="qR">Nouveau quiz</button></div>`;
+    $('#qR').onclick=startQuiz;return;
+  }
+  const q=qL[qI];
+  el.innerHTML=`<div class="meta"><span>Question ${qI+1} sur ${qL.length}</span><span>Score : ${qS}</span></div>
+    <div class="bar"><i style="width:${qI/qL.length*100}%"></i></div>
+    <p class="qtext">${q.q}</p>
+    <div>${q.order.map(o=>`<button class="opt" data-i="${o.i}">${o.t}</button>`).join("")}</div>
+    <div id="qfb" aria-live="polite"></div>
+    <div class="row"><span></span><button class="btn primary" id="qN" disabled>${qI===qL.length-1?"Voir mon score":"Question suivante"}</button></div>`;
+  el.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
+    if(qA)return;qA=true;const i=+b.dataset.i,ok=i===q.c;if(ok)qS++;else qM.push(q.x);
+    el.querySelectorAll('.opt').forEach(o=>{o.disabled=true;if(+o.dataset.i===q.c)o.classList.add('right');else if(o===b)o.classList.add('wrong');});
+    $('#qfb').innerHTML=`<div class="fb ${ok?'ok':'ko'}"><b>${ok?'Exact.':'Non.'}</b> ${q.x}</div>`;$('#qN').disabled=false;$('#qN').focus();
+  });
+  $('#qN').onclick=()=>{qA=false;if(qI===qL.length-1)qDone=true;else qI++;renderQuiz();};
+}
+startQuiz();
+
+/* ---------- Exercices générés ---------- */
+const N = m => `${sw(m)}<b>${NAME[m]}</b>`;
+const GEN = {
+  additif(){
+    const k=pick([2,2,3]); const lights=shuffle([4,2,1]).slice(0,k); const ans=lights.reduce((a,b)=>a|b,0);
+    return {txt:`Sur un écran noir, on superpose les lumières ${lights.map(N).join(" et ")}. Quelle couleur voit-on là où elles se superposent ?`, ans,
+      steps:[`Ce sont des lumières : synthèse <b>additive</b>, on additionne.`,`${lights.map(l=>NAME[l]).join(" + ")} = ${RVB(ans)}`,`${RVB(ans)} correspond à : <b>${NAME[ans]}</b>`]};
+  },
+  compl(){
+    const m=pick([4,2,1,6,5,3]); const ans=7-m;
+    return {txt:`Quelle est la couleur complémentaire de ${N(m)} ?`, ans,
+      steps:[`${NAME[m]} = ${RVB(m)}`,`Pour faire du blanc (R + V + B), il manque : ${RVB(ans)}`,`Donc la complémentaire est <b>${NAME[ans]}</b>`]};
+  },
+  filtres(){
+    const k=pick([1,2,2]); const fl=shuffle([4,2,1,6,5,3]).slice(0,k); const light=pick([7,7,6,3,5]);
+    let cur=light; const st=[`Lumière de départ : ${NAME[light]} = ${RVB(light)}`];
+    fl.forEach(f=>{const nx=cur&f; st.push(`Le filtre ${NAME[f]} laisse passer ${RVB(f)} (il absorbe ${RVB(7-f)}) → il reste ${RVB(nx)}`); cur=nx;});
+    st.push(`Résultat : <b>${NAME[cur]}</b>`);
+    return {txt:`Une lumière ${N(light)} traverse ${k===1?"un filtre":"successivement les filtres"} ${fl.map(N).join(" puis ")}. Quelle couleur sort ?`, ans:cur, steps:st};
+  },
+  objet(){
+    const obj=pick([7,4,2,1,6,5,3]); const light=pick([4,2,1,6,5,3]); const ans=obj&light;
+    return {txt:`Un objet ${obj===7?"":"de couleur "}${N(obj)} (en lumière blanche) est éclairé par une lumière ${N(light)}. Quelle couleur paraît-il ?`, ans,
+      steps:[`Lumière reçue : ${RVB(light)}`,`L'objet ${NAME[obj]} peut diffuser : ${RVB(obj)}`,`Présentes dans les deux : ${RVB(ans)}`,`Il paraît <b>${NAME[ans]}</b>${ans===0?" (rien n'est diffusé)":""}`]};
+  },
+  solution(){
+    const abs=pick([4,2,1,6,5,3]); const ans=7-abs;
+    return {txt:`Une solution éclairée en lumière blanche absorbe surtout le ${N(abs)}. De quelle couleur paraît-elle ?`, ans,
+      steps:[`On voit la couleur <b>complémentaire</b> de la couleur absorbée.`,`${NAME[abs]} = ${RVB(abs)} est absorbé ; il reste ${RVB(ans)}`,`La solution paraît <b>${NAME[ans]}</b>`]};
+  },
+  beer(){
+    const c1=pick([1.0,2.0,4.0,5.0]); const k=pick([0.10,0.15,0.20,0.25]); const A1=+(k*c1).toFixed(2);
+    const c=+(pick([0.6,1.5,2.4,3.1,3.5])).toFixed(1); const A=+(k*c).toFixed(3); const ans=A/(A1/c1);
+    return {num:true, unit:"mmol/L", txt:`Une solution étalon de concentration <b>c₁ = ${nb(c1,1)} mmol/L</b> a une absorbance <b>A₁ = ${nb(A1)}</b>. Une solution inconnue de la même espèce a une absorbance <b>A = ${nb(A,3)}</b>. Calcule sa concentration c.`, ans,
+      steps:[`Beer-Lambert : A = k × c, donc k = A₁ / c₁ = ${nb(A1)} / ${nb(c1,1)} = ${nb(A1/c1,3)} L/mmol`,`c = A / k = ${nb(A,3)} / ${nb(A1/c1,3)}`,`c ≈ <b>${nb(ans,2)} mmol/L</b>`]};
+  }
+};
+const GL={tout:"Tous les types",additif:"Mélange de lumières",compl:"Complémentaires",filtres:"Filtres",objet:"Couleur d'un objet",solution:"Couleur d'une solution",beer:"Beer-Lambert"};
+let eT="tout",cur=null,streak=0,done=false;
+function newEx(){const k=eT==="tout"?pick(["additif","compl","filtres","filtres","objet","objet","solution","beer"]):eT;cur=GEN[k]();done=false;renderEx();}
+function renderEx(){
+  const el=$('#ex');
+  el.innerHTML=`<div class="meta"><label>Type : <select id="eT">${Object.entries(GL).map(([k,v])=>`<option value="${k}" ${k===eT?'selected':''}>${v}</option>`).join("")}</select></label><span>Série sans faute : <b id="stk">${streak}</b></span></div>
+    <p class="problem">${cur.txt}</p>
+    ${cur.num
+      ? `<div class="answer"><input id="eIn" inputmode="decimal" autocomplete="off" aria-label="Ta réponse"><b>${cur.unit}</b><button class="btn primary" id="eChk">Vérifier</button></div><p class="note">Virgule ou point acceptés. On tolère 3 % d'écart.</p>`
+      : `<div class="palette">${COLORS.map(m=>`<button class="pick" data-m="${m}">${sw(m)}${NAME[m]}</button>`).join("")}</div>`}
+    <div id="efb" aria-live="polite"></div>
+    <div class="row"><button class="btn" id="eSol">Voir la correction</button><button class="btn primary" id="eNew">Nouvel exercice</button></div>`;
+  $('#eT').onchange=e=>{eT=e.target.value;newEx();};
+  const show=(ok,reveal)=>{
+    if(!done){streak=ok?streak+1:0;done=true;}
+    $('#stk').textContent=streak;
+    $('#efb').innerHTML=`<div class="fb ${ok?'ok':'ko'}"><b>${ok?"Bravo, c'est juste.":reveal?"Correction :":"Pas tout à fait. Voici le raisonnement :"}</b><ol class="steps">${cur.steps.map(s=>`<li>${s}</li>`).join("")}</ol></div>`;
+  };
+  if(cur.num){
+    const chk=()=>{const v=parseFloat($('#eIn').value.replace(',','.').replace(/\s/g,''));show(!isNaN(v)&&Math.abs(v-cur.ans)/cur.ans<=0.03,false);};
+    $('#eChk').onclick=chk;$('#eIn').addEventListener('keydown',e=>{if(e.key==='Enter')chk();});
+  } else {
+    el.querySelectorAll('.pick').forEach(b=>b.onclick=()=>{
+      if(done)return; const m=+b.dataset.m, ok=m===cur.ans;
+      el.querySelectorAll('.pick').forEach(p=>{p.disabled=true;if(+p.dataset.m===cur.ans)p.classList.add('right');else if(p===b)p.classList.add('wrong');});
+      show(ok,false);
+    });
+  }
+  $('#eSol').onclick=()=>{ if(!cur.num) el.querySelectorAll('.pick').forEach(p=>{p.disabled=true;if(+p.dataset.m===cur.ans)p.classList.add('right');}); show(false,true); };
+  $('#eNew').onclick=newEx;
+}
+newEx();
+
+/* ---------- Labo ---------- */
+(function lab(){
+  const el=$('#lab');
+  el.innerHTML=`
+  <div class="lab">
+    <h2>Mélange de lumières</h2>
+    <p class="note" style="margin-top:0">Allume ou éteins les trois projecteurs (synthèse additive), comme les sous-pixels d'un écran.</p>
+    <div class="mixer">
+      <div class="screen" aria-hidden="true">
+        <div id="cR" style="left:55px;top:8px;background:#f00"></div>
+        <div id="cV" style="left:18px;top:78px;background:#0f0"></div>
+        <div id="cB" style="left:92px;top:78px;background:#00f"></div>
+      </div>
+      <div>
+        <div class="sl"><label for="iR"><span>Rouge</span><span id="lR"></span></label><input type="range" id="iR" min="0" max="1" step="1" value="1" style="accent-color:#E8262B"></div>
+        <div class="sl"><label for="iV"><span>Vert</span><span id="lV"></span></label><input type="range" id="iV" min="0" max="1" step="1" value="1" style="accent-color:#2DB84A"></div>
+        <div class="sl"><label for="iB"><span>Bleu</span><span id="lB"></span></label><input type="range" id="iB" min="0" max="1" step="1" value="0" style="accent-color:#2346E0"></div>
+        <div class="result" id="mixRes" aria-live="polite"></div>
+      </div>
+    </div>
+  </div>
+  <div class="lab">
+    <h2>Un objet sous un projecteur</h2>
+    <p class="note" style="margin-top:0">Choisis la couleur de l'objet (en lumière blanche) et la couleur du projecteur.</p>
+    <div class="scene">
+      <div><label for="sObj">Couleur de l'objet</label><select id="sObj">${[7,4,2,1,6,5,3,0].map(m=>`<option value="${m}" ${m===6?'selected':''}>${NAME[m]}</option>`).join("")}</select></div>
+      <div><label for="sLum">Couleur du projecteur</label><select id="sLum">${[7,4,2,1,6,5,3].map(m=>`<option value="${m}" ${m===5?'selected':''}>${NAME[m]}</option>`).join("")}</select></div>
+    </div>
+    <div class="stagebox"><svg id="shirt" viewBox="0 0 200 170" width="200" height="170" role="img" aria-label="T-shirt éclairé">
+      <path id="shirtPath" d="M60 10 L30 25 L5 60 L35 78 L45 65 L45 160 L155 160 L155 65 L165 78 L195 60 L170 25 L140 10 Q100 40 60 10 Z" stroke="#555" stroke-width="2"/></svg></div>
+    <div class="result" id="objRes" aria-live="polite"></div>
+  </div>`;
+  const upd=()=>{
+    const r=+$('#iR').value,v=+$('#iV').value,b=+$('#iB').value;
+    $('#cR').style.opacity=r;$('#cV').style.opacity=v;$('#cB').style.opacity=b;
+    $('#lR').textContent=r?"allumé":"éteint";$('#lV').textContent=v?"allumé":"éteint";$('#lB').textContent=b?"allumé":"éteint";
+    const m=r*4+v*2+b; $('#mixRes').innerHTML=`${sw(m)}<span>${m?RVB(m)+" = ":""}<b>${NAME[m]}</b></span>`;
+  };
+  ['iR','iV','iB'].forEach(id=>$('#'+id).oninput=upd);upd();
+  const upd2=()=>{
+    const o=+$('#sObj').value,l=+$('#sLum').value,res=o&l;
+    $('#shirtPath').setAttribute('fill',HEX[res]);
+    $('#objRes').innerHTML=`${sw(res)}<span>Lumière reçue : ${RVB(l)} · l'objet diffuse : ${RVB(o)} → on voit <b>${NAME[res]}</b></span>`;
+  };
+  $('#sObj').onchange=upd2;$('#sLum').onchange=upd2;upd2();
+})();
+</script>
+</body>
+</html>

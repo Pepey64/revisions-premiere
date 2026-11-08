@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Le théâtre du XVIIe au XXIe siècle — Révisions</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎭</text></svg>">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Work+Sans:wght@400;500;600&display=swap');
+
+  :root{
+    --curtain: #5A1F2E;
+    --curtain-dark: #3D141F;
+    --ink: #221815;
+    --parchment: #F1E6CF;
+    --parchment-dim: #E4D6B8;
+    --gold: #B8892B;
+    --gold-light: #D4AF5A;
+    --sage: #5F7051;
+    --rose: #A6444F;
+    --shadow: rgba(34,24,21,0.35);
+  }
+
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --curtain: #4A1926;
+      --curtain-dark: #2E0F17;
+    }
+  }
+  :root[data-theme="dark"]{
+    --curtain: #4A1926;
+    --curtain-dark: #2E0F17;
+  }
+
+  *{box-sizing:border-box;}
+  html{ scroll-padding-top: env(safe-area-inset-top, 0px); }
+
+  body{
+    margin:0;
+    min-height:100vh;
+    background:
+      radial-gradient(ellipse at top, #6B2436 0%, var(--curtain) 45%, var(--curtain-dark) 100%);
+    font-family:'Work Sans', sans-serif;
+    color:var(--parchment);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding:calc(32px + env(safe-area-inset-top, 0px)) 16px calc(64px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .header{
+    text-align:center;
+    max-width:640px;
+    margin-bottom:20px;
+  }
+
+  .eyebrow{
+    font-family:'Work Sans', sans-serif;
+    font-size:12px;
+    letter-spacing:0.04em;
+    color:var(--gold-light);
+    margin-bottom:6px;
+  }
+
+  h1{
+    font-family:'Cormorant Garamond', serif;
+    font-weight:600;
+    font-style:italic;
+    font-size:clamp(24px,5vw,38px);
+    margin:0 0 8px;
+    line-height:1.15;
+  }
+
+  .subtitle{
+    font-size:13px;
+    color:var(--parchment-dim);
+    opacity:0.85;
+  }
+
+  .tabs{
+    display:flex;
+    gap:4px;
+    background:rgba(34,24,21,0.35);
+    padding:4px;
+    border-radius:999px;
+    margin-bottom:16px;
+  }
+
+  .tab{
+    border:none;
+    background:transparent;
+    color:var(--parchment-dim);
+    font-family:'Work Sans', sans-serif;
+    font-size:14px;
+    font-weight:500;
+    padding:10px 22px;
+    border-radius:999px;
+    cursor:pointer;
+    transition:background 0.25s ease, color 0.25s ease;
+  }
+
+  .tab.active{
+    background:var(--gold);
+    color:var(--ink);
+  }
+
+  .chapters{
+    display:flex;
+    gap:8px;
+    overflow-x:auto;
+    max-width:100%;
+    width:100%;
+    max-width:560px;
+    padding:2px 2px 12px;
+    margin-bottom:14px;
+    -webkit-overflow-scrolling:touch;
+  }
+  .chapters::-webkit-scrollbar{ height:4px; }
+
+  .chip{
+    flex:0 0 auto;
+    border:1px solid rgba(212,175,90,0.45);
+    background:rgba(34,24,21,0.3);
+    color:var(--parchment-dim);
+    font-family:'Work Sans', sans-serif;
+    font-size:12.5px;
+    font-weight:500;
+    padding:8px 14px;
+    border-radius:999px;
+    cursor:pointer;
+    white-space:nowrap;
+    transition:background 0.2s ease, color 0.2s ease;
+  }
+
+  .chip.active{
+    background:var(--gold-light);
+    color:var(--ink);
+    border-color:var(--gold-light);
+    font-weight:600;
+  }
+
+  .stage{
+    width:100%;
+    max-width:560px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+  }
+
+  /* ---- Flashcards ---- */
+  .flash-progress{
+    font-size:13px;
+    color:var(--gold-light);
+    margin-bottom:14px;
+    letter-spacing:0.02em;
+    text-align:center;
+  }
+
+  .flash-wrap{
+    perspective:1400px;
+    width:100%;
+    aspect-ratio:16/10;
+    max-height:340px;
+  }
+
+  .flash-card{
+    position:relative;
+    width:100%;
+    height:100%;
+    cursor:pointer;
+    transform-style:preserve-3d;
+    transition:transform 0.55s cubic-bezier(.4,.2,.2,1);
+  }
+
+  .flash-card.flipped{
+    transform:rotateY(180deg);
+  }
+
+  .face{
+    position:absolute;
+    inset:0;
+    backface-visibility:hidden;
+    border-radius:14px;
+    background:var(--parchment);
+    color:var(--ink);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:32px 28px;
+    box-shadow:0 18px 40px var(--shadow);
+    border:1px solid rgba(184,137,43,0.4);
+    overflow-y:auto;
+  }
+
+  .face .label{
+    position:absolute;
+    top:16px;
+    left:20px;
+    font-size:11px;
+    letter-spacing:0.06em;
+    color:var(--gold);
+    font-weight:600;
+  }
+
+  .face p{
+    font-family:'Cormorant Garamond', serif;
+    font-size:21px;
+    line-height:1.35;
+    margin:0;
+  }
+
+  .face.back{
+    transform:rotateY(180deg);
+    background:var(--curtain-dark);
+    color:var(--parchment);
+    border:1px solid rgba(184,137,43,0.5);
+  }
+
+  .face.back p{
+    font-weight:600;
+  }
+
+  .face.back .explain{
+    font-family:'Work Sans', sans-serif;
+    font-size:13.5px;
+    font-weight:400;
+    color:var(--parchment-dim);
+    margin-top:12px;
+    line-height:1.5;
+  }
+
+  .hint{
+    font-size:12px;
+    color:var(--parchment-dim);
+    margin-top:10px;
+    text-align:center;
+    min-height:16px;
+  }
+
+  .nav-row{
+    display:flex;
+    align-items:center;
+    gap:18px;
+    margin-top:22px;
+  }
+
+  .nav-btn{
+    background:none;
+    border:1px solid var(--gold);
+    color:var(--gold-light);
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    font-size:18px;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:background 0.2s ease;
+  }
+  .nav-btn:hover{ background:rgba(184,137,43,0.15); }
+  .nav-btn:disabled{ opacity:0.3; cursor:default; }
+
+  /* ---- Quiz ---- */
+  .quiz-progress{
+    font-size:13px;
+    color:var(--gold-light);
+    margin-bottom:16px;
+    text-align:center;
+  }
+
+  .quiz-card{
+    width:100%;
+    background:var(--parchment);
+    color:var(--ink);
+    border-radius:14px;
+    padding:26px 24px;
+    box-shadow:0 18px 40px var(--shadow);
+    border:1px solid rgba(184,137,43,0.4);
+  }
+
+  .quiz-prompt{
+    font-family:'Cormorant Garamond', serif;
+    font-size:21px;
+    font-weight:600;
+    margin:0 0 20px;
+    line-height:1.3;
+  }
+
+  .option{
+    display:block;
+    width:100%;
+    text-align:left;
+    background:#fff;
+    border:1.5px solid rgba(34,24,21,0.15);
+    border-radius:10px;
+    padding:13px 16px;
+    margin-bottom:10px;
+    font-family:'Work Sans', sans-serif;
+    font-size:15px;
+    cursor:pointer;
+    transition:border-color 0.2s ease, background 0.2s ease;
+    color:var(--ink);
+  }
+
+  .option:hover:not(:disabled){
+    border-color:var(--gold);
+  }
+
+  .option.correct{
+    background:#EAF0E4;
+    border-color:var(--sage);
+    color:#2F3D26;
+    font-weight:600;
+  }
+
+  .option.incorrect{
+    background:#F4E4E2;
+    border-color:var(--rose);
+    color:#5C2027;
+    font-weight:600;
+  }
+
+  .option:disabled{ cursor:default; }
+
+  .feedback{
+    margin-top:16px;
+    padding:14px 16px;
+    border-radius:10px;
+    font-size:14px;
+    line-height:1.5;
+  }
+
+  .feedback.correct{ background:#EAF0E4; color:#2F3D26; }
+  .feedback.incorrect{ background:#F4E4E2; color:#5C2027; }
+
+  .feedback strong{ display:block; margin-bottom:4px; font-size:14px; }
+
+  .quiz-footer{
+    margin-top:20px;
+    display:flex;
+    justify-content:flex-end;
+  }
+
+  .primary-btn{
+    background:var(--curtain-dark);
+    color:var(--parchment);
+    border:none;
+    padding:11px 24px;
+    border-radius:999px;
+    font-family:'Work Sans', sans-serif;
+    font-size:14px;
+    font-weight:600;
+    cursor:pointer;
+    transition:background 0.2s ease;
+  }
+  .primary-btn:hover{ background:#2B1D19; }
+  .primary-btn:disabled{ opacity:0.35; cursor:default; }
+
+  .score-screen{
+    width:100%;
+    background:var(--parchment);
+    color:var(--ink);
+    border-radius:14px;
+    padding:44px 32px;
+    text-align:center;
+    box-shadow:0 18px 40px var(--shadow);
+    border:1px solid rgba(184,137,43,0.4);
+  }
+
+  .score-screen .big{
+    font-family:'Cormorant Garamond', serif;
+    font-size:52px;
+    font-weight:700;
+    color:var(--curtain);
+    margin:6px 0 4px;
+  }
+
+  .score-screen p{ margin:4px 0; color:#4A3C32; }
+
+  .restart-btn{
+    margin-top:22px;
+    background:var(--gold);
+    color:var(--ink);
+    border:none;
+    padding:12px 28px;
+    border-radius:999px;
+    font-weight:600;
+    font-family:'Work Sans', sans-serif;
+    cursor:pointer;
+  }
+
+  footer{
+    margin-top:36px;
+    font-size:11.5px;
+    color:rgba(241,230,207,0.5);
+    text-align:center;
+    max-width:520px;
+    line-height:1.5;
+  }
+</style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="eyebrow">BAC DE FRANÇAIS — HISTOIRE LITTÉRAIRE DU THÉÂTRE</div>
+    <h1>Le théâtre, du XVII<sup>e</sup> au XXI<sup>e</sup> siècle</h1>
+    <div class="subtitle">Des origines antiques à la scène contemporaine — + Musset &amp; le romantisme</div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" data-mode="flash">Flashcards</button>
+    <button class="tab" data-mode="quiz">Quiz noté</button>
+  </div>
+
+  <div class="chapters" id="chapters"></div>
+
+  <div class="stage" id="stage"></div>
+
+  <footer>D'après le cours sur l'évolution du genre théâtral (Antiquité → XXIe siècle) et l'introduction sur Musset et le romantisme.</footer>
+
+<script>
+const DECKS = {
+  antique: { label: "Théâtre antique", items: [
+    {q:"Quelle divinité est à l'origine religieuse du théâtre antique ?",
+     options:["Zeus","Dionysos","Apollon","Athéna"], correct:1,
+     explain:"Le théâtre naît d'un culte religieux à Dionysos, avec un aspect politique : les citoyens assistent chaque année à un festival de représentations mettant en scène des histoires communes."},
+    {q:"Sur quelles familles mythologiques s'appuie la tragédie antique ?",
+     options:["Les rois de Thèbes et d'Argos","Les rois de Sparte et de Corinthe","Les rois de Troie et de Mycènes","Les rois d'Athènes et de Delphes"], correct:0,
+     explain:"La tragédie s'appuie sur la famille des rois de Thèbes et d'Argos, sources mythologiques de la « lignée maudite »."},
+    {q:"Comment appelle-t-on la démesure, l'orgueil qui pousse le héros tragique à se sentir au-dessus des lois ?",
+     options:["Le fatum","L'hybris","La catharsis","La hamartia"], correct:1,
+     explain:"L'hybris désigne la démesure et l'orgueil du personnage tragique, souvent de lignée royale, marqué par les crimes de ses ascendants."},
+    {q:"Que désigne la catharsis au théâtre ?",
+     options:["Le décor unique de la scène","La purgation des passions par le spectacle de la violence","La règle des trois unités","Le dénouement heureux d'une pièce"], correct:1,
+     explain:"La catharsis est un héritage de la tragédie antique : le spectateur est « guéri » de la violence en assistant au spectacle d'une violence extrême."},
+    {q:"Quel dramaturge classique évoque la « lignée maudite » dans Phèdre (« La fille de Minos et de Pasiphaé ») ?",
+     options:["Corneille","Molière","Racine","Voltaire"], correct:2,
+     explain:"Racine, dans Phèdre, fait dire à son héroïne qu'elle est « la fille de Minos et de Pasiphaé », rappelant le poids de sa lignée maudite."},
+    {q:"Quels traits caractérisent le personnage tragique depuis l'Antiquité ?",
+     options:["Il est de condition modeste","Il est de lignée royale, marquée par des crimes ancestraux","Il échappe toujours à son destin","Il appartient au registre comique"], correct:1,
+     explain:"Les personnages tragiques appartiennent aux élites sociales et à une lignée qui porte le poids des crimes de ses ascendants, selon la notion de destin (Fatum)."},
+    {q:"Quels auteurs antiques développent la comédie à visée critique de la société ?",
+     options:["Sophocle et Euripide","Aristophane et Plaute","Eschyle et Sénèque","Homère et Hésiode"], correct:1,
+     explain:"La comédie apparaît dans l'Antiquité avec une visée critique, notamment chez Aristophane puis Plaute."},
+    {q:"Quel type de dénouement caractérise la tragédie antique ?",
+     options:["Heureux et apaisé","Atroce et sanglant","Comique et léger","Ouvert, sans conclusion"], correct:1,
+     explain:"La tragédie se clôt sur un dénouement atroce et sanglant, l'une des marques constantes du genre."}
+  ]},
+
+  xvii: { label: "XVIIe siècle", items: [
+    {q:"Quel mouvement s'oppose au baroque au XVIIe siècle en recherchant netteté, précision et simplicité ?",
+     options:["Le romantisme","Le classicisme","Le réalisme","Le symbolisme"], correct:1,
+     explain:"Là où le baroque recherche le mouvement et la surcharge, le classicisme cherche la netteté et la simplicité — d'où naît la règle des trois unités."},
+    {q:"Laquelle de ces règles ne fait PAS partie de la règle classique des trois unités ?",
+     options:["Unité de lieu","Unité de temps (24h)","Unité d'action","Unité de ton"], correct:3,
+     explain:"Les trois unités sont : lieu (un décor principal), temps (24h) et action (une intrigue principale). L'« unité de ton » n'existe pas."},
+    {q:"Que prescrit la règle de bienséance ?",
+     options:["De respecter les trois unités","De ne rien représenter sur scène qui choque la morale (ex : la mort)","D'écrire uniquement en vers","De mélanger tragique et comique"], correct:1,
+     explain:"La bienséance interdit de représenter sur le plateau ce qui choquerait la morale, comme la mort donnée à voir directement sur scène."},
+    {q:"Qu'est-ce qu'une tragi-comédie ?",
+     options:["Une comédie sans intrigue","Une pièce avec toutes les marques du tragique mais un dénouement heureux","Une tragédie jouée par des comédiens italiens","Une pièce sans unité de lieu"], correct:1,
+     explain:"La tragi-comédie conserve les marques du tragique tout au long de la pièce, mais se termine par un dénouement heureux."},
+    {q:"Comment appelle-t-on l'idéal du XVIIe siècle : un homme vertueux, instruit, sociable et sans prétention ?",
+     options:["Le courtisan","L'honnête homme","Le précieux","Le moraliste"], correct:1,
+     explain:"Le XVIIe, siècle des moralistes et de la cour de Louis XIV, synthétise mondanité et vertu dans l'idéal de « l'honnête homme »."},
+    {q:"Quelle invention théâtrale est attribuée à Molière ?",
+     options:["Le vaudeville","La grande comédie","Le drame bourgeois","La tragi-comédie"], correct:1,
+     explain:"Molière invente la grande comédie, qui fait entrer ce genre — jusque-là mineur — à la cour du roi, jusqu'alors réservée à la tragédie."},
+    {q:"À travers quel défaut humain Molière construit-il le personnage de l'Avare ?",
+     options:["La jalousie","L'obsession de l'argent","La vanité","La lâcheté"], correct:1,
+     explain:"Molière critique les défauts humains à travers des personnages « monomaniaques » : l'Avare incarne l'obsession de l'argent."},
+    {q:"Quel précepte antique Molière reprend-il pour défendre la comédie ?",
+     options:["« Imiter la nature »","« Corriger les mœurs par le rire »","« L'art pour l'art »","« Purger les passions »"], correct:1,
+     explain:"Molière reprend le précepte antique « corriger les mœurs par le rire », ce qui lui vaudra aussi des ennemis et la censure."}
+  ]},
+
+  xviii: { label: "XVIIIe siècle", items: [
+    {q:"Comment qualifie-t-on le XVIIIe siècle sur le plan intellectuel ?",
+     options:["Le siècle des moralistes","Le siècle des Lumières (de la raison)","Le siècle baroque","Le siècle du vaudeville"], correct:1,
+     explain:"Le XVIIIe est le siècle des Lumières : on y trouve une critique sociale présente dans les pièces de théâtre."},
+    {q:"Dans L'Île des esclaves de Marivaux, quel procédé sert à réfléchir aux rapports de pouvoir ?",
+     options:["Le travestissement amoureux","L'inversion des rôles maître/valet","Le port du masque antique","Le monologue tragique"], correct:1,
+     explain:"Marivaux inverse les rôles de maître et de valet pour interroger les rapports de pouvoir entre les classes sociales."},
+    {q:"Quel nouveau genre apparaît au XVIIIe siècle, avec des personnages qui ne sont plus exclusivement aristocratiques ?",
+     options:["Le vaudeville","Le drame bourgeois","La tragi-comédie","Le théâtre de l'absurde"], correct:1,
+     explain:"Le drame bourgeois naît en lien avec l'évolution historique et met en scène des personnages plus proches du peuple, souvent dans le registre pathétique."},
+    {q:"Dans Le Fils naturel de Diderot, quel thème est lié à la naissance de l'enfant ?",
+     options:["Il est enfant illégitime, né hors mariage","Il est orphelin de guerre","Il est enfant adopté","Il est fils unique d'une famille noble"], correct:0,
+     explain:"Diderot met en scène un enfant illégitime, né hors mariage, dans une tonalité pathétique faite de joie des retrouvailles et de tristesse."},
+    {q:"Dans la trilogie de Beaumarchais, quel est le statut du personnage central, Figaro ?",
+     options:["Aristocrate déchu","Valet rusé, homme d'intrigue, statut social intermédiaire","Bourgeois enrichi","Paysan révolté"], correct:1,
+     explain:"Figaro est un valet rusé et un homme d'intrigue, occupant un statut social intermédiaire, du Barbier de Séville à La Mère coupable."},
+    {q:"Dans Le Mariage de Figaro, contre quel droit Figaro doit-il lutter ?",
+     options:["Le droit d'aînesse","Le droit de cuissage","Le droit de vote","Le droit de propriété"], correct:1,
+     explain:"Figaro lutte contre son maître, le Comte Almaviva, qui veut réactiver le droit de cuissage : intrigue à la fois politique et amoureuse."},
+    {q:"Que reprend Marivaux du théâtre italien pour construire ses pièces ?",
+     options:["Le personnage d'Arlequin et les demi-masques","Le chœur antique","Les unités classiques strictes","Le vaudeville"], correct:0,
+     explain:"Marivaux fait jouer ses pièces par les comédiens italiens et reprend le personnage d'Arlequin, avec un jeu théâtral très physique."},
+    {q:"Que désigne le terme « marivaudage » ?",
+     options:["Une forme de tragédie classique","Une attitude de séduction où l'on manipule l'autre par le langage","Un genre de farce médiévale","Un procédé de mise en scène moderne"], correct:1,
+     explain:"Le marivaudage désigne un jeu de séduction par la parole : on retrouve un jeu comparable entre langage et sentiment chez Musset (Camille et Perdican)."}
+  ]},
+
+  xix: { label: "XIXe siècle", items: [
+    {q:"Quel événement marque symboliquement la révolution romantique au théâtre, avec Victor Hugo comme chef de file ?",
+     options:["La bataille d'Hernani","La bataille de Waterloo","Les Trois Glorieuses","La création du Cid"], correct:0,
+     explain:"La bataille d'Hernani brise les codes du théâtre professionnel et fait de Victor Hugo le chef de file du mouvement romantique."},
+    {q:"Que rejettent les romantiques par provocation, comme le montre le meurtre sanglant sur scène dans Lorenzaccio de Musset ?",
+     options:["Les trois unités et la bienséance","Le drame bourgeois","La comédie","Le vaudeville"], correct:0,
+     explain:"Les romantiques rejettent la règle des trois unités et de bienséance, provoquant par exemple en montrant la mort directement sur scène."},
+    {q:"Dans la Préface de Cromwell, que théorise Victor Hugo ?",
+     options:["La règle des trois unités","Le mélange des tonalités, comique et tragique (grotesque et sublime)","La catharsis antique","Le marivaudage"], correct:1,
+     explain:"Hugo y définit le drame romantique et la volonté de mélanger les tonalités, car le théâtre doit imiter la vie : c'est la théorie du grotesque et du sublime."},
+    {q:"Quel personnage de Victor Hugo illustre la théorie du grotesque et du sublime ?",
+     options:["Jean Valjean","Quasimodo","Ruy Blas","Hernani"], correct:1,
+     explain:"Quasimodo est difforme physiquement mais sublime sur le plan intellectuel et moral."},
+    {q:"Quelles figures de style les romantiques emploient-ils souvent pour exprimer leurs exigences idéalistes ?",
+     options:["La litote et l'euphémisme","L'antithèse et l'oxymore","L'anaphore uniquement","La périphrase"], correct:1,
+     explain:"Rhétorique de l'excès : les romantiques utilisent l'hyperbole, l'antithèse et l'oxymore, en amour comme en politique."},
+    {q:"Quel nouveau genre comique apparaît au XIXe siècle avec Feydeau, satirisant la bourgeoisie et son hypocrisie ?",
+     options:["Le drame bourgeois","Le vaudeville","La tragi-comédie","Le théâtre de l'absurde"], correct:1,
+     explain:"Le vaudeville, avec des pièces comme Un fil à la patte, satirise par des situations simples la bourgeoisie et son hypocrisie."},
+    {q:"Quel métier se développe et devient un métier à part entière à cette époque ?",
+     options:["Dramaturge","Metteur en scène","Costumier","Souffleur"], correct:1,
+     explain:"Le métier de metteur en scène se développe et devient un métier à part entière."},
+    {q:"Quel conflit anime la génération romantique de 1830 dans le théâtre de cette époque ?",
+     options:["Un conflit de génération contre des adultes figés","Un conflit entre deux familles rivales","Un conflit entre ville et campagne","Un conflit religieux"], correct:0,
+     explain:"Les romantiques mettent en scène une révolte de la génération de 1830 contre des adultes figés qui ne leur laissent pas de place."}
+  ]},
+
+  xxxxi: { label: "XXe – XXIe siècle", items: [
+    {q:"Quelle théorie de Brecht vise à empêcher l'identification du spectateur au personnage ?",
+     options:["La catharsis","La distanciation","Le marivaudage","L'hybris"], correct:1,
+     explain:"Brecht veut faire réfléchir le spectateur sur ce qui se passe sur scène plutôt que de favoriser l'identification au personnage."},
+    {q:"Quelle expérience historique du XXe siècle a profondément désillusionné les auteurs sur la bonté humaine ?",
+     options:["La Révolution française","Les deux guerres mondiales","La colonisation","La révolution industrielle"], correct:1,
+     explain:"L'expérience des deux guerres mondiales désillusionne les hommes, qui ne croient plus en l'héroïsme ni en la bonté humaine."},
+    {q:"D'où est tirée la citation de Paul Valéry : « Nous autres civilisations savons désormais que nous sommes mortels » ?",
+     options:["La Crise de l'esprit","Le Cimetière marin","Monsieur Teste","Charmes"], correct:0,
+     explain:"Cette citation est tirée de La Crise de l'esprit de Paul Valéry, qui traduit le désenchantement du XXe siècle."},
+    {q:"Dans En attendant Godot de Beckett, que font les deux clochards chaque jour ?",
+     options:["Ils attendent Godot, qui ne vient jamais","Ils se battent en duel","Ils construisent une maison","Ils partent en voyage"], correct:0,
+     explain:"Les deux clochards répètent chaque jour la même discussion autour d'un arbre, en attendant Godot, qui ne viendra jamais."},
+    {q:"Que satirise Rhinocéros de Ionesco ?",
+     options:["Le colonialisme","Le totalitarisme","Le capitalisme","La religion"], correct:1,
+     explain:"Rhinocéros est une satire du totalitarisme, à travers ce qu'on appelle en littérature le « creux du langage »."},
+    {q:"Dans le théâtre de l'absurde, comment se parlent souvent des personnages censés se connaître (ex. un couple) ?",
+     options:["Ils se comprennent parfaitement","Ils se parlent comme s'ils ne se connaissaient pas","Ils ne se parlent jamais","Ils chantent leurs répliques"], correct:1,
+     explain:"Situation absurde typique : le mari et la femme ne semblent pas se connaître, comme s'ils se parlaient pour la première fois."},
+    {q:"Quelle pièce de Sartre interroge le rapport social à travers trois personnages enfermés ensemble ?",
+     options:["Les Mouches","Huis clos","La Nausée","Les Mains sales"], correct:1,
+     explain:"Huis clos, pièce du théâtre engagé de Sartre, pose la question du rapport social à travers l'enfermement de ses personnages."},
+    {q:"Dans Les Justes de Camus, quel débat anime les personnages ?",
+     options:["Un débat entre révolutionnaires préparant un attentat contre le tsar","Un débat sur la peine de mort en France","Un débat religieux","Un débat sur le mariage"], correct:0,
+     explain:"Les Justes met en scène un débat entre des révolutionnaires qui préparent un attentat contre le tsar."},
+    {q:"Qu'est-ce que « l'écriture de plateau », pratiquée par des metteurs en scène comme Joël Pommerat ?",
+     options:["Un texte écrit à l'avance puis mis en scène","Un spectacle créé à partir d'improvisations, sans texte de départ","Une adaptation directe d'un roman","Une pièce jouée sans acteurs"], correct:1,
+     explain:"Il n'y a pas de texte au départ : le metteur en scène crée le spectacle à partir d'une thématique et d'improvisations sur le plateau."},
+    {q:"Quel mythe antique Wajdi Mouawad réécrit-il, transposé au Liban, dans sa Trilogie ?",
+     options:["Le mythe d'Œdipe","Le mythe d'Antigone","Le mythe d'Électre","Le mythe d'Ulysse"], correct:0,
+     explain:"La scène contemporaine réécrit les tragédies antiques : Wajdi Mouawad transpose le mythe d'Œdipe au Liban dans sa Trilogie."}
+  ]},
+
+  musset: { label: "Musset & le romantisme", items: [
+    {q:"À quel milieu social appartient Alfred de Musset ?",
+     options:["Bourgeois","Aristocrate","Paysan","Artisan"], correct:1,
+     explain:"Musset est un aristocrate, porté par l'idée romantique d'un individu brillant."},
+    {q:"En quelle année Musset écrit-il On ne badine pas avec l'amour ?",
+     options:["1830","1834","1848","1857"], correct:1,
+     explain:"La pièce est publiée en 1834, dans la Revue des Deux Mondes."},
+    {q:"À quel âge Musset commence-t-il à écrire ses premières œuvres (des contes) ?",
+     options:["Très jeune","Vers 40 ans","Après un long silence","Après son mariage"], correct:0,
+     explain:"Musset écrit ses premières œuvres, des contes, très jeune, avant de composer diverses études."},
+    {q:"Quels sont les deux traits qui constituent la « marque de fabrique » de Musset ?",
+     options:["Colère et vengeance","Désespoir et humour","Optimisme et légèreté","Silence et mystère"], correct:1,
+     explain:"Le désespoir et l'humour caractérisent l'écriture de Musset, notamment dans On ne badine pas avec l'amour."},
+    {q:"Que retrouve-t-on souvent dans la vie et l'œuvre de Musset, très romantiques ?",
+     options:["De la mélancolie, et une mort jeune","De la joie et une longue vie","De l'indifférence au monde","Une grande sérénité"], correct:0,
+     explain:"Musset a une vie très romantique, marquée par la mélancolie ; il meurt jeune."},
+    {q:"Quel point commun peut-on établir entre Musset et Marivaux dans une dissertation ?",
+     options:["Le jeu entre langage et sentiment (badinage/marivaudage)","Le rejet total du romantisme","L'usage exclusif de la prose","Le respect strict des trois unités classiques"], correct:0,
+     explain:"Chez les deux auteurs, il y a un jeu entre langage et sentiment : c'est le cas de Camille et Perdican dans le badinage/marivaudage."}
+  ]}
+};
+
+const CHAPTER_KEYS = Object.keys(DECKS);
+const stage = document.getElementById('stage');
+const chaptersBar = document.getElementById('chapters');
+const tabs = document.querySelectorAll('.tab');
+
+let mode = 'flash';
+let currentChapter = 'antique';
+
+let flashIndex = 0;
+let flipped = false;
+
+let quizIndex = 0;
+let quizScore = 0;
+let quizAnswered = false;
+let quizFinished = false;
+
+function currentQuestions(){
+  return DECKS[currentChapter].items;
+}
+
+function renderChapters(){
+  chaptersBar.innerHTML = '';
+  CHAPTER_KEYS.forEach(key => {
+    const chip = document.createElement('button');
+    chip.className = 'chip' + (key === currentChapter ? ' active' : '');
+    chip.textContent = DECKS[key].label;
+    chip.addEventListener('click', () => {
+      if(key === currentChapter) return;
+      currentChapter = key;
+      flashIndex = 0; flipped = false;
+      quizIndex = 0; quizScore = 0; quizAnswered = false; quizFinished = false;
+      render();
+    });
+    chaptersBar.appendChild(chip);
+  });
+}
+
+tabs.forEach(t => t.addEventListener('click', () => {
+  tabs.forEach(x => x.classList.remove('active'));
+  t.classList.add('active');
+  mode = t.dataset.mode;
+  render();
+}));
+
+function render(){
+  renderChapters();
+  stage.innerHTML = '';
+  if(mode === 'flash') renderFlash();
+  else renderQuiz();
+}
+
+function renderFlash(){
+  const items = currentQuestions();
+  const item = items[flashIndex];
+
+  const progress = document.createElement('div');
+  progress.className = 'flash-progress';
+  progress.textContent = `${DECKS[currentChapter].label} · Carte ${flashIndex+1} / ${items.length}`;
+  stage.appendChild(progress);
+
+  const wrap = document.createElement('div');
+  wrap.className = 'flash-wrap';
+
+  const card = document.createElement('div');
+  card.className = 'flash-card' + (flipped ? ' flipped' : '');
+  card.addEventListener('click', () => { flipped = !flipped; render(); });
+
+  const front = document.createElement('div');
+  front.className = 'face front';
+  front.innerHTML = `<div class="label">QUESTION</div><p>${item.q}</p>`;
+
+  const back = document.createElement('div');
+  back.className = 'face back';
+  back.innerHTML = `<div class="label">RÉPONSE</div><p>${item.options[item.correct]}</p><div class="explain">${item.explain}</div>`;
+
+  card.appendChild(front);
+  card.appendChild(back);
+  wrap.appendChild(card);
+  stage.appendChild(wrap);
+
+  const hint = document.createElement('div');
+  hint.className = 'hint';
+  hint.textContent = flipped ? '' : 'Touche la carte pour voir la réponse';
+  stage.appendChild(hint);
+
+  const nav = document.createElement('div');
+  nav.className = 'nav-row';
+
+  const prevBtn = document.createElement('button');
+  prevBtn.className = 'nav-btn';
+  prevBtn.textContent = '‹';
+  prevBtn.disabled = flashIndex === 0;
+  prevBtn.addEventListener('click', () => { flashIndex--; flipped=false; render(); });
+
+  const nextBtn = document.createElement('button');
+  nextBtn.className = 'nav-btn';
+  nextBtn.textContent = '›';
+  nextBtn.disabled = flashIndex === items.length - 1;
+  nextBtn.addEventListener('click', () => { flashIndex++; flipped=false; render(); });
+
+  nav.appendChild(prevBtn);
+  nav.appendChild(nextBtn);
+  stage.appendChild(nav);
+}
+
+function renderQuiz(){
+  const items = currentQuestions();
+
+  if(quizFinished){
+    const screen = document.createElement('div');
+    screen.className = 'score-screen';
+    const pct = Math.round((quizScore/items.length)*100);
+    screen.innerHTML = `
+      <div style="font-size:14px;color:#7A6A55;">Score final — ${DECKS[currentChapter].label}</div>
+      <div class="big">${quizScore} / ${items.length}</div>
+      <p>${pct}% de bonnes réponses</p>
+      <button class="restart-btn" id="restartBtn">Recommencer</button>
+    `;
+    stage.appendChild(screen);
+    document.getElementById('restartBtn').addEventListener('click', () => {
+      quizIndex = 0; quizScore = 0; quizAnswered = false; quizFinished = false; render();
+    });
+    return;
+  }
+
+  const item = items[quizIndex];
+
+  const progress = document.createElement('div');
+  progress.className = 'quiz-progress';
+  progress.textContent = `${DECKS[currentChapter].label} · Question ${quizIndex+1} / ${items.length} · Score : ${quizScore}`;
+  stage.appendChild(progress);
+
+  const card = document.createElement('div');
+  card.className = 'quiz-card';
+
+  const prompt = document.createElement('p');
+  prompt.className = 'quiz-prompt';
+  prompt.textContent = item.q;
+  card.appendChild(prompt);
+
+  let selected = null;
+
+  item.options.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option';
+    btn.textContent = opt;
+    btn.addEventListener('click', () => {
+      if(quizAnswered) return;
+      quizAnswered = true;
+      selected = i;
+      if(i === item.correct) quizScore++;
+      renderFeedback();
+    });
+    card.appendChild(btn);
+  });
+
+  const feedbackSlot = document.createElement('div');
+  feedbackSlot.id = 'feedbackSlot';
+  card.appendChild(feedbackSlot);
+
+  const footer = document.createElement('div');
+  footer.className = 'quiz-footer';
+  const nextBtn = document.createElement('button');
+  nextBtn.className = 'primary-btn';
+  nextBtn.textContent = quizIndex === items.length - 1 ? 'Voir le score' : 'Question suivante';
+  nextBtn.disabled = true;
+  nextBtn.id = 'quizNextBtn';
+  nextBtn.addEventListener('click', () => {
+    quizAnswered = false;
+    if(quizIndex === items.length - 1){ quizFinished = true; }
+    else { quizIndex++; }
+    render();
+  });
+  footer.appendChild(nextBtn);
+  card.appendChild(footer);
+
+  stage.appendChild(card);
+
+  function renderFeedback(){
+    Array.from(card.querySelectorAll('.option')).forEach((btn, i) => {
+      btn.disabled = true;
+      if(i === item.correct) btn.classList.add('correct');
+      else if(i === selected) btn.classList.add('incorrect');
+    });
+    const isCorrect = selected === item.correct;
+    feedbackSlot.innerHTML = `
+      <div class="feedback ${isCorrect ? 'correct' : 'incorrect'}">
+        <strong>${isCorrect ? 'Exact !' : 'Pas tout à fait.'}</strong>
+        ${item.explain}
+      </div>`;
+    document.getElementById('quizNextBtn').disabled = false;
+  }
+}
+
+render();
+</script>
+</body>
+</html>

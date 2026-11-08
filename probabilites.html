@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Probabilités — Révisions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F5F3EC; --surface:#FFFFFF; --surface-2:#EEF2F8; --ink:#1D2733; --muted:#5B6776;
+  --line:#D9DEE6; --accent:#2457A6; --accent-ink:#FFFFFF; --accent-soft:#E3ECFA;
+  --ok:#2E7D4F; --ok-soft:#E4F2E9; --ko:#B3412F; --ko-soft:#F8E6E2; --hl:#FFF1B8;
+  --branch:#8592A3; --shadow:0 10px 30px rgba(29,39,51,.08);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#11161D; --surface:#19212B; --surface-2:#202A36; --ink:#E6EAEF; --muted:#9AA6B4;
+    --line:#2D3946; --accent:#7EA6EE; --accent-ink:#0E1620; --accent-soft:#22324A;
+    --ok:#6FCB94; --ok-soft:#1C3328; --ko:#F08C7A; --ko-soft:#3A221E; --hl:#4A4220;
+    --branch:#6C7A8B; --shadow:0 10px 30px rgba(0,0,0,.35);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#11161D; --surface:#19212B; --surface-2:#202A36; --ink:#E6EAEF; --muted:#9AA6B4;
+  --line:#2D3946; --accent:#7EA6EE; --accent-ink:#0E1620; --accent-soft:#22324A;
+  --ok:#6FCB94; --ok-soft:#1C3328; --ko:#F08C7A; --ko-soft:#3A221E; --hl:#4A4220;
+  --branch:#6C7A8B; --shadow:0 10px 30px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:'Atkinson Hyperlegible',system-ui,sans-serif;
+  font-size:16px;line-height:1.55;padding:28px 16px 64px}
+.wrap{max-width:760px;margin:0 auto}
+header{margin-bottom:22px}
+.eyebrow{font-size:13px;color:var(--muted);letter-spacing:.03em}
+h1{font-family:'Fraunces',serif;font-weight:700;font-size:clamp(28px,6vw,40px);line-height:1.1;margin:4px 0 6px}
+.sub{color:var(--muted);font-size:15px}
+nav.tabs{display:flex;gap:6px;flex-wrap:wrap;margin:18px 0 22px;border-bottom:1px solid var(--line);padding-bottom:10px}
+.tab{border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;font-size:15px;
+  padding:8px 16px;border-radius:999px;cursor:pointer}
+.tab[aria-selected="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:700}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px 20px;box-shadow:var(--shadow);margin-bottom:16px}
+h2{font-family:'Fraunces',serif;font-weight:600;font-size:22px;margin:0 0 10px}
+h3{font-size:16px;margin:0 0 6px;color:var(--accent)}
+.formula{background:var(--surface-2);border-left:4px solid var(--accent);border-radius:8px;padding:10px 14px;
+  margin:10px 0;font-size:17px;overflow-x:auto}
+.warn{background:var(--hl);border-radius:8px;padding:10px 14px;margin:10px 0;font-size:15px}
+.bar{text-decoration:overline}
+sub{font-size:.72em}
+.muted{color:var(--muted)}
+.tree{width:100%;overflow-x:auto;margin:8px 0}
+.tree svg{display:block;max-width:100%;height:auto}
+svg .br{stroke:var(--branch);stroke-width:1.4;fill:none}
+svg .lab{fill:var(--ink);font-weight:700;font-size:16px;font-family:'Atkinson Hyperlegible',sans-serif}
+svg .pr{fill:var(--accent);font-size:13px;font-family:'Atkinson Hyperlegible',sans-serif;
+  paint-order:stroke;stroke:var(--surface);stroke-width:5px;stroke-linejoin:round}
+svg .pr.q{fill:var(--ko);font-weight:700}
+svg .leaf{fill:var(--muted);font-size:13px;font-family:'Atkinson Hyperlegible',sans-serif}
+svg .dot{fill:var(--ink)}
+.btn{border:none;background:var(--accent);color:var(--accent-ink);font:inherit;font-weight:700;font-size:15px;
+  padding:9px 18px;border-radius:999px;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--accent);border:1px solid var(--accent)}
+.btn.small{padding:6px 12px;font-size:14px}
+.btn:disabled{opacity:.4;cursor:default}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;background:var(--surface)}
+.seg button{border:none;background:transparent;color:var(--ink);font:inherit;font-size:14px;padding:7px 14px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--accent-soft);color:var(--accent);font-weight:700}
+/* flashcards */
+.flash{perspective:1200px;min-height:250px;cursor:pointer;margin-bottom:12px}
+.flash-in{position:relative;min-height:250px;transition:transform .5s cubic-bezier(.4,.2,.2,1);transform-style:preserve-3d}
+.flash.flipped .flash-in{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:14px;
+  border:1px solid var(--line);background:var(--surface);box-shadow:var(--shadow);padding:28px 24px;
+  display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center}
+.face.back{transform:rotateY(180deg);background:var(--accent-soft)}
+.face .tag{position:absolute;top:12px;left:16px;font-size:12px;color:var(--muted);letter-spacing:.06em}
+.face p{margin:0;font-size:19px}
+.face .ex{font-size:15px;color:var(--muted);margin-top:10px}
+.center{text-align:center}
+/* quiz */
+.opt{display:block;width:100%;text-align:left;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);
+  font:inherit;padding:11px 14px;border-radius:10px;margin:8px 0;cursor:pointer}
+.opt:hover:not(:disabled){border-color:var(--accent)}
+.opt.good{background:var(--ok-soft);border-color:var(--ok);font-weight:700}
+.opt.bad{background:var(--ko-soft);border-color:var(--ko);font-weight:700}
+.opt:disabled{cursor:default}
+.fb{border-radius:10px;padding:10px 14px;margin-top:10px;font-size:15px}
+.fb.good{background:var(--ok-soft)} .fb.bad{background:var(--ko-soft)}
+.fb b.t{display:block}
+.progress{font-size:14px;color:var(--muted);margin-bottom:8px}
+.big{font-family:'Fraunces',serif;font-size:52px;font-weight:700;color:var(--accent);margin:4px 0}
+/* training */
+.qline{border-top:1px dashed var(--line);padding:14px 0 6px}
+.qline:first-of-type{border-top:none}
+.qtext{margin-bottom:8px}
+.qnum{display:inline-block;min-width:26px;height:26px;border-radius:50%;background:var(--accent-soft);color:var(--accent);
+  font-weight:700;text-align:center;line-height:26px;font-size:14px;margin-right:6px}
+.qline.done .qnum{background:var(--ok);color:var(--surface)}
+input.ans{font:inherit;font-size:16px;width:150px;padding:7px 10px;border-radius:8px;border:1.5px solid var(--line);
+  background:var(--surface);color:var(--ink)}
+input.ans:focus{outline:2px solid var(--accent);outline-offset:1px}
+.score{font-size:14px;color:var(--muted)}
+.statement{font-size:17px}
+.hintbox{background:var(--surface-2);border-radius:8px;padding:8px 12px;margin-top:8px;font-size:15px}
+footer{margin-top:30px;font-size:13px;color:var(--muted);text-align:center}
+@media (max-width:560px){ .tree svg{max-width:none;width:max(100%, calc(var(--w) * 0.7px))}  .card{padding:16px 14px} .face p{font-size:17px} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">MATHS · PREMIÈRE SPÉCIALITÉ</div>
+    <h1>Probabilités conditionnelles &amp; Bernoulli</h1>
+    <div class="sub">Le cours, des cartes, un quiz noté, et des exercices à l'infini pour préparer le DS.</div>
+  </header>
+  <nav class="tabs" role="tablist">
+    <button class="tab" data-tab="fiche" role="tab">Fiche de cours</button>
+    <button class="tab" data-tab="flash" role="tab">Flashcards</button>
+    <button class="tab" data-tab="quiz" role="tab">Quiz noté</button>
+    <button class="tab" data-tab="train" role="tab">Entraînement</button>
+  </nav>
+  <main id="view"></main>
+  <footer>Réponses acceptées : 0,25 · 0.25 · 1/4 · 25 % — valeur exacte ou arrondie au millième.</footer>
+</div>
+
+<script>
+/* ---------- helpers ---------- */
+const $ = s => document.querySelector(s);
+const bar = x => `<span class="bar">${x}</span>`;
+const P = (ev, c) => c ? `P<sub>${c}</sub>(${ev})` : `P(${ev})`;
+const fix = x => Math.round(x * 1e9) / 1e9;
+function fmt(x){ // exact decimal (≤6 digits) or ≈ thousandth
+  const r = Math.round(x * 1e6) / 1e6;
+  if (Math.abs(r - x) > 1e-10) return '≈ ' + (Math.round(x * 1000) / 1000).toString().replace('.', ',');
+  return r.toString().replace('.', ',');
+}
+const num = x => fmt(x).replace('≈ ', '');
+const pct = x => fmt(x * 100) + ' %';
+const pick = a => a[Math.floor(Math.random() * a.length)];
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+function parseAns(s){
+  s = (s || '').trim().replace(/\s/g, '').replace(',', '.');
+  if (!s) return NaN;
+  let perc = false;
+  if (s.endsWith('%')) { perc = true; s = s.slice(0, -1); }
+  let v;
+  if (/^-?\d*\.?\d+\/\d*\.?\d+$/.test(s)) { const [a, b] = s.split('/'); v = parseFloat(a) / parseFloat(b); }
+  else if (/^-?\d*\.?\d+$/.test(s)) v = parseFloat(s);
+  else return NaN;
+  return perc ? v / 100 : v;
+}
+const isRight = (v, exact) => !isNaN(v) && Math.abs(v - exact) <= 0.0005 + 1e-9;
+const store = {
+  get(k, d){ try { const v = localStorage.getItem('probas_' + k); return v === null ? d : JSON.parse(v); } catch(e){ return d; } },
+  set(k, v){ try { localStorage.setItem('probas_' + k, JSON.stringify(v)); } catch(e){} }
+};
+
+/* ---------- tree SVG ----------
+   n levels; branch(path, bit) -> {lab, bar, pr, q}; leaf(path) -> svg string or '' */
+function treeSVG(n, branch, leaf){
+  const leaves = 2 ** n, rowH = n >= 4 ? 30 : n === 3 ? 32 : 40;
+  const colW = n >= 4 ? 92 : 110, leafW = leaf ? 150 : 20;
+  const H = leaves * rowH + 10, W = 18 + n * colW + leafW;
+  let leafIdx = 0, out = '';
+  function lay(path, d){
+    if (d === n) { const y = 5 + rowH * (leafIdx + 0.5); leafIdx++; return { y, path, kids: [] }; }
+    const kids = [0, 1].map(b => lay(path.concat(b), d + 1));
+    return { y: (kids[0].y + kids[1].y) / 2, path, kids };
+  }
+  const root = lay([], 0);
+  function draw(node, d){
+    const x0 = 10 + d * colW;
+    node.kids.forEach((k, b) => {
+      const x1 = 10 + (d + 1) * colW, info = branch(node.path, b);
+      out += `<line class="br" x1="${x0 + (d ? 12 : 2)}" y1="${node.y}" x2="${x1 - 12}" y2="${k.y}"/>`;
+      out += `<text class="lab" x="${x1 - 4}" y="${k.y + 5}" text-anchor="middle">${info.bar ? `<tspan style="text-decoration:overline">${info.lab}</tspan>` : info.lab}</text>`;
+      const mx = (x0 + x1) / 2 - 2, my = (node.y + k.y) / 2 - 3;
+      out += `<text class="pr${info.q ? ' q' : ''}" x="${mx}" y="${my}" text-anchor="middle">${info.pr}</text>`;
+      if (!k.kids.length && leaf) out += `<text class="leaf" x="${x1 + 12}" y="${k.y + 4}">${leaf(k.path)}</text>`;
+      draw(k, d + 1);
+    });
+  }
+  draw(root, 0);
+  out = `<circle class="dot" cx="10" cy="${root.y}" r="3"/>` + out;
+  return `<div class="tree"><svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" style="--w:${W}" role="img" aria-label="Arbre pondéré">${out}</svg></div>`;
+}
+const svgSeq = path => path.map(b => b ? 'S' : '<tspan style="text-decoration:overline">S</tspan>').join(' ');
+const htmlSeq = path => path.map(b => b ? 'S' : bar('S')).join(' ');
+
+/* ---------- FICHE ---------- */
+function renderFiche(){
+  const ex = treeSVG(2, (path, b) => {
+    if (!path.length) return b === 0 ? { lab: 'A', pr: '0,4' } : { lab: 'A', bar: 1, pr: '0,6' };
+    if (path[0] === 0) return b === 0 ? { lab: 'B', pr: '0,3' } : { lab: 'B', bar: 1, pr: '0,7' };
+    return b === 0 ? { lab: 'B', pr: '0,2' } : { lab: 'B', bar: 1, pr: '0,8' };
+  }, path => ['P(A ∩ B) = 0,12', 'P(A ∩ B̄) = 0,28', 'P(Ā ∩ B) = 0,12', 'P(Ā ∩ B̄) = 0,48'][path[0] * 2 + path[1]]);
+  $('#view').innerHTML = `
+  <div class="card">
+    <h2>1. Probabilité conditionnelle</h2>
+    <p>${P('B','A')} se lit « probabilité de B <b>sachant</b> A » : on sait que A est réalisé, et on cherche la probabilité de B.</p>
+    <div class="formula">${P('B','A')} = ${P('A ∩ B')} / ${P('A')}</div>
+    <p class="muted">Dans un tableau : on ne regarde <b>que</b> la ligne (ou la colonne) de A. Par exemple, sur 60 filles dont 48 nageuses, ${P('N','F')} = 48/60 = 0,8.</p>
+  </div>
+  <div class="card">
+    <h2>2. L'arbre pondéré</h2>
+    ${ex}
+    <h3>Les 3 règles</h3>
+    <ul>
+      <li>La somme des branches qui partent d'un même nœud vaut <b>1</b> (0,3 + 0,7 = 1).</li>
+      <li>Au 2<sup>e</sup> niveau, on écrit des probabilités <b>conditionnelles</b> : 0,3 = ${P('B','A')}, 0,2 = ${P('B', bar('A'))}.</li>
+      <li>La probabilité d'un chemin est le <b>produit</b> des probabilités sur ses branches :</li>
+    </ul>
+    <div class="formula">${P('A ∩ B')} = ${P('A')} × ${P('B','A')} = 0,4 × 0,3 = 0,12</div>
+    <div class="formula">${P(bar('B'),'A')} = 1 − ${P('B','A')}</div>
+  </div>
+  <div class="card">
+    <h2>3. Formule des probabilités totales</h2>
+    <p>Pour obtenir ${P('B')}, on <b>additionne</b> tous les chemins qui mènent à B :</p>
+    <div class="formula">${P('B')} = ${P('A ∩ B')} + ${P(bar('A') + ' ∩ B')} = 0,12 + 0,12 = 0,24</div>
+    <h3>Probabilité « inversée »</h3>
+    <p>Si l'arbre commence par A et qu'on demande ${P('A','B')}, on revient à la définition :</p>
+    <div class="formula">${P('A','B')} = ${P('A ∩ B')} / ${P('B')} = 0,12 / 0,24 = 0,5</div>
+  </div>
+  <div class="card">
+    <h2>4. Indépendance</h2>
+    <p>A et B sont indépendants quand l'un ne change pas la probabilité de l'autre :</p>
+    <div class="formula">${P('A ∩ B')} = ${P('A')} × ${P('B')} &nbsp; ⟺ &nbsp; ${P('B','A')} = ${P('B')}</div>
+    <p class="muted">Méthode : on calcule les deux côtés et on compare. Dans l'arbre ci-dessus, ${P('A')} × ${P('B')} = 0,4 × 0,24 = 0,096 ≠ 0,12, donc A et B ne sont <b>pas</b> indépendants.</p>
+    <div class="warn"><b>Piège :</b> incompatibles ≠ indépendants. Incompatibles veut dire A ∩ B = ∅ (ils ne peuvent pas arriver ensemble). Deux événements incompatibles de probabilités non nulles ne sont <b>jamais</b> indépendants.</div>
+  </div>
+  <div class="card">
+    <h2>5. Épreuves de Bernoulli répétées</h2>
+    <p>Une <b>épreuve de Bernoulli</b> a deux issues : <b>succès</b> S (probabilité p) et <b>échec</b> ${bar('S')} (probabilité 1 − p). On la répète 3 ou 4 fois, de façon <b>indépendante</b>.</p>
+    ${treeSVG(3, (path, b) => b === 0 ? { lab: 'S', pr: '0,2' } : { lab: 'S', bar: 1, pr: '0,8' }, path => {
+      const v = path.reduce((a, x) => a * (x ? 0.8 : 0.2), 1);
+      return svgSeq(path.map(x => 1 - x)) + ' : ' + num(v);
+    })}
+    <ul>
+      <li>À chaque niveau, ce sont les <b>mêmes</b> probabilités (0,2 et 0,8). Ici, ce ne sont <b>pas</b> des probabilités conditionnelles.</li>
+      <li>« Exactement un succès » : on <b>liste les chemins</b> (S ${bar('S')} ${bar('S')}, ${bar('S')} S ${bar('S')}, ${bar('S')} ${bar('S')} S), chacun vaut 0,2 × 0,8 × 0,8 = 0,128, puis on additionne : 3 × 0,128 = 0,384.</li>
+      <li>« Au moins un succès » : on passe par le <b>contraire</b> « aucun succès ».</li>
+    </ul>
+    <div class="formula">P(au moins un succès) = 1 − P(aucun succès) = 1 − 0,8<sup>3</sup> = 1 − 0,512 = 0,488</div>
+  </div>`;
+}
+
+/* ---------- FLASHCARDS ---------- */
+const CARDS = [
+  [`Que signifie ${P('B','A')} ?`, `La probabilité que B se réalise <b>sachant que</b> A est réalisé.`, `${P('B','A')} = ${P('A ∩ B')} / ${P('A')}`],
+  [`Comment calcule-t-on ${P('A ∩ B')} avec un arbre ?`, `${P('A ∩ B')} = ${P('A')} × ${P('B','A')}`, `On multiplie le long du chemin.`],
+  [`Que vaut ${P(bar('B'),'A')} ?`, `1 − ${P('B','A')}`, `Les branches issues d'un même nœud font 1.`],
+  [`Que vaut la somme des branches issues d'un même nœud ?`, `1`, `C'est la première vérification à faire sur un arbre.`],
+  [`Formule des probabilités totales ?`, `${P('B')} = ${P('A ∩ B')} + ${P(bar('A') + ' ∩ B')}`, `On additionne tous les chemins qui mènent à B.`],
+  [`L'arbre commence par A. Comment calculer ${P('A','B')} ?`, `${P('A','B')} = ${P('A ∩ B')} / ${P('B')}`, `${P('B')} se calcule avec les probabilités totales.`],
+  [`Quand A et B sont-ils indépendants ?`, `Quand ${P('A ∩ B')} = ${P('A')} × ${P('B')}`, `Équivalent : ${P('B','A')} = ${P('B')}.`],
+  [`Incompatibles ou indépendants : quelle différence ?`, `Incompatibles : A ∩ B = ∅. Indépendants : l'un ne change pas la probabilité de l'autre.`, `Incompatibles (probas non nulles) ⇒ jamais indépendants.`],
+  [`Qu'est-ce qu'une épreuve de Bernoulli ?`, `Une expérience à <b>deux issues</b> : succès (p) et échec (1 − p).`, `Exemple : pile ou face, tir réussi ou raté.`],
+  [`Répétition d'épreuves indépendantes : que met-on au 2<sup>e</sup> niveau de l'arbre ?`, `Les mêmes probabilités qu'au 1<sup>er</sup> niveau : p et 1 − p.`, `Ce ne sont pas des probabilités conditionnelles.`],
+  [`3 essais : probabilité d'« exactement un succès » ?`, `3 chemins : S ${bar('S')} ${bar('S')}, ${bar('S')} S ${bar('S')}, ${bar('S')} ${bar('S')} S`, `Chacun vaut p × (1 − p) × (1 − p) : on additionne les 3.`],
+  [`Comment calculer « au moins un succès » ?`, `1 − P(aucun succès)`, `Avec n essais : 1 − (1 − p)<sup>n</sup>.`],
+];
+let fi = 0, flipped = false;
+function renderFlash(){
+  const [f, b, e] = CARDS[fi];
+  $('#view').innerHTML = `
+    <div class="progress center">Carte ${fi + 1} / ${CARDS.length}</div>
+    <div class="flash${flipped ? ' flipped' : ''}" id="fc" role="button" tabindex="0" aria-label="Retourner la carte">
+      <div class="flash-in">
+        <div class="face"><span class="tag">QUESTION</span><p>${f}</p></div>
+        <div class="face back"><span class="tag">RÉPONSE</span><p>${b}</p><div class="ex">${e}</div></div>
+      </div>
+    </div>
+    <p class="center muted" style="font-size:14px">${flipped ? '&nbsp;' : 'Touche la carte pour voir la réponse'}</p>
+    <div class="row" style="justify-content:center">
+      <button class="btn ghost small" id="fp" ${fi === 0 ? 'disabled' : ''}>‹ Précédente</button>
+      <button class="btn ghost small" id="fs">Mélanger</button>
+      <button class="btn small" id="fn" ${fi === CARDS.length - 1 ? 'disabled' : ''}>Suivante ›</button>
+    </div>`;
+  const flip = () => { flipped = !flipped; $('#fc').classList.toggle('flipped', flipped); };
+  $('#fc').onclick = flip;
+  $('#fc').onkeydown = e => { if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); flip(); } };
+  $('#fp').onclick = () => { fi--; flipped = false; renderFlash(); };
+  $('#fn').onclick = () => { fi++; flipped = false; renderFlash(); };
+  $('#fs').onclick = () => { CARDS.splice(0, CARDS.length, ...shuffle(CARDS)); fi = 0; flipped = false; renderFlash(); };
+}
+
+/* ---------- QUIZ ---------- */
+const QUIZ = [
+  { q: `${P('A')} = 0,5 et ${P('B','A')} = 0,4. Que vaut ${P('A ∩ B')} ?`, o: ['0,9', '0,2', '0,1', '0,8'], c: 1, e: `${P('A ∩ B')} = ${P('A')} × ${P('B','A')} = 0,5 × 0,4 = 0,2.` },
+  { q: `${P('B','A')} = 0,7. Que vaut ${P(bar('B'),'A')} ?`, o: ['0,7', '0,3', '1,7', 'On ne peut pas savoir'], c: 1, e: `${P(bar('B'),'A')} = 1 − 0,7 = 0,3.` },
+  { q: `Dans un arbre, que lit-on sur les branches qui partent du nœud A ?`, o: [`${P('B')} et ${P(bar('B'))}`, `${P('B','A')} et ${P(bar('B'),'A')}`, `${P('A ∩ B')} et ${P('A ∩ ' + bar('B'))}`, `${P('A','B')} et ${P(bar('A'),'B')}`], c: 1, e: `Au 2<sup>e</sup> niveau, ce sont des probabilités conditionnelles sachant A.` },
+  { q: `${P('A')} = 0,6, ${P('B','A')} = 0,5 et ${P('B', bar('A'))} = 0,25. Que vaut ${P('B')} ?`, o: ['0,75', '0,4', '0,3', '0,375'], c: 1, e: `Probabilités totales : 0,6 × 0,5 + 0,4 × 0,25 = 0,3 + 0,1 = 0,4.` },
+  { q: `${P('A ∩ B')} = 0,1 et ${P('B')} = 0,4. Que vaut ${P('A','B')} ?`, o: ['0,04', '0,25', '0,5', '4'], c: 1, e: `${P('A','B')} = ${P('A ∩ B')} / ${P('B')} = 0,1 / 0,4 = 0,25.` },
+  { q: `A et B sont indépendants, ${P('A')} = 0,3 et ${P('B')} = 0,5. Que vaut ${P('A ∩ B')} ?`, o: ['0,8', '0,15', '0,2', '0,6'], c: 1, e: `Indépendants : ${P('A ∩ B')} = 0,3 × 0,5 = 0,15.` },
+  { q: `${P('A')} = 0,2, ${P('B')} = 0,5 et ${P('A ∩ B')} = 0,1. A et B sont-ils indépendants ?`, o: ['Oui', 'Non', 'On ne peut pas savoir'], c: 0, e: `${P('A')} × ${P('B')} = 0,2 × 0,5 = 0,1 = ${P('A ∩ B')} : ils sont indépendants.` },
+  { q: `Deux événements incompatibles, de probabilités non nulles, sont :`, o: ['toujours indépendants', 'jamais indépendants', 'parfois indépendants'], c: 1, e: `${P('A ∩ B')} = 0 alors que ${P('A')} × ${P('B')} > 0.` },
+  { q: `Une épreuve de Bernoulli est une expérience aléatoire…`, o: ['à deux issues', 'répétée deux fois', 'à issues équiprobables', 'à trois issues'], c: 0, e: `Deux issues : succès et échec.` },
+  { q: `On lance 3 fois une pièce équilibrée. Probabilité d'obtenir 3 fois pile ?`, o: ['0,5', '0,125', '0,375', '0,25'], c: 1, e: `Un seul chemin : 0,5 × 0,5 × 0,5 = 0,125.` },
+  { q: `On lance 3 fois une pièce équilibrée. Probabilité d'obtenir exactement un pile ?`, o: ['0,125', '0,375', '0,5', '0,875'], c: 1, e: `3 chemins (P F F, F P F, F F P) de 0,125 chacun : 3 × 0,125 = 0,375.` },
+  { q: `p = 0,3, on répète 3 fois de façon indépendante. Probabilité d'au moins un succès ?`, o: ['0,9', '0,657', '0,343', '0,027'], c: 1, e: `Contraire : aucun succès = 0,7<sup>3</sup> = 0,343. Donc 1 − 0,343 = 0,657.` },
+];
+let qz = null;
+function newQuiz(){ qz = { list: shuffle(QUIZ), i: 0, score: 0, answered: false, done: false }; }
+function renderQuiz(){
+  if (!qz) newQuiz();
+  const best = store.get('best', null);
+  if (qz.done) {
+    const n = qz.list.length, pct20 = Math.round(qz.score / n * 20 * 10) / 10;
+    if (best === null || qz.score > best) store.set('best', qz.score);
+    $('#view').innerHTML = `<div class="card center">
+      <div class="muted">Score final</div>
+      <div class="big">${qz.score} / ${n}</div>
+      <p>soit <b>${String(pct20).replace('.', ',')} / 20</b>${best !== null ? ` · meilleur score : ${Math.max(best, qz.score)} / ${n}` : ''}</p>
+      <p class="muted">${qz.score === n ? 'Parfait, tu es prêt pour le DS.' : qz.score >= n * 0.7 ? 'Bien ! Revois les questions ratées dans la fiche.' : 'Reprends la fiche de cours, puis recommence.'}</p>
+      <button class="btn" id="qr">Recommencer</button></div>`;
+    $('#qr').onclick = () => { newQuiz(); renderQuiz(); };
+    return;
+  }
+  const it = qz.list[qz.i];
+  $('#view').innerHTML = `
+    <div class="progress">Question ${qz.i + 1} / ${qz.list.length} · Score : ${qz.score}</div>
+    <div class="card">
+      <p style="font-size:18px;margin-top:0">${it.q}</p>
+      <div id="opts">${it.o.map((o, i) => `<button class="opt" data-i="${i}">${o}</button>`).join('')}</div>
+      <div id="qfb"></div>
+      <div class="row" style="justify-content:flex-end;margin-top:12px">
+        <button class="btn" id="qn" disabled>${qz.i === qz.list.length - 1 ? 'Voir le score' : 'Question suivante'}</button>
+      </div>
+    </div>`;
+  document.querySelectorAll('.opt').forEach(b => b.onclick = () => {
+    if (qz.answered) return;
+    qz.answered = true;
+    const i = +b.dataset.i, ok = i === it.c;
+    if (ok) qz.score++;
+    document.querySelectorAll('.opt').forEach((x, j) => { x.disabled = true; if (j === it.c) x.classList.add('good'); else if (j === i) x.classList.add('bad'); });
+    $('#qfb').innerHTML = `<div class="fb ${ok ? 'good' : 'bad'}"><b class="t">${ok ? 'Exact !' : 'Pas tout à fait.'}</b>${it.e}</div>`;
+    $('#qn').disabled = false;
+  });
+  $('#qn').onclick = () => { qz.answered = false; if (qz.i === qz.list.length - 1) qz.done = true; else qz.i++; renderQuiz(); };
+}
+
+/* ---------- ENTRAÎNEMENT ---------- */
+const COND_STORIES = [
+  { A: 'M', B: 'T', a: [0.02, 0.05, 0.1, 0.15, 0.2], b: [0.85, 0.9, 0.95, 0.98], c: [0.02, 0.05, 0.1],
+    txt: (a, b, c) => `Dans un élevage, ${pct(a)} des animaux sont malades. Le test de dépistage est positif pour ${pct(b)} des animaux malades et pour ${pct(c)} des animaux sains.`,
+    def: `M : « l'animal est malade » ; T : « le test est positif ».` },
+  { A: 'U', B: 'R', a: [0.4, 0.5, 0.6, 0.65, 0.7, 0.8], b: [0.7, 0.75, 0.8, 0.85, 0.9], c: [0.3, 0.4, 0.45, 0.5, 0.55],
+    txt: (a, b, c) => `Dans un lycée, ${pct(a)} des élèves utilisent une application de révision. Parmi eux, ${pct(b)} réussissent le contrôle ; parmi les autres, seulement ${pct(c)}.`,
+    def: `U : « l'élève utilise l'application » ; R : « l'élève réussit le contrôle ».` },
+  { A: 'F', B: 'D', a: [0.3, 0.4, 0.55, 0.6, 0.7, 0.75], b: [0.02, 0.03, 0.04, 0.05], c: [0.04, 0.06, 0.08, 0.1],
+    txt: (a, b, c) => `Une usine a deux ateliers. L'atelier F fabrique ${pct(a)} des pièces. ${pct(b)} des pièces de l'atelier F sont défectueuses, contre ${pct(c)} pour l'autre atelier.`,
+    def: `F : « la pièce vient de l'atelier F » ; D : « la pièce est défectueuse ».` },
+  { A: 'E', B: 'Q', a: [0.25, 0.3, 0.35, 0.4, 0.45], b: [0.6, 0.65, 0.7, 0.75, 0.8], c: [0.15, 0.2, 0.25, 0.3],
+    txt: (a, b, c) => `Dans un club de natation, ${pct(a)} des nageurs s'entraînent plus de trois fois par semaine. Parmi eux, ${pct(b)} se qualifient pour les championnats régionaux, contre ${pct(c)} des autres nageurs.`,
+    def: `E : « le nageur s'entraîne plus de 3 fois par semaine » ; Q : « le nageur se qualifie ».` },
+];
+const BER_STORIES = [
+  { s: 'toucher la cible', ps: [0.6, 0.7, 0.8, 0.9], txt: (p, n) => `Un archer touche la cible avec une probabilité de ${num(p)} à chaque tir. Il tire ${n} flèches ; les tirs sont indépendants.` },
+  { s: 'réussir la pénalité', ps: [0.6, 0.7, 0.75, 0.8], txt: (p, n) => `Un buteur de rugby réussit chaque pénalité avec une probabilité de ${num(p)}. Il tente ${n} pénalités, de façon indépendante.` },
+  { s: 'répondre juste', qcm: true, txt: (p, n, k) => `Un élève répond au hasard aux ${n} questions d'un QCM. Chaque question propose ${k} réponses dont une seule est juste.` },
+  { s: 'obtenir pile', ps: [0.5], txt: (p, n) => `On lance ${n} fois une pièce de monnaie équilibrée.` },
+  { s: 'que le feu soit vert', ps: [0.3, 0.4, 0.6], txt: (p, n) => `Sur le trajet du lycée, il y a ${n} feux tricolores. Chacun est vert avec une probabilité de ${num(p)}, indépendamment des autres.` },
+];
+let tr = { type: store.get('type', 'cond'), n: store.get('n', 3), ex: null, ok: store.get('ok', 0), tot: store.get('tot', 0) };
+
+function genCond(){
+  const st = pick(COND_STORIES);
+  const a = pick(st.a), b = pick(st.b), c = pick(st.c);
+  const A = st.A, B = st.B, Ab = bar(A), Bb = bar(B);
+  const pAB = fix(a * b), pnAB = fix((1 - a) * c), pB = fix(pAB + pnAB), pBA = pAB / pB;
+  const qs = [
+    { t: `Calculer ${P(Ab)}.`, v: fix(1 - a), key: 'na',
+      h: `Les deux branches qui partent du départ font 1 au total.`,
+      e: `${P(Ab)} = 1 − ${P(A)} = 1 − ${num(a)} = <b>${num(1 - a)}</b>` },
+    { t: `Calculer la probabilité ${P(A + ' ∩ ' + B)}.`, v: pAB,
+      h: `Probabilité d'un chemin = produit des branches.`,
+      e: `${P(A + ' ∩ ' + B)} = ${P(A)} × ${P(B, A)} = ${num(a)} × ${num(b)} = <b>${num(pAB)}</b>` },
+    { t: `Calculer ${P(B)}.`, v: pB,
+      h: `Formule des probabilités totales : on additionne les deux chemins qui mènent à ${B}.`,
+      e: `${P(B)} = ${P(A + ' ∩ ' + B)} + ${P(Ab + ' ∩ ' + B)} = ${num(a)} × ${num(b)} + ${num(1 - a)} × ${num(c)} = ${num(pAB)} + ${num(pnAB)} = <b>${num(pB)}</b>` },
+    { t: `Calculer ${P(A, B)}, arrondie au millième.`, v: pBA,
+      h: `Probabilité « inversée » : ${P(A, B)} = ${P(A + ' ∩ ' + B)} / ${P(B)}.`,
+      e: `${P(A, B)} = ${P(A + ' ∩ ' + B)} / ${P(B)} = ${num(pAB)} / ${num(pB)} <b>${fmt(pBA).startsWith('≈') ? fmt(pBA) : '= ' + fmt(pBA)}</b>` },
+  ];
+  return { kind: 'cond', st, a, b, c, qs, statement: `${st.txt(a, b, c)}<br><span class="muted">On choisit au hasard. ${st.def}</span>` };
+}
+function seqsWith(n, k){ const r = []; for (let m = 0; m < 2 ** n; m++) { const p = []; for (let i = n - 1; i >= 0; i--) p.push((m >> i) & 1); if (p.reduce((s, x) => s + x, 0) === k) r.push(p.reverse()); } return r; }
+function genBer(n){
+  const st = pick(BER_STORIES);
+  let p, k = null, pStr, qStr;
+  if (st.qcm) { k = pick([2, 4, 5]); p = 1 / k; } else p = pick(st.ps);
+  const q = fix(1 - p);
+  pStr = num(p); qStr = num(q);
+  const pw = (x, e) => Math.pow(x, e);
+  const path = s => `<span style="white-space:nowrap">${htmlSeq(s)}</span>`;
+  const one = seqsWith(n, 1), two = seqsWith(n, 2);
+  const v1 = fix(p * pw(q, n - 1)), v2 = fix(p * p * pw(q, n - 2));
+  const prodStr = s => s.map(x => x ? pStr : qStr).join(' × ');
+  const qs = [
+    { t: `Quelle est la probabilité de n'avoir <b>que des succès</b> ?`, v: fix(pw(p, n)),
+      h: `Un seul chemin : ${'S '.repeat(n).trim()}.`,
+      e: `Un seul chemin, ${'S '.repeat(n).trim()} : ${pStr}<sup>${n}</sup> = <b>${num(pw(p, n))}</b>` },
+    { t: `Quelle est la probabilité de n'avoir <b>aucun succès</b> ?`, v: fix(pw(q, n)),
+      h: `Un seul chemin : que des échecs.`,
+      e: `Un seul chemin, ${path(Array(n).fill(0))} : ${qStr}<sup>${n}</sup> = <b>${num(pw(q, n))}</b>` },
+    { t: `Quelle est la probabilité d'avoir <b>exactement un</b> succès ?`, v: fix(n * v1),
+      h: `Liste les chemins avec un seul S. Il y en a ${n}.`,
+      e: `${n} chemins : ${one.map(path).join(', ')}.<br>Chacun vaut ${prodStr(one[0])} = ${num(v1)}.<br>On additionne : ${n} × ${num(v1)} = <b>${num(n * v1)}</b>` },
+    { t: `En utilisant l'événement contraire, calculer la probabilité d'avoir <b>au moins un</b> succès.`, v: fix(1 - pw(q, n)),
+      h: `Le contraire de « au moins un succès » est « aucun succès ».`,
+      e: `P(au moins un succès) = 1 − P(aucun succès) = 1 − ${qStr}<sup>${n}</sup> = 1 − ${num(pw(q, n))} = <b>${num(1 - pw(q, n))}</b>` },
+    { t: `Quelle est la probabilité d'avoir <b>exactement deux</b> succès ?`, v: fix(two.length * v2),
+      h: `Liste les chemins avec exactement deux S. Il y en a ${two.length}.`,
+      e: `${two.length} chemins : ${two.map(path).join(', ')}.<br>Chacun vaut ${prodStr(two[0])} = ${num(v2)}.<br>On additionne : ${two.length} × ${num(v2)} = <b>${num(two.length * v2)}</b>` },
+  ];
+  const statement = `${st.txt(p, n, k)}<br><span class="muted">On appelle succès l'événement « ${st.s} » : c'est une épreuve de Bernoulli de paramètre p = ${pStr}${st.qcm ? ` (1 chance sur ${k})` : ''}, répétée ${n} fois de façon indépendante.</span>`;
+  return { kind: 'ber', n, p, q, pStr, qStr, qs, statement };
+}
+function newExercise(){
+  const ex = tr.type === 'cond' ? genCond() : genBer(tr.n);
+  ex.state = ex.qs.map(() => ({ done: false, tries: 0, show: false, hint: false, fb: '' }));
+  ex.showTree = tr.type === 'cond';
+  tr.ex = ex;
+}
+function condTree(ex){
+  const { st, a, b, c } = ex, A = st.A, B = st.B, s = ex.state;
+  return treeSVG(2, (path, bit) => {
+    if (!path.length) return bit === 0 ? { lab: A, pr: num(a) } : { lab: A, bar: 1, pr: s[0].done || s[0].show ? num(1 - a) : '?', q: !(s[0].done || s[0].show) };
+    const pb = path[0] === 0 ? b : c;
+    return bit === 0 ? { lab: B, pr: num(pb) } : { lab: B, bar: 1, pr: num(1 - pb) };
+  }, null);
+}
+function berTree(ex){
+  return treeSVG(ex.n, (path, bit) => bit === 0 ? { lab: 'S', pr: ex.pStr } : { lab: 'S', bar: 1, pr: ex.qStr }, path => {
+    const pp = path.map(x => 1 - x), v = pp.reduce((m, x) => m * (x ? ex.p : ex.q), 1);
+    return svgSeq(pp) + ' : ' + num(fix(v));
+  });
+}
+function renderTrain(){
+  if (!tr.ex) newExercise();
+  const ex = tr.ex;
+  const tree = ex.kind === 'cond' ? condTree(ex) : (ex.showTree ? berTree(ex) : '');
+  $('#view').innerHTML = `
+    <div class="card">
+      <div class="row" style="justify-content:space-between">
+        <div class="seg" role="group" aria-label="Type d'exercice">
+          <button data-type="cond" aria-pressed="${tr.type === 'cond'}">Arbre pondéré</button>
+          <button data-type="ber" aria-pressed="${tr.type === 'ber'}">Bernoulli</button>
+        </div>
+        ${tr.type === 'ber' ? `<div class="seg" role="group" aria-label="Nombre d'essais">
+          <button data-n="3" aria-pressed="${tr.n === 3}">3 essais</button>
+          <button data-n="4" aria-pressed="${tr.n === 4}">4 essais</button></div>` : ''}
+      </div>
+      <p class="score" style="margin:10px 0 0">Bonnes réponses du premier coup : ${tr.ok} / ${tr.tot}</p>
+    </div>
+    <div class="card">
+      <h2>Énoncé</h2>
+      <p class="statement">${ex.statement}</p>
+      ${ex.kind === 'cond'
+        ? `<p class="muted" style="font-size:14px">Arbre de la situation (les « ? » se remplissent quand tu trouves la réponse) :</p>${tree}`
+        : `<p class="muted" style="font-size:14px">Fais d'abord l'arbre à ${2 ** ex.n} issues sur ton cahier, puis compare.</p>
+           <button class="btn ghost small" id="tt">${ex.showTree ? 'Masquer l\'arbre' : 'Voir l\'arbre corrigé'}</button>${tree}`}
+    </div>
+    <div class="card" id="qs">
+      <h2>Questions</h2>
+      ${ex.qs.map((q, i) => {
+        const s = ex.state[i];
+        return `<div class="qline${s.done ? ' done' : ''}">
+          <div class="qtext"><span class="qnum">${s.done ? '✓' : i + 1}</span>${q.t}</div>
+          ${s.done || s.show ? '' : `<form class="row" data-i="${i}">
+            <input class="ans" inputmode="decimal" autocomplete="off" placeholder="ta réponse" aria-label="Réponse question ${i + 1}">
+            <button class="btn small" type="submit">Vérifier</button>
+            <button class="btn ghost small" type="button" data-hint="${i}">Indice</button>
+            ${s.tries ? `<button class="btn ghost small" type="button" data-show="${i}">Voir la correction</button>` : ''}
+          </form>`}
+          ${s.hint && !s.done && !s.show ? `<div class="hintbox">💡 ${q.h}</div>` : ''}
+          ${s.fb}
+          ${s.done || s.show ? `<div class="fb ${s.done ? 'good' : 'bad'}"><b class="t">${s.done ? (s.tries ? 'Exact !' : 'Exact du premier coup !') : 'Correction'}</b>${q.e}</div>` : ''}
+        </div>`;
+      }).join('')}
+      <div class="row" style="justify-content:flex-end;margin-top:14px">
+        <button class="btn" id="nx">Nouvel exercice</button>
+      </div>
+    </div>`;
+  document.querySelectorAll('[data-type]').forEach(b => b.onclick = () => { tr.type = b.dataset.type; store.set('type', tr.type); newExercise(); renderTrain(); });
+  document.querySelectorAll('[data-n]').forEach(b => b.onclick = () => { tr.n = +b.dataset.n; store.set('n', tr.n); newExercise(); renderTrain(); });
+  const tt = $('#tt'); if (tt) tt.onclick = () => { ex.showTree = !ex.showTree; renderTrain(); };
+  $('#nx').onclick = () => { newExercise(); renderTrain(); window.scrollTo({ top: 0, behavior: 'smooth' }); };
+  document.querySelectorAll('[data-hint]').forEach(b => b.onclick = () => { ex.state[+b.dataset.hint].hint = true; renderTrain(); });
+  document.querySelectorAll('[data-show]').forEach(b => b.onclick = () => { ex.state[+b.dataset.show].show = true; ex.state[+b.dataset.show].fb = ''; renderTrain(); });
+  document.querySelectorAll('#qs form').forEach(f => f.onsubmit = e => {
+    e.preventDefault();
+    const i = +f.dataset.i, s = ex.state[i], q = ex.qs[i];
+    const raw = f.querySelector('input').value, v = parseAns(raw);
+    if (isNaN(v)) { s.fb = `<div class="fb bad"><b class="t">Je n'ai pas compris ta réponse.</b>Écris un nombre, par exemple 0,25 ou 1/4.</div>`; renderTrain(); return; }
+    if (s.tries === 0) { tr.tot++; if (isRight(v, q.v)) tr.ok++; store.set('ok', tr.ok); store.set('tot', tr.tot); }
+    if (isRight(v, q.v)) { s.done = true; s.fb = ''; }
+    else {
+      s.tries++;
+      let msg = 'Ce n\'est pas ça. Relis l\'indice ou réessaie.';
+      if (v > 1 || v < 0) msg = 'Une probabilité est toujours entre 0 et 1 !';
+      s.fb = `<div class="fb bad"><b class="t">Pas encore (${raw.trim()}).</b>${msg}</div>`;
+    }
+    renderTrain();
+    const next = document.querySelector('#qs input.ans'); if (next && s.done) next.focus();
+  });
+}
+
+/* ---------- tabs ---------- */
+const VIEWS = { fiche: renderFiche, flash: renderFlash, quiz: renderQuiz, train: renderTrain };
+function show(tab){
+  if (!VIEWS[tab]) tab = 'fiche';
+  document.querySelectorAll('.tab').forEach(t => t.setAttribute('aria-selected', t.dataset.tab === tab));
+  store.set('tab', tab);
+  VIEWS[tab]();
+}
+document.querySelectorAll('.tab').forEach(t => t.onclick = () => show(t.dataset.tab));
+show(store.get('tab', 'fiche'));
+</script>
+</body>
+</html>

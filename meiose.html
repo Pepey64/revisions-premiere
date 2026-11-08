@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>La méiose — Révisions</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap">
+<style>
+:root{
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  --paper:#FBFAF5; --grid:#D9E2EE; --ink:#1F2A44; --muted:#5B6781;
+  --red:#C8323C; --teal:#17909E; --card:#FFFFFF; --cell:#F3F6FB; --line:#C5D0E0;
+  --ok:#2E7D4F; --okbg:#E4F2E9; --ko:#B3303A; --kobg:#FBE6E8; --accent:#1F2A44; --onaccent:#FBFAF5;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#141C27; --grid:#1F2B3B; --ink:#E8EDF5; --muted:#9AA8BE;
+    --red:#FF6B75; --teal:#4CC9D6; --card:#1D2836; --cell:#192331; --line:#34445A;
+    --ok:#7BD39B; --okbg:#1B3527; --ko:#FF8A92; --kobg:#3A1F25; --accent:#E8EDF5; --onaccent:#141C27;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#141C27; --grid:#1F2B3B; --ink:#E8EDF5; --muted:#9AA8BE;
+  --red:#FF6B75; --teal:#4CC9D6; --card:#1D2836; --cell:#192331; --line:#34445A;
+  --ok:#7BD39B; --okbg:#1B3527; --ko:#FF8A92; --kobg:#3A1F25; --accent:#E8EDF5; --onaccent:#141C27;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px);}
+*,*::before,*::after{box-sizing:border-box;}
+body{
+  margin:0; min-height:100vh; color:var(--ink);
+  background-color:var(--paper);
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:22px 22px;
+  font-family:'Atkinson Hyperlegible',system-ui,sans-serif; font-size:16px; line-height:1.5;
+}
+.wrap{max-width:620px;margin:0 auto;padding:20px 16px 56px;}
+h1{font-family:'Caveat',cursive;font-weight:700;font-size:clamp(38px,9vw,52px);line-height:1;margin:6px 0 4px;}
+h1 .r{color:var(--red);} h1 .t{color:var(--teal);}
+.sub{color:var(--muted);margin:0 0 18px;font-size:15px;}
+h2{font-family:'Caveat',cursive;font-size:30px;font-weight:700;margin:0 0 6px;line-height:1.1;}
+h3{font-size:16px;margin:16px 0 4px;}
+.tabs{display:flex;gap:6px;overflow-x:auto;padding:2px 0 10px;margin-bottom:8px;scrollbar-width:none;}
+.tabs::-webkit-scrollbar{display:none;}
+.tab{flex:0 0 auto;border:1.5px solid var(--ink);background:var(--card);color:var(--ink);font:inherit;font-weight:700;font-size:15px;padding:8px 16px;border-radius:999px;cursor:pointer;}
+.tab[aria-selected="true"]{background:var(--accent);color:var(--onaccent);}
+button:focus-visible{outline:3px solid var(--teal);outline-offset:2px;}
+.card{background:var(--card);border:1.5px solid var(--ink);border-radius:12px;padding:16px;}
+.card + .card{margin-top:12px;}
+.muted{color:var(--muted);}
+
+/* schéma */
+.stepper{display:flex;gap:4px;margin-bottom:12px;}
+.stepper button{flex:1;min-width:0;border:1.5px solid var(--line);background:var(--card);color:var(--muted);font:inherit;font-size:12px;font-weight:700;padding:7px 0;border-radius:8px;cursor:pointer;}
+.stepper button.on{background:var(--accent);color:var(--onaccent);border-color:var(--accent);}
+.stepper button.div2{border-bottom-color:var(--teal);}
+.stepper button.div1{border-bottom-color:var(--red);}
+.legend{display:flex;gap:14px;font-size:13px;color:var(--muted);margin:2px 0 10px;flex-wrap:wrap;}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:5px;vertical-align:-1px;}
+.diagram{background:var(--card);border:1.5px solid var(--ink);border-radius:12px;padding:6px;}
+.diagram svg{display:block;width:100%;height:auto;animation:appear .35s ease;}
+@keyframes appear{from{opacity:.2}to{opacity:1}}
+@media (prefers-reduced-motion:reduce){.diagram svg{animation:none}}
+.cell{fill:var(--cell);stroke:var(--ink);stroke-width:2;}
+.nuc{fill:none;stroke:var(--muted);stroke-width:1.5;stroke-dasharray:4 4;}
+.spin{stroke:var(--muted);stroke-width:1;stroke-dasharray:3 3;opacity:.7;}
+.plane{stroke:var(--ink);stroke-width:1;stroke-dasharray:6 4;opacity:.5;}
+.stage-name{font-family:'Caveat',cursive;font-size:32px;font-weight:700;margin:12px 0 0;line-height:1.1;}
+.stage-div{font-size:14px;color:var(--muted);margin:0 0 6px;}
+.chips{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px;}
+.chip{border:1.5px solid var(--line);border-radius:10px;padding:8px 10px;background:var(--card);}
+.chip b{display:block;font-size:12px;color:var(--muted);font-weight:400;}
+.chip span{font-weight:700;}
+.navrow{display:flex;gap:10px;margin-top:14px;}
+.btn{flex:1;border:1.5px solid var(--ink);background:var(--card);color:var(--ink);font:inherit;font-weight:700;padding:11px 16px;border-radius:999px;cursor:pointer;}
+.btn.primary{background:var(--accent);color:var(--onaccent);}
+.btn:disabled{opacity:.35;cursor:default;}
+
+/* fiche */
+table{width:100%;border-collapse:collapse;font-size:14px;}
+th,td{border:1.5px solid var(--line);padding:8px;text-align:left;vertical-align:top;}
+th{background:var(--cell);}
+.tblwrap{overflow-x:auto;}
+ul.f{margin:6px 0 0;padding-left:20px;} ul.f li{margin:4px 0;}
+.tag{display:inline-block;font-size:12px;font-weight:700;padding:1px 8px;border-radius:999px;border:1.5px solid currentColor;}
+.tag.r{color:var(--red);} .tag.t{color:var(--teal);}
+
+/* flashcards */
+.fc-count{color:var(--muted);font-size:14px;margin-bottom:10px;}
+.flip{perspective:1200px;height:240px;cursor:pointer;}
+.flip-in{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .5s;}
+.flip.on .flip-in{transform:rotateY(180deg);}
+@media (prefers-reduced-motion:reduce){.flip-in{transition:none}}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;background:var(--card);border:1.5px solid var(--ink);border-radius:12px;padding:20px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;}
+.face.back{transform:rotateY(180deg);background:var(--cell);}
+.face small{position:absolute;top:10px;left:14px;color:var(--muted);font-size:12px;}
+.face p{margin:0;font-size:18px;}
+.face.front p{font-family:'Caveat',cursive;font-size:28px;font-weight:700;line-height:1.15;}
+.tip{text-align:center;color:var(--muted);font-size:13px;margin-top:8px;}
+.row2{display:flex;gap:10px;margin-top:12px;}
+
+/* quiz */
+.q{font-family:'Caveat',cursive;font-size:28px;font-weight:700;line-height:1.15;margin:4px 0 14px;}
+.opt{display:block;width:100%;text-align:left;border:1.5px solid var(--ink);background:var(--card);color:var(--ink);font:inherit;padding:11px 14px;border-radius:10px;margin-bottom:8px;cursor:pointer;}
+.opt.ok{background:var(--okbg);border-color:var(--ok);color:var(--ok);font-weight:700;}
+.opt.ko{background:var(--kobg);border-color:var(--ko);color:var(--ko);font-weight:700;}
+.opt:disabled{cursor:default;}
+.fb{margin-top:6px;padding:12px 14px;border-radius:10px;font-size:15px;}
+.fb.ok{background:var(--okbg);} .fb.ko{background:var(--kobg);}
+.bar{height:8px;background:var(--line);border-radius:99px;overflow:hidden;margin-bottom:12px;}
+.bar i{display:block;height:100%;background:var(--teal);transition:width .3s;}
+.score{font-family:'Caveat',cursive;font-size:72px;font-weight:700;line-height:1;margin:6px 0;color:var(--red);}
+.center{text-align:center;}
+
+/* ordre */
+.slots{display:flex;flex-direction:column;gap:6px;margin:10px 0 14px;}
+.slot{border:1.5px dashed var(--line);border-radius:10px;padding:9px 12px;min-height:42px;display:flex;gap:10px;align-items:center;color:var(--muted);}
+.slot.fill{border-style:solid;border-color:var(--ok);background:var(--okbg);color:var(--ink);font-weight:700;}
+.slot em{font-style:normal;font-weight:700;width:1.4em;}
+.pool{display:flex;flex-wrap:wrap;gap:8px;}
+.pill{border:1.5px solid var(--ink);background:var(--card);color:var(--ink);font:inherit;font-weight:700;padding:9px 14px;border-radius:999px;cursor:pointer;}
+.pill.used{opacity:.25;pointer-events:none;}
+.pill.shake{animation:shake .3s;border-color:var(--ko);color:var(--ko);}
+@keyframes shake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>La <span class="r">mé</span><span class="t">iose</span></h1>
+  <p class="sub">Cycle cellulaire, mitose et production des gamètes</p>
+  <div class="tabs" role="tablist" id="tabs"></div>
+  <main id="view"></main>
+</div>
+
+<script>
+const R='var(--red)', T='var(--teal)', L=46, S=30;
+const ch=(x,y,rot,col,len,dbl=true,w=6,poles=[])=>({x,y,rot,col,len,dbl,w,poles});
+
+/* ---------- Schéma : 9 images (2n = 4) ---------- */
+const lc=[{cx:80,cy:100,rx:62,ry:72},{cx:220,cy:100,rx:62,ry:72}];
+const STAGES=[
+ {k:'Inter.',name:'Interphase',part:'Avant la méiose',
+  cap:"Phase S terminée : l'ADN a été répliqué. Chaque chromosome est constitué de 2 chromatides, mais reste décondensé (non visible).",
+  cells:[{cx:150,cy:100,rx:95,ry:82,nuc:true,nr:52}],
+  ch:[ch(126,92,20,R,L,true,3),ch(142,112,-15,T,L,true,3),ch(168,88,-25,R,S,true,3),ch(172,114,15,T,S,true,3)],
+  stats:['4 (2n = 4)','2','1','2Q']},
+ {k:'P1',name:'Prophase 1',part:'1ʳᵉ division',
+  cap:"Les chromosomes se condensent. Chaque chromosome s'associe à son homologue : on voit des paires de chromosomes à 2 chromatides. L'enveloppe nucléaire disparaît.",
+  cells:[{cx:150,cy:100,rx:95,ry:82,nuc:true,nr:58}],
+  ch:[ch(124,84,0,R,L),ch(144,84,0,T,L),ch(162,122,0,R,S),ch(182,122,0,T,S)],
+  stats:['4','2','1','2Q']},
+ {k:'M1',name:'Métaphase 1',part:'1ʳᵉ division',
+  cap:"Chaque paire de chromosomes homologues s'aligne selon le plan équatorial. Les deux homologues sont de part et d'autre du plan.",
+  cells:[{cx:150,cy:100,rx:112,ry:82}], planes:[[150,24,150,176]],
+  ch:[ch(134,70,0,R,L,true,6,[[46,100]]),ch(166,70,0,T,L,true,6,[[254,100]]),ch(134,130,0,R,S,true,6,[[46,100]]),ch(166,130,0,T,S,true,6,[[254,100]])],
+  stats:['4','2','1','2Q']},
+ {k:'A1',name:'Anaphase 1',part:'1ʳᵉ division',
+  cap:"Les chromosomes homologues se séparent : chacun migre vers un pôle de la cellule grâce au fuseau qui se raccourcit. Les chromatides sœurs restent attachées.",
+  cells:[{cx:150,cy:100,rx:128,ry:64}],
+  ch:[ch(78,78,0,R,L,true,6,[[30,100]]),ch(84,124,0,T,S,true,6,[[30,100]]),ch(222,78,0,T,L,true,6,[[270,100]]),ch(216,124,0,R,S,true,6,[[270,100]])],
+  stats:['4 (2 vers chaque pôle)','2','1','2Q']},
+ {k:'T1',name:'Télophase 1',part:'1ʳᵉ division',
+  cap:"2 cellules filles s'individualisent. Chacune contient n chromosomes à 2 chromatides : elle est haploïde. L'ADN par cellule est divisé par 2.",
+  cells:lc,
+  ch:[ch(66,100,0,R,L),ch(96,106,0,T,S),ch(204,100,0,T,L),ch(234,106,0,R,S)],
+  stats:['2 (n = 2)','2','2','Q']},
+ {k:'P2',name:'Prophase 2',part:'2ᵉ division',
+  cap:"La 2ᵉ division démarre tout de suite, sans réplication de l'ADN. Elle se déroule comme une mitose classique : les chromosomes se condensent à nouveau.",
+  cells:lc.map(c=>({...c,nuc:true,nr:46})),
+  ch:[ch(66,100,0,R,L),ch(96,106,0,T,S),ch(204,100,0,T,L),ch(234,106,0,R,S)],
+  stats:['2','2','2','Q']},
+ {k:'M2',name:'Métaphase 2',part:'2ᵉ division',
+  cap:"Dans chaque cellule, les chromosomes à 2 chromatides s'alignent au centre, sur le plan équatorial.",
+  cells:lc, planes:[[22,100,138,100],[162,100,278,100]],
+  ch:[ch(56,100,90,R,L,true,6,[[80,34],[80,166]]),ch(106,100,90,T,S,true,6,[[80,34],[80,166]]),ch(196,100,90,T,L,true,6,[[220,34],[220,166]]),ch(246,100,90,R,S,true,6,[[220,34],[220,166]])],
+  stats:['2','2','2','Q']},
+ {k:'A2',name:'Anaphase 2',part:'2ᵉ division',
+  cap:"Les chromatides sœurs de chaque chromosome se séparent et migrent vers les 2 pôles opposés de la cellule.",
+  cells:[{cx:80,cy:100,rx:62,ry:92},{cx:220,cy:100,rx:62,ry:92}],
+  ch:[ch(56,52,90,R,L,false,6,[[80,14]]),ch(56,148,90,R,L,false,6,[[80,186]]),ch(106,52,90,T,S,false,6,[[80,14]]),ch(106,148,90,T,S,false,6,[[80,186]]),
+      ch(196,52,90,T,L,false,6,[[220,14]]),ch(196,148,90,T,L,false,6,[[220,186]]),ch(246,52,90,R,S,false,6,[[220,14]]),ch(246,148,90,R,S,false,6,[[220,186]])],
+  stats:['4 (2 vers chaque pôle)','1','2','Q']},
+ {k:'T2',name:'Télophase 2',part:'2ᵉ division',
+  cap:"4 cellules filles haploïdes se forment : ce sont les gamètes. Chacune a n chromosomes à 1 seule chromatide. Une cellule diploïde (2n) a donné 4 cellules haploïdes (n).",
+  cells:[{cx:80,cy:52,rx:58,ry:42},{cx:80,cy:148,rx:58,ry:42},{cx:220,cy:52,rx:58,ry:42},{cx:220,cy:148,rx:58,ry:42}],
+  ch:[ch(56,52,90,R,L,false),ch(106,52,90,T,S,false),ch(56,148,90,R,L,false),ch(106,148,90,T,S,false),
+      ch(196,52,90,T,L,false),ch(246,52,90,R,S,false),ch(196,148,90,T,L,false),ch(246,148,90,R,S,false)],
+  stats:['2 (n = 2)','1','4','Q/2']}
+];
+
+function chromo(c){
+  let s=`<g transform="translate(${c.x} ${c.y}) rotate(${c.rot})" stroke="${c.col}" stroke-width="${c.w}" stroke-linecap="round" fill="none">`;
+  const h=c.len/2;
+  if(c.dbl){
+    const o=c.w*0.75+0.8;
+    s+=`<line x1="${-o}" y1="${-h}" x2="${-o}" y2="${h}"/><line x1="${o}" y1="${-h}" x2="${o}" y2="${h}"/>`;
+    s+=`<circle r="${c.w*0.5}" fill="var(--card)" stroke="none"/>`;
+  } else s+=`<line x1="0" y1="${-h}" x2="0" y2="${h}"/>`;
+  return s+'</g>';
+}
+function svgStage(s){
+  let o=`<svg viewBox="0 0 300 200" role="img" aria-label="Schéma de la cellule en ${s.name}">`;
+  s.cells.forEach(c=>{
+    o+=`<ellipse class="cell" cx="${c.cx}" cy="${c.cy}" rx="${c.rx}" ry="${c.ry}"/>`;
+    if(c.nuc) o+=`<circle class="nuc" cx="${c.cx}" cy="${c.cy}" r="${c.nr}"/>`;
+  });
+  (s.planes||[]).forEach(p=>o+=`<line class="plane" x1="${p[0]}" y1="${p[1]}" x2="${p[2]}" y2="${p[3]}"/>`);
+  s.ch.forEach(c=>c.poles.forEach(p=>o+=`<line class="spin" x1="${p[0]}" y1="${p[1]}" x2="${c.x}" y2="${c.y}"/>`));
+  s.ch.forEach(c=>o+=chromo(c));
+  return o+'</svg>';
+}
+
+/* ---------- Données de révision ---------- */
+const CARDS=[
+ ["Dans quelles cellules se déroule la méiose ?","Dans les cellules germinales (qui produisent les gamètes)."],
+ ["Combien de divisions successives comprend la méiose ?","2 divisions, qui comprennent chacune 4 étapes : 8 étapes au total."],
+ ["Quel est le résultat de la méiose ?","1 cellule diploïde (2n) donne 4 cellules haploïdes (n) : les gamètes."],
+ ["Que fait la 1ʳᵉ division de la méiose ?","Elle sépare les chromosomes homologues de chaque paire. Le nombre de chromosomes est divisé par 2, donc la quantité d'ADN aussi."],
+ ["Que se passe-t-il pendant la 2ᵉ division ?","Elle suit immédiatement, SANS réplication préalable de l'ADN. Elle se déroule comme une mitose classique et divise encore par 2 la quantité d'ADN."],
+ ["Prophase 1","Chaque chromosome s'associe à son homologue et forme des paires de chromosomes à 2 chromatides."],
+ ["Métaphase 1","Chaque paire de chromosomes homologues s'aligne selon le plan équatorial."],
+ ["Anaphase 1","Chaque chromosome (à 2 chromatides) migre vers un pôle de la cellule grâce au fuseau méiotique qui se raccourcit."],
+ ["Télophase 1","2 cellules filles s'individualisent. Chacune contient n chromosomes à 2 chromatides : elle est haploïde."],
+ ["Anaphase 2","Les chromatides sœurs se séparent et migrent vers les 2 pôles opposés de la cellule."],
+ ["Évolution de l'ADN pendant la méiose (par cellule)","2Q après la phase S → Q après la 1ʳᵉ division → Q/2 après la 2ᵉ division."],
+ ["Que se passe-t-il pendant la phase S ?","Réplication de l'ADN : semi-conservative, elle donne 2 molécules d'ADN identiques."],
+ ["Qu'est-ce qu'une cellule haploïde ? diploïde ?","Haploïde : n chromosomes (1 de chaque paire). Diploïde : 2n chromosomes (paires d'homologues)."],
+ ["Résultat de la mitose","2 cellules filles génétiquement identiques entre elles et à la cellule mère, diploïdes (2n). Le caryotype est conservé : reproduction conforme."],
+ ["Prophase de la mitose","Les chromosomes se condensent et deviennent visibles : chacun est double (2 chromatides réunies au niveau du centromère). L'enveloppe nucléaire disparaît progressivement."],
+ ["Rôle du fuseau (mitotique ou méiotique)","Il contrôle le déplacement des chromosomes pendant la division cellulaire."]
+];
+
+const QUIZ=[
+ {q:"La méiose se déroule dans…",o:["les cellules musculaires","les cellules germinales","toutes les cellules du corps","uniquement les cellules sanguines"],c:1,e:"La méiose a lieu dans les cellules germinales, qui produisent les gamètes."},
+ {q:"Combien de cellules filles obtient-on à la fin de la méiose ?",o:["2","3","4","8"],c:2,e:"Une cellule mère diploïde donne 4 cellules filles haploïdes (les gamètes)."},
+ {q:"Que sépare la 1ʳᵉ division de la méiose ?",o:["Les chromatides sœurs","Les chromosomes homologues","Les deux cellules filles","Les molécules d'ADN"],c:1,e:"La 1ʳᵉ division sépare les chromosomes homologues de chaque paire, ce qui divise par 2 le nombre de chromosomes."},
+ {q:"Une réplication de l'ADN a-t-elle lieu entre les 2 divisions de la méiose ?",o:["Oui, toujours","Oui, mais seulement en prophase 2","Non, la 2ᵉ division suit immédiatement","Oui, pendant la métaphase 1"],c:2,e:"La 2ᵉ division se déroule immédiatement, sans réplication préalable : c'est pourquoi la quantité d'ADN est encore divisée par 2."},
+ {q:"En métaphase 1, qu'est-ce qui s'aligne sur le plan équatorial ?",o:["Des chromosomes isolés, un par un","Des paires de chromosomes homologues","Des chromatides simples","Les 4 gamètes"],c:1,e:"En métaphase 1, chaque paire de chromosomes homologues s'aligne selon le plan équatorial."},
+ {q:"En anaphase 2, que se passe-t-il ?",o:["Les homologues se séparent","L'ADN est répliqué","Les chromatides sœurs se séparent","Les gamètes fusionnent"],c:2,e:"En anaphase 2, les chromatides sœurs se séparent et migrent vers les 2 pôles opposés."},
+ {q:"À la fin de la télophase 1, chaque cellule fille contient…",o:["2n chromosomes à 1 chromatide","n chromosomes à 2 chromatides","n chromosomes à 1 chromatide","2n chromosomes à 2 chromatides"],c:1,e:"Après la 1ʳᵉ division, chaque cellule est haploïde : n chromosomes, encore à 2 chromatides."},
+ {q:"Comment évolue la quantité d'ADN par cellule pendant la méiose (à partir de la fin de la phase S) ?",o:["2Q → Q → Q/2","Q → 2Q → 4Q","2Q → 2Q → 2Q","Q → Q → Q"],c:0,e:"2Q après réplication, Q après la 1ʳᵉ division, Q/2 après la 2ᵉ division."},
+ {q:"Quelle phase du cycle cellulaire correspond à la réplication de l'ADN ?",o:["La phase S","La prophase","La télophase","La cytodiérèse"],c:0,e:"La réplication a lieu en phase S de l'interphase. Elle est semi-conservative."},
+ {q:"Que donne la mitose d'une cellule diploïde ?",o:["4 cellules haploïdes","2 cellules haploïdes","2 cellules diploïdes génétiquement identiques","2 cellules diploïdes différentes"],c:2,e:"La mitose est une reproduction conforme : le caryotype est conservé dans les 2 cellules filles."},
+ {q:"Combien d'étapes comptent les 2 divisions de la méiose en tout ?",o:["4","6","8","10"],c:2,e:"Chaque division comprend 4 étapes (prophase, métaphase, anaphase, télophase) : 8 étapes au total."},
+ {q:"Quel est le rôle du fuseau ?",o:["Répliquer l'ADN","Déplacer les chromosomes","Fabriquer les chromatides","Condenser les chromosomes"],c:1,e:"Les mécanismes de déplacement des chromosomes sont contrôlés par le fuseau mitotique (méiotique)."}
+];
+
+const ORDER=['Prophase 1','Métaphase 1','Anaphase 1','Télophase 1','Prophase 2','Métaphase 2','Anaphase 2','Télophase 2'];
+
+/* ---------- App ---------- */
+const view=document.getElementById('view'), tabsEl=document.getElementById('tabs');
+const TABS=[['schema','Schéma'],['fiche','Fiche'],['cartes','Cartes'],['quiz','Quiz'],['ordre','Ordre']];
+let tab='schema';
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
+
+function drawTabs(){
+  tabsEl.innerHTML=TABS.map(([id,l])=>`<button class="tab" role="tab" aria-selected="${id===tab}" data-id="${id}">${l}</button>`).join('');
+  tabsEl.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{tab=b.dataset.id;drawTabs();render();window.scrollTo(0,0);});
+}
+function render(){({schema:rSchema,fiche:rFiche,cartes:rCartes,quiz:rQuiz,ordre:rOrdre})[tab]();}
+
+/* Schéma */
+let si=0;
+function rSchema(){
+  const s=STAGES[si];
+  const labels=['Chromosomes par cellule','Chromatides par chromosome','Cellules','ADN par cellule'];
+  view.innerHTML=`
+   <div class="stepper">${STAGES.map((x,i)=>`<button class="${i===si?'on':''} ${i>=1&&i<=4?'div1':''} ${i>=5?'div2':''}" data-i="${i}" aria-label="${x.name}">${x.k}</button>`).join('')}</div>
+   <div class="legend"><span><i style="background:var(--red)"></i>chromosome d'un parent</span><span><i style="background:var(--teal)"></i>son homologue</span></div>
+   <div class="diagram">${svgStage(s)}</div>
+   <p class="stage-name">${s.name}</p>
+   <p class="stage-div">${s.part}</p>
+   <p style="margin:0">${s.cap}</p>
+   <div class="chips">${s.stats.map((v,i)=>`<div class="chip"><b>${labels[i]}</b><span>${v}</span></div>`).join('')}</div>
+   <div class="navrow"><button class="btn" id="prev" ${si===0?'disabled':''}>Précédent</button><button class="btn primary" id="next" ${si===STAGES.length-1?'disabled':''}>Suivant</button></div>
+   <p class="tip">Exemple avec une cellule à 2n = 4 chromosomes.</p>`;
+  view.querySelectorAll('.stepper button').forEach(b=>b.onclick=()=>{si=+b.dataset.i;rSchema();});
+  document.getElementById('prev').onclick=()=>{si--;rSchema();};
+  document.getElementById('next').onclick=()=>{si++;rSchema();};
+}
+
+/* Fiche */
+function rFiche(){
+  view.innerHTML=`
+  <div class="card"><h2>Le cycle cellulaire</h2>
+   <ul class="f">
+    <li>Il comprend une <b>interphase</b> et une <b>division cellulaire</b>.</li>
+    <li>La <b>réplication de l'ADN</b> a lieu pendant la <b>phase S</b>. Elle est <b>semi-conservative</b> et donne 2 molécules d'ADN identiques.</li>
+    <li>Pendant la division, le matériel génétique est transmis soit de façon <b>conforme</b> (mitose), soit de façon <b>partielle</b> (méiose : on passe d'une cellule diploïde à des cellules haploïdes).</li>
+    <li>Le déplacement des chromosomes est contrôlé par le <b>fuseau</b> mitotique (ou méiotique).</li>
+   </ul></div>
+  <div class="card"><h2>La mitose</h2>
+   <ul class="f">
+    <li><b>Prophase :</b> les chromosomes se condensent et deviennent visibles. Chacun est double : 2 <b>chromatides</b> réunies par un <b>centromère</b>. L'enveloppe nucléaire disparaît.</li>
+    <li><b>Métaphase :</b> les chromosomes doubles s'alignent au centre de la cellule.</li>
+    <li><b>Anaphase :</b> les chromatides sœurs se séparent et migrent vers les 2 pôles.</li>
+    <li><b>Télophase :</b> 2 noyaux se forment, la cellule se divise en 2 cellules filles.</li>
+    <li>Résultat : 2 cellules <b>génétiquement identiques</b>, diploïdes (2n).</li>
+   </ul></div>
+  <div class="card"><h2>La méiose</h2>
+   <p style="margin:0 0 6px">Elle a lieu dans les cellules germinales et comprend 2 divisions successives de 4 étapes chacune.</p>
+   <h3><span class="tag r">1ʳᵉ division</span> sépare les homologues</h3>
+   <ul class="f">
+    <li><b>Prophase 1 :</b> chaque chromosome s'associe à son homologue (paires à 2 chromatides).</li>
+    <li><b>Métaphase 1 :</b> chaque paire s'aligne selon le plan équatorial.</li>
+    <li><b>Anaphase 1 :</b> chaque chromosome migre vers un pôle (fuseau qui se raccourcit).</li>
+    <li><b>Télophase 1 :</b> 2 cellules filles, chacune avec n chromosomes à 2 chromatides : elles sont haploïdes.</li>
+   </ul>
+   <h3><span class="tag t">2ᵉ division</span> comme une mitose classique</h3>
+   <ul class="f"><li>Elle suit immédiatement, <b>sans réplication préalable</b>. Elle sépare les chromatides sœurs.</li><li>Bilan : 1 cellule diploïde (2n) → <b>4 cellules haploïdes (n)</b> = les gamètes.</li></ul>
+   <h3>Quantité d'ADN par cellule</h3>
+   <p style="margin:0"><b>2Q</b> (après phase S) → <b>Q</b> (après la 1ʳᵉ division) → <b>Q/2</b> (après la 2ᵉ division).</p></div>
+  <div class="card"><h2>Mitose ou méiose ?</h2>
+   <div class="tblwrap"><table>
+    <tr><th></th><th>Mitose</th><th>Méiose</th></tr>
+    <tr><td>Divisions</td><td>1</td><td>2 (8 étapes)</td></tr>
+    <tr><td>Cellule mère</td><td>2n</td><td>2n (cellule germinale)</td></tr>
+    <tr><td>Cellules filles</td><td>2, identiques, 2n</td><td>4, haploïdes (n)</td></tr>
+    <tr><td>Caryotype</td><td>conservé (conforme)</td><td>divisé par 2</td></tr>
+    <tr><td>Anaphase</td><td>les chromatides sœurs se séparent</td><td>A1 : les homologues se séparent<br>A2 : les chromatides se séparent</td></tr>
+   </table></div></div>
+  <div class="card"><h2>Vocabulaire</h2>
+   <ul class="f">
+    <li><b>Chromatide :</b> une moitié d'un chromosome double.</li>
+    <li><b>Centromère :</b> point qui relie les 2 chromatides.</li>
+    <li><b>Chromosomes homologues :</b> les 2 chromosomes d'une même paire.</li>
+    <li><b>Haploïde (n) / diploïde (2n) :</b> 1 chromosome de chaque paire / les 2.</li>
+    <li><b>Gamète :</b> cellule reproductrice haploïde.</li>
+   </ul></div>`;
+}
+
+/* Flashcards */
+let deck=CARDS.map((c,i)=>i), fi=0, flipped=false, known=0, missed=[];
+function rCartes(){
+  if(fi>=deck.length){
+    view.innerHTML=`<div class="card center"><h2>Série terminée</h2><p>${known} carte${known>1?'s':''} sue${known>1?'s':''} · ${missed.length} à revoir</p>
+      ${missed.length?`<button class="btn primary" id="again">Revoir les ${missed.length} cartes</button>`:''}
+      <div style="height:10px"></div><button class="btn" id="all">Tout recommencer</button></div>`;
+    const a=document.getElementById('again'); if(a)a.onclick=()=>{deck=shuffle(missed);fi=0;flipped=false;known=0;missed=[];rCartes();};
+    document.getElementById('all').onclick=()=>{deck=shuffle(CARDS.map((c,i)=>i));fi=0;flipped=false;known=0;missed=[];rCartes();};
+    return;
+  }
+  const c=CARDS[deck[fi]];
+  view.innerHTML=`<div class="fc-count">Carte ${fi+1} sur ${deck.length}</div>
+   <div class="flip ${flipped?'on':''}" id="flip" tabindex="0" role="button" aria-label="Retourner la carte"><div class="flip-in">
+     <div class="face front"><small>Question</small><p>${c[0]}</p></div>
+     <div class="face back"><small>Réponse</small><p>${c[1]}</p></div></div></div>
+   <p class="tip">${flipped?'':'Touche la carte pour voir la réponse'}</p>
+   ${flipped?`<div class="row2"><button class="btn" id="miss">À revoir</button><button class="btn primary" id="know">Je sais</button></div>`:''}`;
+  const f=document.getElementById('flip');
+  const toggle=()=>{flipped=!flipped;rCartes();};
+  f.onclick=toggle; f.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();toggle();}};
+  if(flipped){
+    document.getElementById('know').onclick=()=>{known++;fi++;flipped=false;rCartes();};
+    document.getElementById('miss').onclick=()=>{missed.push(deck[fi]);fi++;flipped=false;rCartes();};
+  }
+}
+
+/* Quiz */
+let qs=shuffle(QUIZ), qi=0, qscore=0, qdone=false, qans=null;
+function rQuiz(){
+  if(qdone){
+    const pct=Math.round(qscore/qs.length*100);
+    view.innerHTML=`<div class="card center"><p class="muted" style="margin:0">Score final</p><div class="score">${qscore} / ${qs.length}</div>
+      <p>${pct>=80?'Très bien, tu maîtrises le sujet.':pct>=50?'Pas mal. Relis la fiche et refais un tour.':'Reprends la fiche et le schéma, puis réessaie.'}</p>
+      <button class="btn primary" id="re">Recommencer</button></div>`;
+    document.getElementById('re').onclick=()=>{qs=shuffle(QUIZ);qi=0;qscore=0;qdone=false;qans=null;rQuiz();};
+    return;
+  }
+  const it=qs[qi];
+  view.innerHTML=`<div class="bar"><i style="width:${qi/qs.length*100}%"></i></div>
+   <div class="card"><div class="muted" style="font-size:14px">Question ${qi+1} sur ${qs.length} · score ${qscore}</div>
+   <p class="q">${it.q}</p>
+   ${it.o.map((o,i)=>`<button class="opt ${qans!==null?(i===it.c?'ok':(i===qans?'ko':'')):''}" data-i="${i}" ${qans!==null?'disabled':''}>${o}</button>`).join('')}
+   ${qans!==null?`<div class="fb ${qans===it.c?'ok':'ko'}"><b>${qans===it.c?'Exact.':'Pas tout à fait.'}</b> ${it.e}</div>
+   <div class="navrow"><button class="btn primary" id="nq">${qi===qs.length-1?'Voir le score':'Question suivante'}</button></div>`:''}</div>`;
+  view.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{qans=+b.dataset.i;if(qans===it.c)qscore++;rQuiz();});
+  const n=document.getElementById('nq');
+  if(n)n.onclick=()=>{qans=null;if(qi===qs.length-1)qdone=true;else qi++;rQuiz();};
+}
+
+/* Ordre des étapes */
+let pool=shuffle(ORDER), placed=[], errs=0, shakeI=-1;
+function rOrdre(){
+  const done=placed.length===ORDER.length;
+  view.innerHTML=`<div class="card"><h2>Remets les étapes dans l'ordre</h2>
+   <p class="muted" style="margin:0">Touche les étapes de la méiose dans l'ordre, de la première à la dernière.</p>
+   <div class="slots">${ORDER.map((_,i)=>`<div class="slot ${placed[i]?'fill':''}"><em>${i+1}</em>${placed[i]||''}</div>`).join('')}</div>
+   ${done?`<div class="fb ok"><b>Bravo !</b> ${errs===0?'Sans aucune erreur.':`Terminé avec ${errs} erreur${errs>1?'s':''}.`} Les 4 premières étapes forment la 1ʳᵉ division, les 4 dernières la 2ᵉ.</div>
+     <div class="navrow"><button class="btn primary" id="rs">Rejouer</button></div>`
+   :`<div class="pool">${pool.map((p,i)=>`<button class="pill ${placed.includes(p)?'used':''} ${i===shakeI?'shake':''}" data-i="${i}">${p}</button>`).join('')}</div><p class="tip">Erreurs : ${errs}</p>`}</div>`;
+  view.querySelectorAll('.pill').forEach(b=>b.onclick=()=>{
+    const i=+b.dataset.i;
+    if(pool[i]===ORDER[placed.length]){placed.push(pool[i]);shakeI=-1;}
+    else{errs++;shakeI=i;}
+    rOrdre();
+  });
+  const rs=document.getElementById('rs'); if(rs)rs.onclick=()=>{pool=shuffle(ORDER);placed=[];errs=0;shakeI=-1;rOrdre();};
+}
+
+drawTabs(); render();
+</script>
+</body>
+</html>

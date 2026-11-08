@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Underground Railroad — Révisions d'anglais</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Work+Sans:wght@400;500;600;700&display=swap');
+
+  :root{
+    --navy: #1B2A45;
+    --navy-dark: #10192B;
+    --cream: #F4ECDA;
+    --cream-dim: #E6D9BD;
+    --rust: #B5542D;
+    --rust-light: #D97C4F;
+    --gold: #C9A227;
+    --gold-light: #E0BE55;
+    --sage: #5F7051;
+    --sage-bg: #EAF0E4;
+    --error: #A6444F;
+    --error-bg: #F4E4E2;
+    --ink: #221815;
+    --shadow: rgba(16,25,43,0.35);
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --cream: #E9DFC7;
+      --cream-dim: #D8C9A2;
+    }
+  }
+  :root[data-theme="dark"]{
+    --cream: #E9DFC7;
+    --cream-dim: #D8C9A2;
+  }
+
+  html{ scroll-padding-top: env(safe-area-inset-top, 0px); }
+  *{ box-sizing:border-box; }
+
+  body{
+    margin:0;
+    min-height:100%;
+    background:
+      radial-gradient(ellipse at top, #24365C 0%, var(--navy) 45%, var(--navy-dark) 100%);
+    font-family:'Work Sans', sans-serif;
+    color:var(--cream);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding:32px 16px 64px;
+  }
+
+  .header{ text-align:center; max-width:640px; margin-bottom:24px; }
+  .eyebrow{
+    font-size:12px; letter-spacing:0.06em; text-transform:uppercase;
+    color:var(--rust-light); margin-bottom:8px; font-weight:600;
+  }
+  h1{
+    font-family:'Playfair Display', serif;
+    font-weight:700;
+    font-size:clamp(24px,5vw,36px);
+    margin:0 0 8px;
+    line-height:1.15;
+  }
+  .subtitle{ font-size:13px; color:var(--cream-dim); opacity:0.85; }
+
+  .tabs{
+    display:flex; gap:4px; background:rgba(16,25,43,0.4);
+    padding:4px; border-radius:999px; margin-bottom:24px;
+    flex-wrap:wrap; justify-content:center; max-width:100%;
+  }
+  .tab{
+    border:none; background:transparent; color:var(--cream-dim);
+    font-family:'Work Sans', sans-serif; font-size:13px; font-weight:600;
+    padding:9px 16px; border-radius:999px; cursor:pointer;
+    transition:background 0.25s ease, color 0.25s ease; white-space:nowrap;
+  }
+  .tab.active{ background:var(--gold); color:var(--navy-dark); }
+
+  .stage{ width:100%; max-width:560px; display:flex; flex-direction:column; align-items:center; }
+
+  /* ---- Flashcards ---- */
+  .flash-progress{ font-size:13px; color:var(--gold-light); margin-bottom:14px; letter-spacing:0.02em; }
+  .flash-wrap{ perspective:1400px; width:100%; aspect-ratio:16/10; max-height:340px; }
+  .flash-card{
+    position:relative; width:100%; height:100%; cursor:pointer;
+    transform-style:preserve-3d; transition:transform 0.55s cubic-bezier(.4,.2,.2,1);
+  }
+  .flash-card.flipped{ transform:rotateY(180deg); }
+  .face{
+    position:absolute; inset:0; backface-visibility:hidden; border-radius:14px;
+    background:var(--cream); color:var(--ink);
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center; padding:28px 26px; box-shadow:0 18px 40px var(--shadow);
+    border:1px solid rgba(201,162,39,0.4); overflow-y:auto;
+  }
+  .face .label{
+    position:absolute; top:14px; left:18px; font-size:10px; letter-spacing:0.08em;
+    color:var(--rust); font-weight:700; text-transform:uppercase;
+  }
+  .face p{ font-family:'Playfair Display', serif; font-size:21px; line-height:1.3; margin:0; font-weight:600;}
+  .face.back{ transform:rotateY(180deg); background:var(--navy-dark); color:var(--cream); border:1px solid rgba(201,162,39,0.5); }
+  .face.back .fr{ font-family:'Work Sans', sans-serif; font-size:14px; font-weight:600; color:var(--gold-light); margin-top:10px; }
+  .face.back .explain{ font-family:'Work Sans', sans-serif; font-size:13px; font-weight:400; color:var(--cream-dim); margin-top:8px; line-height:1.5; }
+
+  .hint{ font-size:12px; color:var(--cream-dim); margin-top:10px; text-align:center; min-height:16px; }
+
+  .nav-row{ display:flex; align-items:center; gap:18px; margin-top:20px; }
+  .nav-btn{
+    background:none; border:1px solid var(--gold); color:var(--gold-light);
+    width:38px; height:38px; border-radius:50%; font-size:18px; cursor:pointer;
+    display:flex; align-items:center; justify-content:center; transition:background 0.2s ease;
+  }
+  .nav-btn:hover{ background:rgba(201,162,39,0.15); }
+  .nav-btn:disabled{ opacity:0.3; cursor:default; }
+
+  /* ---- Quiz ---- */
+  .quiz-progress{ font-size:13px; color:var(--gold-light); margin-bottom:14px; }
+  .quiz-card{
+    width:100%; background:var(--cream); color:var(--ink); border-radius:14px;
+    padding:26px 24px; box-shadow:0 18px 40px var(--shadow); border:1px solid rgba(201,162,39,0.4);
+  }
+  .quiz-prompt{ font-family:'Playfair Display', serif; font-size:20px; font-weight:700; margin:0 0 18px; line-height:1.3; }
+  .option{
+    display:block; width:100%; text-align:left; background:#fff;
+    border:1.5px solid rgba(34,24,21,0.15); border-radius:10px; padding:12px 15px;
+    margin-bottom:9px; font-family:'Work Sans', sans-serif; font-size:14px; cursor:pointer;
+    transition:border-color 0.2s ease, background 0.2s ease; color:var(--ink);
+  }
+  .option:hover:not(:disabled){ border-color:var(--gold); }
+  .option.correct{ background:var(--sage-bg); border-color:var(--sage); color:#2F3D26; font-weight:600; }
+  .option.incorrect{ background:var(--error-bg); border-color:var(--error); color:#5C2027; font-weight:600; }
+  .option:disabled{ cursor:default; }
+
+  .feedback{ margin-top:14px; padding:13px 15px; border-radius:10px; font-size:13px; line-height:1.5; }
+  .feedback.correct{ background:var(--sage-bg); color:#2F3D26; }
+  .feedback.incorrect{ background:var(--error-bg); color:#5C2027; }
+  .feedback strong{ display:block; margin-bottom:4px; font-size:14px; }
+
+  .quiz-footer{ margin-top:18px; display:flex; justify-content:flex-end; }
+  .primary-btn{
+    background:var(--navy-dark); color:var(--cream); border:none; padding:10px 22px;
+    border-radius:999px; font-family:'Work Sans', sans-serif; font-size:13px; font-weight:700;
+    cursor:pointer; transition:background 0.2s ease;
+  }
+  .primary-btn:hover{ background:#0A121F; }
+  .primary-btn:disabled{ opacity:0.35; cursor:default; }
+
+  .score-screen{
+    width:100%; background:var(--cream); color:var(--ink); border-radius:14px; padding:40px 28px;
+    text-align:center; box-shadow:0 18px 40px var(--shadow); border:1px solid rgba(201,162,39,0.4);
+  }
+  .score-screen .big{ font-family:'Playfair Display', serif; font-size:48px; font-weight:700; color:var(--navy); margin:6px 0 4px; }
+  .score-screen p{ margin:4px 0; color:#4A3C32; }
+  .restart-btn{
+    margin-top:20px; background:var(--gold); color:var(--navy-dark); border:none; padding:11px 26px;
+    border-radius:999px; font-weight:700; font-family:'Work Sans', sans-serif; cursor:pointer;
+  }
+
+  footer{ margin-top:32px; font-size:11px; color:rgba(244,236,218,0.5); text-align:center; max-width:520px; }
+</style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="eyebrow">ANGLAIS — 1ère — THE UNDERGROUND RAILROAD &amp; HARRIET TUBMAN</div>
+    <h1>The Underground Railroad</h1>
+    <div class="subtitle">Vocabulaire, compréhension et grammaire — d'après le cahier de cours</div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" data-mode="flash">Vocabulaire</button>
+    <button class="tab" data-mode="tubman">Quiz : Harriet Tubman</button>
+    <button class="tab" data-mode="grammar">Quiz : Grammaire</button>
+  </div>
+
+  <div class="stage" id="stage"></div>
+
+  <footer>21 cartes de vocabulaire · 10 questions par quiz · d'après les documents de classe (carte du Kansas-Nebraska Act, code de l'Underground Railroad, biographie de Harriet Tubman, mots croisés et correction de grammaire)</footer>
+
+<script>
+// ---------- DATA ----------
+const VOCAB = [
+  {en:"Tracks", fr:"Les voies", explain:"L'itinéraire secret et fixe emprunté par les fugitifs (secret route, fixed route)."},
+  {en:"Stations", fr:"Les gares", explain:"Maisons sûres où les fugitifs pouvaient se reposer et se cacher (safe houses, hiding places)."},
+  {en:"Conductors", fr:"Les conducteurs", explain:"Abolitionnistes qui guidaient les esclaves le long de l'Underground Railroad vers la liberté."},
+  {en:"Agents", fr:"Les agents", explain:"Personnes qui aidaient les fugitifs (people helping fugitives)."},
+  {en:"Station masters", fr:"Les chefs de gare", explain:"Personnes qui cachaient les esclaves et leur fournissaient un abri et de la nourriture."},
+  {en:"Passengers", fr:"Les passagers", explain:"Les esclaves en fuite sur l'Underground Railroad, ceux qui cherchaient la liberté (freedom seekers)."},
+  {en:"Tickets", fr:"Les billets", explain:"Informations secrètes, mots de passe, indices (passwords, clues)."},
+  {en:"Stockholders", fr:"Les actionnaires", explain:"Soutiens financiers qui donnaient de l'argent pour financer le réseau."},
+  {en:"Terminal / Heaven / Promised Land", fr:"Le terminus / le paradis / la terre promise", explain:"Les États libres du Nord ou le Canada, destination finale du voyage."},
+  {en:"Bounty hunter", fr:"Chasseur de primes", explain:"Personne payée pour capturer les esclaves en fuite."},
+  {en:"Shelter", fr:"Abri, refuge", explain:"Un lieu sûr (safe place)."},
+  {en:"Rifle", fr:"Fusil", explain:"Une arme à feu (gun)."},
+  {en:"Perilous", fr:"Périlleux, risqué", explain:"Synonyme : risky."},
+  {en:"Undernourished", fr:"Sous-alimenté", explain:"Synonyme : underfed."},
+  {en:"Outraged", fr:"Révolté, indigné", explain:"Exprime une forte indignation face à une injustice."},
+  {en:"Slaveholder", fr:"Esclavagiste", explain:"Personne qui possède des esclaves."},
+  {en:"Overworked", fr:"Surexploité, épuisé de travail", explain:"Synonyme : exploited."},
+  {en:"Advocate", fr:"Défenseur", explain:"Synonyme : defender — personne qui soutient une cause."},
+  {en:"Jailed", fr:"Emprisonné", explain:"Synonyme : imprisoned."},
+  {en:"Abused", fr:"Maltraité", explain:"Synonyme : ill-treated."},
+  {en:"Cottonfields", fr:"Champs de coton", explain:"Lieu de travail forcé des esclaves dans les plantations (plantations)."}
+];
+
+const TUBMAN = [
+  {q:"Where and when was Harriet Tubman born?",
+   options:["Baltimore, Maryland, late 1830s","Richmond, Virginia, early 1800s","Dorchester County, Maryland, early 1820s"], correct:2,
+   explain:"Harriet Tubman est née dans le comté de Dorchester, dans le Maryland, au début des années 1820."},
+  {q:"What was Harriet Tubman's birth name?",
+   options:["Harriet Ross","Araminta Ross","Minty Tubman","Harriet Green"], correct:1,
+   explain:"Son nom de naissance était Araminta Ross ; on l'appelait « Minty »."},
+  {q:"True or False: Harriet Tubman was the seventh of nine children.",
+   options:["Vrai","Faux"], correct:1,
+   explain:"Faux : elle était la cinquième (the fifth) des neuf enfants."},
+  {q:"What happened to Harriet's two older sisters?",
+   options:["They ran away together","They were sold to a chain gang","They died young","They bought their freedom"], correct:1,
+   explain:"Ses deux sœurs aînées ont été vendues et envoyées dans un chain gang (groupe d'esclaves enchaînés forcés de travailler ensemble)."},
+  {q:"What injury did Harriet suffer as a child, and what condition did it cause?",
+   options:["Hit by a weight, causing narcolepsy","Broken leg, causing arthritis","Burn, causing chronic pain"], correct:0,
+   explain:"Un surveillant a lancé un poids de deux livres sur un fugitif et a frappé Minty à la tête à la place, lui causant une narcolepsie."},
+  {q:"How many times did Harriet Tubman return to the South to free others?",
+   options:["5 times","13 times","20 times"], correct:1,
+   explain:"Elle est retournée 13 fois dans le Sud pour libérer d'autres esclaves, dont ses frères et sœurs."},
+  {q:"What nickname did Harriet Tubman earn?",
+   options:["Black Moses","Iron Lady","Freedom Fighter","Lady Liberty"], correct:0,
+   explain:"On la surnommait « Black Moses », tant elle était déterminée à guider les esclaves vers la liberté."},
+  {q:"What roles did Harriet Tubman have during the Civil War?",
+   options:["Only a nurse","Nurse, scout and spy","Only a soldier","Teacher and pilot"], correct:1,
+   explain:"Pendant la guerre de Sécession, elle fut infirmière (nurse), éclaireuse (scout) et espionne (spy)."},
+  {q:"What honor did the U.S. Treasury announce for Harriet Tubman in 2016?",
+   options:["A statue in Washington D.C.","A national holiday in her name","Her image on a redesigned twenty-dollar bill"], correct:2,
+   explain:"Le Trésor américain a annoncé que son portrait figurerait sur le nouveau billet de 20 dollars."},
+  {q:"True or False: Harriet Tubman was the first woman in U.S. history to plan and lead a military raid.",
+   options:["Vrai","Faux"], correct:0,
+   explain:"Vrai : elle fut la première femme de l'histoire des États-Unis à planifier et diriger un raid militaire."}
+];
+
+const GRAMMAR = [
+  {q:"Choose the correct sentence:",
+   options:["That flowers smell nice.","That flower smells nice.","That flower smell nice.","That flowers smells nice."], correct:1,
+   explain:"Accord sujet-verbe : « that flower » est singulier, donc le verbe prend un -s : flower smells."},
+  {q:"Choose the correct sentence:",
+   options:["He lives in Sydney since his childhood.","He lived in Sydney since his childhood.","He has lived in Sydney since his childhood.","He is living in Sydney since his childhood."], correct:2,
+   explain:"Avec « since » (point de départ dans le passé) pour une action qui continue jusqu'à maintenant, on utilise le present perfect : has lived."},
+  {q:"Choose the correct sentence:",
+   options:["It is a 10-kilometre hike.","It is a 10-kilometres hike.","It is a 10-kilometer's hike.","It is a 10-kilometres' hike."], correct:0,
+   explain:"Dans un adjectif composé (nombre + nom), le nom reste au singulier : a 10-kilometre hike."},
+  {q:"Choose the correct sentence:",
+   options:["Nobody are coming to her party.","Nobody is coming to her party.","Nobody were coming to her party.","Nobody have coming to her party."], correct:1,
+   explain:"Les pronoms indéfinis comme « nobody », « everybody », « somebody » sont toujours suivis d'un verbe au singulier."},
+  {q:"Choose the correct sentence:",
+   options:["Three hundreds people went to the concert.","Three hundred people went to the concert.","Three hundred's people went to the concert.","Three hundreds of people went to the concert."], correct:1,
+   explain:"Après un nombre précis, « hundred » (comme thousand, million) reste invariable : three hundred people."},
+  {q:"Choose the correct sentence:",
+   options:["He made a speech about the education.","He made a speech about an education.","He made a speech about education.","He made a speech about educations."], correct:2,
+   explain:"Un nom abstrait ou indénombrable employé de façon générale (l'éducation en général) n'a pas d'article : about education."},
+  {q:"Which word means « secret / fixed route » in the Underground Railroad code?",
+   options:["Tickets","Tracks","Passengers","Terminal"], correct:1,
+   explain:"« Tracks » désigne l'itinéraire secret et fixe emprunté par les fugitifs."},
+  {q:"Which word means « financial supporters who donated money »?",
+   options:["Conductors","Agents","Stockholders","Station masters"], correct:2,
+   explain:"« Stockholders » : les soutiens financiers qui donnaient de l'argent au réseau."},
+  {q:"What is the antonym-style pair used in the crossword: « underfed » (across) matches which clue?",
+   options:["Undernourished","Overworked","Abused","Jailed"], correct:0,
+   explain:"« Underfed » = sous-alimenté, synonyme de undernourished."},
+  {q:"Which word means « chasseur de prime » in English?",
+   options:["Advocate","Bounty hunter","Slaveholder","Overseer"], correct:1,
+   explain:"« Bounty hunter » = chasseur de primes, personne payée pour capturer les esclaves en fuite."}
+];
+
+// ---------- STATE ----------
+const stage = document.getElementById('stage');
+const tabs = document.querySelectorAll('.tab');
+let mode = 'flash';
+
+let flashIndex = 0;
+let flipped = false;
+
+const quizState = {
+  tubman:  {index:0, score:0, answered:false, finished:false},
+  grammar: {index:0, score:0, answered:false, finished:false}
+};
+
+tabs.forEach(t => t.addEventListener('click', () => {
+  tabs.forEach(x => x.classList.remove('active'));
+  t.classList.add('active');
+  mode = t.dataset.mode;
+  render();
+}));
+
+function render(){
+  stage.innerHTML = '';
+  if(mode === 'flash') renderFlash();
+  else renderQuiz(mode === 'tubman' ? TUBMAN : GRAMMAR, quizState[mode]);
+}
+
+// ---------- FLASHCARDS ----------
+function renderFlash(){
+  const item = VOCAB[flashIndex];
+
+  const progress = document.createElement('div');
+  progress.className = 'flash-progress';
+  progress.textContent = `Carte ${flashIndex+1} / ${VOCAB.length}`;
+  stage.appendChild(progress);
+
+  const wrap = document.createElement('div');
+  wrap.className = 'flash-wrap';
+
+  const card = document.createElement('div');
+  card.className = 'flash-card' + (flipped ? ' flipped' : '');
+  card.addEventListener('click', () => { flipped = !flipped; render(); });
+
+  const front = document.createElement('div');
+  front.className = 'face front';
+  front.innerHTML = `<div class="label">ENGLISH</div><p>${item.en}</p>`;
+
+  const back = document.createElement('div');
+  back.className = 'face back';
+  back.innerHTML = `<div class="label">FRANÇAIS</div><p>${item.fr}</p><div class="explain">${item.explain}</div>`;
+
+  card.appendChild(front);
+  card.appendChild(back);
+  wrap.appendChild(card);
+  stage.appendChild(wrap);
+
+  const hint = document.createElement('div');
+  hint.className = 'hint';
+  hint.textContent = flipped ? '' : 'Clique sur la carte pour voir la traduction';
+  stage.appendChild(hint);
+
+  const nav = document.createElement('div');
+  nav.className = 'nav-row';
+
+  const prevBtn = document.createElement('button');
+  prevBtn.className = 'nav-btn';
+  prevBtn.textContent = '‹';
+  prevBtn.disabled = flashIndex === 0;
+  prevBtn.addEventListener('click', () => { flashIndex--; flipped=false; render(); });
+
+  const nextBtn = document.createElement('button');
+  nextBtn.className = 'nav-btn';
+  nextBtn.textContent = '›';
+  nextBtn.disabled = flashIndex === VOCAB.length - 1;
+  nextBtn.addEventListener('click', () => { flashIndex++; flipped=false; render(); });
+
+  nav.appendChild(prevBtn);
+  nav.appendChild(nextBtn);
+  stage.appendChild(nav);
+}
+
+// ---------- QUIZ ----------
+function renderQuiz(QUESTIONS, st){
+  if(st.finished){
+    const screen = document.createElement('div');
+    screen.className = 'score-screen';
+    const pct = Math.round((st.score/QUESTIONS.length)*100);
+    screen.innerHTML = `
+      <div style="font-size:13px;color:#7A6A55;">Score final</div>
+      <div class="big">${st.score} / ${QUESTIONS.length}</div>
+      <p>${pct}% de bonnes réponses</p>
+      <button class="restart-btn" id="restartBtn">Recommencer</button>
+    `;
+    stage.appendChild(screen);
+    document.getElementById('restartBtn').addEventListener('click', () => {
+      st.index = 0; st.score = 0; st.answered = false; st.finished = false; render();
+    });
+    return;
+  }
+
+  const item = QUESTIONS[st.index];
+
+  const progress = document.createElement('div');
+  progress.className = 'quiz-progress';
+  progress.textContent = `Question ${st.index+1} / ${QUESTIONS.length} · Score : ${st.score}`;
+  stage.appendChild(progress);
+
+  const card = document.createElement('div');
+  card.className = 'quiz-card';
+
+  const prompt = document.createElement('p');
+  prompt.className = 'quiz-prompt';
+  prompt.textContent = item.q;
+  card.appendChild(prompt);
+
+  let selected = null;
+
+  item.options.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option';
+    btn.textContent = opt;
+    btn.addEventListener('click', () => {
+      if(st.answered) return;
+      st.answered = true;
+      selected = i;
+      if(i === item.correct) st.score++;
+      renderFeedback();
+    });
+    card.appendChild(btn);
+  });
+
+  const feedbackSlot = document.createElement('div');
+  feedbackSlot.id = 'feedbackSlot';
+  card.appendChild(feedbackSlot);
+
+  const footer = document.createElement('div');
+  footer.className = 'quiz-footer';
+  const nextBtn = document.createElement('button');
+  nextBtn.className = 'primary-btn';
+  nextBtn.textContent = st.index === QUESTIONS.length - 1 ? 'Voir le score' : 'Question suivante';
+  nextBtn.disabled = true;
+  nextBtn.id = 'quizNextBtn';
+  nextBtn.addEventListener('click', () => {
+    st.answered = false;
+    if(st.index === QUESTIONS.length - 1){ st.finished = true; }
+    else { st.index++; }
+    render();
+  });
+  footer.appendChild(nextBtn);
+  card.appendChild(footer);
+
+  stage.appendChild(card);
+
+  function renderFeedback(){
+    Array.from(card.querySelectorAll('.option')).forEach((btn, i) => {
+      btn.disabled = true;
+      if(i === item.correct) btn.classList.add('correct');
+      else if(i === selected) btn.classList.add('incorrect');
+    });
+    const isCorrect = selected === item.correct;
+    feedbackSlot.innerHTML = `
+      <div class="feedback ${isCorrect ? 'correct' : 'incorrect'}">
+        <strong>${isCorrect ? 'Exact !' : 'Pas tout à fait.'}</strong>
+        ${item.explain}
+      </div>`;
+    document.getElementById('quizNextBtn').disabled = false;
+  }
+}
+
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,413 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Underground Railroad Grammar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;700&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: une "route vers le Nord" — chaque point de grammaire est une station reliée par une ligne ; la règle d'abord, puis l'entraînement. */
+:root{
+  --bg:#EEF0F4; --surface:#FFFFFF; --surface-2:#E3E7EE;
+  --ink:#1A2233; --muted:#5A6476; --line:#C9D0DC;
+  --night:#1E2A44; --lantern:#C7811F; --lantern-soft:#F6E7CD;
+  --ok:#2F7A4F; --ok-bg:#E1F1E7; --ko:#B23A3A; --ko-bg:#F7E1E1;
+  --display:'Zilla Slab', Georgia, serif;
+  --body:'Source Sans 3', 'Segoe UI', system-ui, sans-serif;
+  --mono:'IBM Plex Mono', ui-monospace, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0F1524; --surface:#18213A; --surface-2:#222D4A;
+  --ink:#E6E9F0; --muted:#9CA6BA; --line:#2E3A5A;
+  --night:#0A0F1C; --lantern:#E3A447; --lantern-soft:#3A2E1C;
+  --ok:#6FC793; --ok-bg:#183326; --ko:#EE8A8A; --ko-bg:#3A1C22; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0F1524; --surface:#18213A; --surface-2:#222D4A;
+  --ink:#E6E9F0; --muted:#9CA6BA; --line:#2E3A5A;
+  --night:#0A0F1C; --lantern:#E3A447; --lantern-soft:#3A2E1C;
+  --ok:#6FC793; --ok-bg:#183326; --ko:#EE8A8A; --ko-bg:#3A1C22; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55;margin:0}
+.hero{background:var(--night);color:#EEF0F4;padding:28px 16px 22px}
+.hero-in,.wrap{max-width:760px;margin:0 auto}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--lantern)}
+h1{font-family:var(--display);font-weight:700;font-size:clamp(30px,6vw,44px);line-height:1.05;margin:6px 0 8px;text-wrap:balance}
+.hero p{margin:0;color:#B9C1D3;max-width:60ch;font-size:15px}
+
+/* Route */
+.route{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+.route-in{max-width:760px;margin:0 auto;overflow-x:auto;padding:14px 16px 12px;scrollbar-width:thin}
+.stops{display:flex;gap:0;position:relative;min-width:max-content}
+.stop{position:relative;display:flex;flex-direction:column;align-items:center;gap:6px;background:none;border:0;cursor:pointer;padding:0 10px;color:var(--muted);font-family:var(--body);font-size:13px;font-weight:600;min-width:74px}
+.stop::before{content:"";position:absolute;top:13px;left:0;right:0;height:2px;background:var(--line);z-index:0}
+.stop:first-child::before{left:50%}.stop:last-child::before{right:50%}
+.dot{position:relative;z-index:1;width:28px;height:28px;border-radius:50%;background:var(--surface);border:2px solid var(--line);display:grid;place-items:center;font-family:var(--mono);font-size:11px;color:var(--muted)}
+.stop.done .dot{border-color:var(--ok);color:var(--ok)}
+.stop.active{color:var(--ink)}
+.stop.active .dot{background:var(--lantern);border-color:var(--lantern);color:#1A1205;box-shadow:0 0 0 5px color-mix(in srgb,var(--lantern) 25%,transparent)}
+.stop:focus-visible{outline:2px solid var(--lantern);outline-offset:3px;border-radius:6px}
+
+.wrap{padding-inline:16px;padding-block:22px 64px}
+.kicker{font-family:var(--mono);font-size:12px;letter-spacing:.06em;color:var(--lantern);text-transform:uppercase}
+h2{font-family:var(--display);font-size:clamp(24px,4.5vw,32px);margin:4px 0 6px;line-height:1.15;text-wrap:balance}
+.lead{color:var(--muted);margin:0 0 18px;max-width:62ch}
+
+.rule{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:20px 20px 8px;margin-bottom:28px}
+.rule h3{font-family:var(--display);font-size:20px;margin:0 0 8px}
+.rule h4{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:18px 0 6px;font-weight:500}
+.rule p,.rule li{max-width:65ch}
+.rule ul{padding-left:20px;margin:6px 0}
+.rule li{margin-bottom:6px}
+.ex{display:block;background:var(--surface-2);border-radius:6px;padding:8px 12px;margin:6px 0;font-size:16px}
+.ex em{color:var(--muted);font-style:italic;display:block;font-size:14px}
+b.k{color:var(--lantern);font-weight:700}
+.trap{background:var(--lantern-soft);border-radius:8px;padding:12px 14px;margin:14px 0 12px}
+.trap strong{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:4px;color:var(--lantern)}
+table.t{border-collapse:collapse;width:100%;font-size:15px;margin:6px 0}
+.tw{overflow-x:auto}
+table.t th,table.t td{border-bottom:1px solid var(--line);padding:7px 8px;text-align:left;vertical-align:top}
+table.t th{font-family:var(--mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);font-weight:500}
+
+.train-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.train-head h3{font-family:var(--display);font-size:22px;margin:0}
+.score{font-family:var(--mono);font-size:14px;font-variant-numeric:tabular-nums;color:var(--muted)}
+.items{display:flex;flex-direction:column;gap:14px}
+.item{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px}
+.item .n{font-family:var(--mono);font-size:11px;color:var(--muted)}
+.item .s{font-size:17px;margin:4px 0 12px}
+.gap{display:inline-block;min-width:70px;border-bottom:2px solid var(--lantern);text-align:center;padding:0 4px;font-weight:700}
+.opts{display:flex;flex-wrap:wrap;gap:8px}
+.opt{font-family:var(--body);font-size:15px;font-weight:600;padding:9px 14px;border-radius:8px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer;text-align:left}
+.opt:hover:not(:disabled){border-color:var(--lantern)}
+.opt:focus-visible{outline:2px solid var(--lantern);outline-offset:2px}
+.opt:disabled{cursor:default;opacity:.55}
+.opt.good{background:var(--ok-bg);border-color:var(--ok);color:var(--ok);opacity:1}
+.opt.bad{background:var(--ko-bg);border-color:var(--ko);color:var(--ko);opacity:1}
+.why{margin-top:12px;padding:10px 12px;border-radius:8px;font-size:15px}
+.why.good{background:var(--ok-bg)}.why.bad{background:var(--ko-bg)}
+.why b{display:block}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.btn{font-family:var(--body);font-weight:700;font-size:15px;padding:11px 20px;border-radius:999px;border:0;cursor:pointer;background:var(--night);color:#EEF0F4}
+:root[data-theme="dark"] .btn{background:var(--lantern);color:#1A1205}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .btn{background:var(--lantern);color:#1A1205}}
+.btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
+.btn:focus-visible{outline:2px solid var(--lantern);outline-offset:2px}
+.final{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:24px;text-align:center}
+.final .big{font-family:var(--display);font-size:52px;font-weight:700;color:var(--lantern);font-variant-numeric:tabular-nums}
+.final ul{text-align:left;max-width:52ch;margin:12px auto 0}
+@media (prefers-reduced-motion: no-preference){.item{transition:border-color .2s}}
+</style>
+
+<header class="hero"><div class="hero-in">
+  <div class="eyebrow">Anglais · Première · Fiche « Grammar – The Underground Railroad »</div>
+  <h1>Grammar on the Underground Railroad</h1>
+  <p>Huit points de grammaire de la fiche, chacun avec la règle expliquée pas à pas, puis des exercices corrigés. Les phrases sont nouvelles : la fiche reste à faire par toi-même, avec les bonnes méthodes.</p>
+</div></header>
+
+<nav class="route" aria-label="Points de grammaire"><div class="route-in"><div class="stops" id="stops"></div></div></nav>
+<main class="wrap" id="main"></main>
+
+<script>
+const TOPICS = [
+{id:"fsd", num:"1", short:"for / since / during",
+ title:"For, since ou during ?", lead:"Trois mots pour dire « pendant » ou « depuis ». Tout dépend de ce qui suit : une durée, un point de départ, ou une période nommée.",
+ rule:`
+<h3>La méthode : regarde ce qui vient juste après</h3>
+<div class="tw"><table class="t"><tr><th>Mot</th><th>Suivi de…</th><th>Question qu'on se pose</th><th>Exemple</th></tr>
+<tr><td><b class="k">for</b></td><td>une <b>durée</b> (un chiffre, « ages », « centuries », « a long time »)</td><td>Combien de temps ?</td><td>for ten years, for ages, for weeks</td></tr>
+<tr><td><b class="k">since</b></td><td>un <b>point de départ</b> (date, moment, événement qui a commencé)</td><td>Depuis quand ?</td><td>since 1865, since the middle of the 19th century</td></tr>
+<tr><td><b class="k">during</b></td><td>une <b>période nommée</b> (un nom : la guerre, la nuit, le voyage, un siècle)</td><td>Quand ? Au cours de quoi ?</td><td>during the war, during the journey, during the 19th century</td></tr></table></div>
+<h4>Le lien avec les temps</h4>
+<ul><li><b class="k">since</b> s'emploie presque toujours avec le <b>present perfect</b> (ou le past perfect) : l'action commence dans le passé et continue.
+<span class="ex">Slavery has been illegal in the USA since 1865.<em>L'esclavage est illégal depuis 1865 (et ça l'est toujours).</em></span></li>
+<li><b class="k">for</b> marche avec tous les temps : prétérit (action finie) ou present perfect (action qui continue).
+<span class="ex">She worked for ten years. / She has worked here for ten years.<em>Elle a travaillé dix ans (fini). / Elle travaille ici depuis dix ans (ça continue).</em></span></li></ul>
+<div class="trap"><strong>Piège</strong>« Pendant » en français se traduit par <b>for</b> devant une durée chiffrée, mais par <b>during</b> devant un nom de période. « Pendant trois semaines » = <i>for three weeks</i> ; « pendant le voyage » = <i>during the journey</i>. Et « depuis » se traduit par <b>since</b> devant une date, mais par <b>for</b> devant une durée : « depuis dix ans » = <i>for ten years</i>.</div>`,
+ items:[
+ {s:"Harriet Tubman worked as a conductor ___ about ten years.", o:["for","since","during"], a:0, w:"« about ten years » est une durée (combien de temps ?) → for."},
+ {s:"Slavery has been illegal in the United States ___ 1865.", o:["for","since","during"], a:1, w:"1865 est un point de départ (depuis quand ?), et le verbe est au present perfect → since."},
+ {s:"Many slaves escaped ___ the night.", o:["for","since","during"], a:2, w:"« the night » est une période nommée (un nom), on répond à « quand ? » → during."},
+ {s:"The runaways hid in the barn ___ two days.", o:["for","since","during"], a:0, w:"« two days » est une durée chiffrée → for."},
+ {s:"___ the Civil War, Tubman worked as a spy for the Union army.", o:["For","Since","During"], a:2, w:"« the Civil War » est un événement, une période nommée → During."},
+ {s:"People have told these stories ___ generations.", o:["for","since","during"], a:0, w:"« generations » exprime une durée (comme « ages » ou « centuries ») → for."},
+ {s:"Canada has welcomed refugees ___ the 1830s.", o:["for","since","during"], a:1, w:"« the 1830s » est ici le point de départ d'une situation qui continue (present perfect) → since."},
+ {s:"Frederick Douglass learned to read secretly ___ his childhood.", o:["for","since","during"], a:2, w:"« his childhood » est une période nommée (au cours de son enfance) → during."}
+ ]},
+
+{id:"ppf", num:"2", short:"present perfect / past perfect",
+ title:"Present perfect ou past perfect ?", lead:"Les deux utilisent un participe passé. La différence : le moment de référence. Maintenant, ou un autre moment du passé ?",
+ rule:`
+<h3>Deux temps, deux points de vue</h3>
+<div class="tw"><table class="t"><tr><th>Temps</th><th>Forme</th><th>Idée</th></tr>
+<tr><td><b class="k">Present perfect</b></td><td>have / has + participe passé</td><td>Le passé <b>vu depuis aujourd'hui</b> : un bilan, un résultat visible maintenant, ou une situation qui dure encore.</td></tr>
+<tr><td><b class="k">Past perfect</b></td><td>had + participe passé</td><td>Le <b>« passé du passé »</b> : une action déjà terminée avant un autre moment passé.</td></tr></table></div>
+<h4>Les indices dans la phrase</h4>
+<ul><li>Present perfect : <i>today, now, so far, since, ever, never</i> (jusqu'à maintenant), ou un résultat présent.
+<span class="ex">Historians have found many documents about the Underground Railroad.<em>Bilan : aujourd'hui, on a ces documents.</em></span></li>
+<li>Past perfect : un <b>autre verbe au prétérit</b> ou une <b>date passée</b> qui sert de repère (<i>when…, before…, by 1850, by the time…</i>).
+<span class="ex">By 1850, thousands of slaves had escaped to the North.<em>Le repère est 1850 ; les évasions ont eu lieu avant.</em></span></li></ul>
+<h4>Au passif</h4>
+<p>Si le sujet subit l'action, on ajoute <b>been</b> : <i>has been + PP</i> / <i>had been + PP</i>.</p>
+<span class="ex">The island had never been inhabited when the settlers arrived.<em>Personne n'y avait habité avant l'arrivée des colons.</em></span>
+<div class="trap"><strong>Piège</strong>Pas de present perfect avec une date passée précise : on ne dit pas <i>« has escaped in 1849 »</i> mais <i>escaped in 1849</i>. Et never / already se placent entre l'auxiliaire et le participe : <i>had never been</i>, <i>has already become</i>.</div>`,
+ items:[
+ {s:"Today, historians ___ many documents about the Underground Railroad. (find)", o:["have found","had found","found"], a:0, w:"« Today » : bilan vu depuis maintenant → present perfect (have found)."},
+ {s:"By 1850, thousands of slaves ___ to the North. (escape)", o:["have escaped","had escaped","escape"], a:1, w:"« By 1850 » est un repère passé ; les évasions sont antérieures → past perfect (had escaped)."},
+ {s:"So far, Tubman's story ___ many films and books. (inspire)", o:["has inspired","had inspired","inspires"], a:0, w:"« So far » = jusqu'à maintenant → present perfect (has inspired, car Tubman's story = 3e personne)."},
+ {s:"When Tubman reached Philadelphia, she ___ about 140 kilometres. (walk)", o:["has walked","had walked","walks"], a:1, w:"Repère passé « when she reached » ; la marche s'est faite avant → past perfect."},
+ {s:"Before the 1830s, the route ___ by many abolitionists. (never / use)", o:["has never been used","had never been used","was never using"], a:1, w:"Repère passé « before the 1830s » + sens passif (la route subit) → had never been used."},
+ {s:"Since the 1990s, the Underground Railroad ___ a popular topic at school. (become)", o:["has become","had become","became"], a:0, w:"« Since the 1990s » + la situation continue aujourd'hui → present perfect (has become)."}
+ ]},
+
+{id:"pas", num:"3", short:"le passif",
+ title:"La voix passive", lead:"On met en avant la personne ou la chose qui subit l'action. La recette est toujours la même : be au bon temps + participe passé.",
+ rule:`
+<h3>La recette en 4 étapes</h3>
+<ul><li><b>1.</b> Le <b>complément d'objet</b> (COD) de la phrase active devient le <b>sujet</b>.</li>
+<li><b>2.</b> On met <b class="k">be</b> <b>au même temps</b> que le verbe de la phrase active.</li>
+<li><b>3.</b> On ajoute le <b class="k">participe passé</b> du verbe (attention aux irréguliers : caught, built, written…).</li>
+<li><b>4.</b> L'ancien sujet devient complément avec <b class="k">by</b>… seulement s'il apporte une information. On le supprime si c'est <i>someone, people, they</i>.</li></ul>
+<span class="ex">The guards caught the runaways. → The runaways <b>were caught</b> by the guards.<em>caught est au prétérit → be au prétérit (were, car « runaways » est pluriel).</em></span>
+<h4>Le tableau des temps</h4>
+<div class="tw"><table class="t"><tr><th>Temps actif</th><th>Actif</th><th>Passif</th></tr>
+<tr><td>Présent simple</td><td>They pick cotton.</td><td>Cotton <b>is picked</b>.</td></tr>
+<tr><td>Prétérit</td><td>They picked cotton.</td><td>Cotton <b>was picked</b>.</td></tr>
+<tr><td>Present perfect</td><td>They have introduced reforms.</td><td>Reforms <b>have been introduced</b>.</td></tr>
+<tr><td>Past perfect</td><td>They had exploited slaves.</td><td>Slaves <b>had been exploited</b>.</td></tr>
+<tr><td>Modal</td><td>They can free them.</td><td>They <b>can be freed</b>.</td></tr></table></div>
+<div class="trap"><strong>Pièges</strong>Accorde <b>be</b> avec le <b>nouveau</b> sujet (was / were, has / have). Garde les adverbes à leur place : <i>Slaves were often ill-treated</i>. Et un complément de temps ou de lieu reste à la fin : <i>…was abolished by Lincoln in 1865</i>.</div>`,
+ items:[
+ {s:"Slave catchers hunt fugitives.", o:["Fugitives are hunted by slave catchers.","Fugitives were hunted by slave catchers.","Fugitives have hunted slave catchers."], a:0, w:"« hunt » est au présent simple → be au présent (are, car fugitives est pluriel) + hunted."},
+ {s:"The guards caught the runaways.", o:["The runaways are caught by the guards.","The runaways were caught by the guards.","The runaways had been caught by the guards."], a:1, w:"« caught » est au prétérit → were + caught. On ne change pas le temps."},
+ {s:"Abolitionists have built many safe houses.", o:["Many safe houses were built by abolitionists.","Many safe houses have built by abolitionists.","Many safe houses have been built by abolitionists."], a:2, w:"Present perfect actif → have been + participe passé (built). Sans « been », la phrase reste active."},
+ {s:"Someone had betrayed the group.", o:["The group had been betrayed.","The group had been betrayed by someone.","The group was betrayed by someone."], a:0, w:"Past perfect → had been + betrayed. « by someone » n'apporte aucune information : on le supprime."},
+ {s:"People wrote songs with secret codes.", o:["Songs with secret codes were written by people.","Songs with secret codes were written.","Songs with secret codes was written."], a:1, w:"Prétérit → were written (songs = pluriel). « by people » est inutile, on l'enlève."},
+ {s:"Congress passed the Fugitive Slave Act in 1850.", o:["The Fugitive Slave Act was passed by Congress in 1850.","The Fugitive Slave Act passed by Congress in 1850.","The Fugitive Slave Act has been passed by Congress in 1850."], a:0, w:"Prétérit → was passed. Ici l'agent (Congress) est une vraie information, on le garde. Le complément de temps reste à la fin."}
+ ]},
+
+{id:"det", num:"4", short:"the ou Ø",
+ title:"Les déterminants : the ou Ø ?", lead:"En français on met presque toujours un article (« la liberté », « les esclaves »). En anglais, souvent pas. Ø signifie « pas d'article ».",
+ rule:`
+<h3>La question clé : sens général ou chose précise ?</h3>
+<h4>On met Ø (pas d'article)</h4>
+<ul><li>Devant un nom <b>pris dans un sens général</b> : noms abstraits, matières, pluriels « en général ».
+<span class="ex">Ø Freedom was their dream. Ø Cotton was very profitable. Ø Slaves had no rights.<em>La liberté en général, le coton en général, les esclaves en général.</em></span></li>
+<li>Devant la plupart des <b>noms de pays</b> et de continents : <i>Ø Canada, Ø America, Ø Great Britain</i>.</li>
+<li>Devant un nom précédé d'un <b>génitif</b> : <i>Tubman's mission</i> (jamais « the Tubman's »).</li></ul>
+<h4>On met the</h4>
+<ul><li>Quand on parle d'une <b>chose précise, identifiée</b> (souvent précisée par <i>of…</i>, une relative, ou le contexte).
+<span class="ex">The slaves of this plantation worked 15 hours a day. / The abolition of slavery.<em>Pas tous les esclaves : ceux de cette plantation. Pas une abolition en général : celle de l'esclavage.</em></span></li>
+<li>Devant les pays au <b>pluriel</b> ou contenant <i>United, Kingdom, Republic</i> : <i>the USA, the United States, the UK</i>.</li>
+<li>Devant les <b>siècles</b> et les <b>régions</b> désignées par un point cardinal : <i>the 19th century, the North, the South</i>.</li>
+<li>Devant un <b>document ou un événement historique unique</b> : <i>the Declaration of Independence, the Civil War</i>.</li></ul>
+<div class="trap"><strong>Astuce</strong>Traduis la phrase en français et demande-toi : « est-ce que je parle de <b>tous</b> en général, ou de <b>ceux-là</b> précisément ? ». En général → Ø. Précis → the. Un adjectif devant le nom ne change rien : <i>Ø cheap labour</i>, <i>Ø free labour</i>.</div>`,
+ items:[
+ {s:"___ freedom was the dream of every enslaved person.", o:["the","Ø"], a:1, w:"La liberté en général (nom abstrait) → Ø."},
+ {s:"___ United States abolished slavery in 1865.", o:["the","Ø"], a:0, w:"Nom de pays avec « United » → the."},
+ {s:"Many fugitives went to ___ Canada.", o:["the","Ø"], a:1, w:"Nom de pays simple, au singulier → Ø."},
+ {s:"___ slaves on this plantation worked fifteen hours a day.", o:["the","Ø"], a:0, w:"Pas les esclaves en général : ceux de cette plantation, précis → the."},
+ {s:"___ cotton was the main source of wealth.", o:["the","Ø"], a:1, w:"Le coton en général (une matière) → Ø."},
+ {s:"Tubman was born in ___ South, in Maryland.", o:["the","Ø"], a:0, w:"Région désignée par un point cardinal → the South."},
+ {s:"___ abolition of slavery was a long fight.", o:["the","Ø"], a:0, w:"Structure « nom + of… » qui précise de quoi on parle → the."},
+ {s:"It happened in ___ 19th century.", o:["the","Ø"], a:0, w:"Devant un siècle → toujours the."}
+ ]},
+
+{id:"would", num:"5", short:"would fréquentatif",
+ title:"Would fréquentatif", lead:"Ici would n'est pas un conditionnel. Il raconte une habitude répétée dans le passé, comme l'imparfait français « elle chantait chaque soir ».",
+ rule:`
+<h3>Forme et sens</h3>
+<p><b class="k">would + base verbale</b> (verbe sans to) = une <b>action répétée</b> dans le passé, souvent dans un récit ou un souvenir. Les indices : <i>whenever, every time, every Sunday, often, always, at night</i>…</p>
+<span class="ex">Whenever a patrol came, they hid in the woods. → Whenever a patrol came, they <b>would hide</b> in the woods.<em>Chaque fois qu'une patrouille passait, ils se cachaient (habitude).</em></span>
+<h4>Quand would est impossible : les 3 tests</h4>
+<ul><li><b>Test 1 – Une seule fois ?</b> Si l'action n'a eu lieu qu'une fois (date précise, « when she was 12 », « last night »), pas de would.
+<span class="ex">She escaped in 1849. → reste au prétérit.</span></li>
+<li><b>Test 2 – Verbe d'état ?</b> Would ne marche qu'avec des <b>actions</b>. Avec un état (<i>be, know, like, love, have</i> au sens de posséder, <i>live</i> quand c'est un état durable), on utilise <b class="k">used to</b> ou le prétérit.
+<span class="ex">She knew the forest well. → pas de would. (She used to know… est possible.)</span></li>
+<li><b>Test 3 – Ambiguïté ?</b> Si would pourrait être compris comme un conditionnel, garde le prétérit.</li></ul>
+<div class="trap"><strong>Would ou used to ?</strong>Les deux expriment une habitude passée. <b>used to</b> insiste sur le fait que c'est fini aujourd'hui et accepte les verbes d'état. <b>would</b> est plus « récit », ne s'emploie qu'avec des actions, et il faut d'abord avoir posé le cadre passé.</div>`,
+ items:[
+ {s:"Every Sunday, the slaves sang in secret.", o:["would sing","Impossible : on garde le prétérit"], a:0, w:"« Every Sunday » : action répétée → would sing."},
+ {s:"Tubman was born in Maryland around 1822.", o:["would be born","Impossible : on garde le prétérit"], a:1, w:"Test 1 : une naissance n'arrive qu'une fois. Et « be » est un verbe d'état → impossible."},
+ {s:"Whenever a patrol came, they hid in the woods.", o:["would hide","Impossible : on garde le prétérit"], a:0, w:"« Whenever » = chaque fois que : habitude → would hide."},
+ {s:"She knew the forest very well.", o:["would know","Impossible : on garde le prétérit"], a:1, w:"Test 2 : « know » est un verbe d'état, pas une action → would impossible (used to know serait possible)."},
+ {s:"In winter, the escapees walked at night and slept during the day.", o:["would walk … would sleep","Impossible : on garde le prétérit"], a:0, w:"Actions répétées chaque jour d'hiver → would walk / would sleep."},
+ {s:"Last night I watched a documentary about Tubman.", o:["would watch","Impossible : on garde le prétérit"], a:1, w:"Test 1 : « last night » = une seule fois → pas de would."},
+ {s:"When I was little, my grandfather told me stories about the Underground Railroad.", o:["would tell","Impossible : on garde le prétérit"], a:0, w:"Souvenir d'une habitude d'enfance (il racontait souvent) → would tell."}
+ ]},
+
+{id:"spc", num:"6", short:"simple past / past continuous",
+ title:"Simple past ou past continuous ?", lead:"Dans un récit au passé, le past continuous plante le décor, le simple past fait avancer l'histoire.",
+ rule:`
+<h3>Le décor et l'événement</h3>
+<div class="tw"><table class="t"><tr><th>Temps</th><th>Forme</th><th>Rôle</th></tr>
+<tr><td><b class="k">Past continuous</b></td><td>was / were + V-ing</td><td>Action <b>en cours</b> à un moment du passé, l'arrière-plan. Comme l'imparfait « ils traversaient ».</td></tr>
+<tr><td><b class="k">Simple past</b></td><td>V-ed ou forme irrégulière</td><td>Action <b>ponctuelle, terminée</b>, qui fait avancer le récit. Comme le passé composé/simple « un orage éclata ».</td></tr></table></div>
+<h4>Le schéma à retenir</h4>
+<span class="ex">They <b>were crossing</b> the river <b>when</b> a storm <b>began</b>.<em>Action longue en cours (past continuous) + interruption soudaine (simple past).</em></span>
+<ul><li><b class="k">when</b> introduit souvent l'action courte qui interrompt (simple past).</li>
+<li><b class="k">while / as</b> introduisent souvent l'action longue en cours (past continuous).</li>
+<li>Deux actions longues en même temps : past continuous des deux côtés. <i>While she was guiding them, the guards were sleeping.</i></li>
+<li>Une suite d'actions courtes : simple past partout. <i>She opened the door, looked outside and ran.</i></li></ul>
+<div class="trap"><strong>Piège</strong>Les verbes d'état (<i>know, want, like, believe, hear</i> au sens d'entendre un bruit) ne se mettent pas en be + ing : <i>They heard footsteps</i>, jamais « were hearing ». Pour le nombre de fois (« 13 times »), c'est toujours le simple past.</div>`,
+ items:[
+ {s:"The runaways ___ in the barn when the dogs started barking. (sleep)", o:["slept","were sleeping"], a:1, w:"Action en cours (le décor), interrompue par « the dogs started » → past continuous."},
+ {s:"While they ___ the forest, it began to rain. (cross)", o:["crossed","were crossing"], a:1, w:"« While » + action longue en cours → were crossing."},
+ {s:"Tubman ___ to Maryland about thirteen times. (return)", o:["returned","was returning"], a:0, w:"On compte le nombre de fois : actions terminées → simple past."},
+ {s:"They were walking along the river when they ___ a lantern. (see)", o:["saw","were seeing"], a:0, w:"Action courte qui interrompt (« when ») → simple past."},
+ {s:"She ___ the stars well and used them to find the North. (know)", o:["knew","was knowing"], a:0, w:"« know » est un verbe d'état : jamais en be + ing → knew."},
+ {s:"At midnight, the guards ___ the road. (patrol)", o:["patrolled","were patrolling"], a:1, w:"« At midnight » : action en cours à ce moment précis → were patrolling."}
+ ]},
+
+{id:"ppsp", num:"7-8", short:"past perfect / simple past",
+ title:"Past perfect ou simple past ?", lead:"Deux actions passées. Laquelle est arrivée en premier ? C'est elle qui prend le past perfect.",
+ rule:`
+<h3>Remettre les actions dans l'ordre</h3>
+<p>Quand une phrase contient <b>deux actions passées</b>, on se demande laquelle s'est produite <b>en premier</b>.</p>
+<ul><li>L'action la plus ancienne → <b class="k">past perfect</b> (had + PP).</li>
+<li>L'action qui sert de repère → <b class="k">simple past</b>.</li></ul>
+<span class="ex">By the time the guards arrived, the fugitives <b>had</b> already <b>crossed</b> the river.<em>1) ils traversent → 2) les gardes arrivent. La traversée est antérieure.</em></span>
+<h4>Les mots qui signalent l'antériorité</h4>
+<p><i>by the time, already, before, after, never… before, until</i>. Avec <i>by the time</i> et <i>already</i>, le past perfect est presque automatique.</p>
+<h4>Quand le simple past suffit</h4>
+<ul><li>Les actions sont racontées <b>dans l'ordre où elles arrivent</b> : <i>She knocked, waited and went in.</i></li>
+<li>Une seule action avec une date : <i>Tubman escaped in 1849.</i></li></ul>
+<h4>Le past perfect continuous</h4>
+<p><b class="k">had been + V-ing</b> insiste sur la <b>durée</b> d'une action jusqu'à un moment passé (souvent avec <i>for</i>).</p>
+<span class="ex">The group had been travelling for weeks before they reached Canada.<em>Ils voyageaient depuis des semaines quand ils sont arrivés.</em></span>
+<div class="trap"><strong>Piège</strong>« Avant que » / « après que » ne forcent pas toujours le past perfect : <i>After she had checked the road, they left</i> (insiste sur l'ordre) est la forme attendue dans un exercice. Mais dans un récit simple, une suite chronologique se met au prétérit.</div>`,
+ items:[
+ {s:"By the time the guards arrived, the fugitives ___ the river. (already / cross)", o:["already crossed","had already crossed"], a:1, w:"« By the time » + « already » : la traversée est antérieure à l'arrivée des gardes → past perfect."},
+ {s:"When she reached the safe house, she ___ three times on the door. (knock)", o:["knocked","had knocked"], a:0, w:"Elle arrive, puis elle frappe : actions dans l'ordre chronologique → simple past."},
+ {s:"She ___ for days before she found a guide. (walk)", o:["walked","had been walking"], a:1, w:"Durée (« for days ») jusqu'à un moment passé (« before she found ») → past perfect continuous."},
+ {s:"They ate quickly because they ___ for two days. (not eat)", o:["didn't eat","hadn't eaten"], a:1, w:"Ne pas manger pendant deux jours, c'est avant le moment où ils mangent → past perfect."},
+ {s:"Tubman ___ from slavery in 1849. (escape)", o:["escaped","had escaped"], a:0, w:"Une seule action avec une date précise, pas d'autre repère → simple past."},
+ {s:"After the conductor ___ the road, the group left the house. (check)", o:["had checked","has checked"], a:0, w:"Vérifier la route arrive avant le départ (« left ») → past perfect. Le present perfect est impossible dans un récit passé."}
+ ]},
+
+{id:"mod", num:"9-10", short:"obligation / interdiction",
+ title:"Obligation, interdiction, permission", lead:"Must et mustn't n'existent qu'au présent. Pour parler du passé, on passe par d'autres formes.",
+ rule:`
+<h3>Le tableau à connaître par cœur</h3>
+<div class="tw"><table class="t"><tr><th>Sens</th><th>Présent</th><th>Passé</th></tr>
+<tr><td><b>Obligation</b></td><td>must / have to</td><td><b class="k">had to</b></td></tr>
+<tr><td><b>Censé faire</b> (règle, consigne)</td><td>am/is/are supposed to</td><td><b class="k">was / were supposed to</b></td></tr>
+<tr><td><b>Interdiction</b></td><td>mustn't / can't / am not allowed to</td><td><b class="k">couldn't / wasn't, weren't allowed to</b></td></tr>
+<tr><td><b>Pas censé</b></td><td>am not supposed to</td><td><b class="k">wasn't / weren't supposed to</b></td></tr>
+<tr><td><b>Absence d'obligation</b></td><td>don't have to</td><td><b class="k">didn't have to</b></td></tr>
+<tr><td><b>Permission</b></td><td>can / am allowed to</td><td><b class="k">could / was, were allowed to</b></td></tr></table></div>
+<h4>Exemples</h4>
+<span class="ex">Fugitives <b>had to</b> travel at night.<em>Ils étaient obligés de voyager la nuit.</em></span>
+<span class="ex">Slaves <b>weren't allowed to</b> learn to read.<em>Il leur était interdit d'apprendre à lire (une loi l'interdisait).</em></span>
+<span class="ex">Conductors <b>weren't supposed to</b> reveal the names of safe houses.<em>Ils n'étaient pas censés révéler les noms (règle du réseau).</em></span>
+<div class="trap"><strong>Le piège n°1</strong><b>mustn't</b> = interdiction (« il ne faut pas »). <b>don't have to</b> = pas obligé (« ce n'est pas la peine »). Ce sont deux sens très différents ! <i>You mustn't tell</i> = interdit de le dire. <i>You don't have to tell</i> = tu n'es pas obligé de le dire. Et pour la méthode : demande-toi qui impose la règle. Une loi ou un maître → <b>(not) allowed to</b>. Une consigne ou une règle de prudence → <b>(not) supposed to</b>. Une nécessité → <b>had to</b>.</div>`,
+ items:[
+ {s:"Fugitives ___ cross rivers to lose the dogs' scent.", o:["had to","weren't allowed to","didn't have to"], a:0, w:"C'était une nécessité pour survivre → obligation au passé : had to."},
+ {s:"Enslaved people ___ learn to read: it was illegal.", o:["had to","weren't allowed to","could"], a:1, w:"« It was illegal » : une loi l'interdit → interdiction au passé : weren't allowed to."},
+ {s:"On some plantations, slaves ___ visit their families on Sundays.", o:["were allowed to","mustn't","weren't supposed to"], a:0, w:"Une autorisation accordée par le maître → permission : were allowed to."},
+ {s:"Conductors ___ reveal the names of the safe houses.", o:["had to","weren't supposed to","were allowed to"], a:1, w:"Règle de prudence du réseau → ils n'étaient pas censés : weren't supposed to."},
+ {s:"Free people in the North ___ hide: they could live openly.", o:["had to","couldn't","didn't have to"], a:2, w:"Ils n'étaient pas obligés de se cacher (pas d'interdiction, juste pas de nécessité) → didn't have to."},
+ {s:"Today, we ___ forget this part of history.", o:["mustn't","don't have to","weren't allowed to"], a:0, w:"Présent + interdiction morale (« il ne faut pas oublier ») → mustn't. « don't have to » voudrait dire « on n'est pas obligés »."}
+ ]}
+];
+
+const KEY="ugr-grammar-v1";
+let state={cur:0, ans:{}}; // ans["topicId-i"]=chosen index
+try{const s=JSON.parse(localStorage.getItem(KEY)||"null"); if(s&&s.ans) state=s;}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}}
+
+const stopsEl=document.getElementById("stops"), main=document.getElementById("main");
+const EXAM={id:"exam",num:"★",short:"examen blanc"};
+
+function topicScore(t){let done=0,ok=0;t.items.forEach((it,i)=>{const a=state.ans[t.id+"-"+i];if(a!==undefined){done++;if(a===it.a)ok++;}});return{done,ok,total:t.items.length};}
+
+function renderStops(){
+  stopsEl.innerHTML="";
+  [...TOPICS,EXAM].forEach((t,i)=>{
+    const b=document.createElement("button");
+    b.className="stop"+(i===state.cur?" active":"");
+    if(t.items){const sc=topicScore(t); if(sc.done===sc.total) b.classList.add("done");}
+    b.innerHTML=`<span class="dot">${t.num}</span><span>${t.short}</span>`;
+    b.setAttribute("aria-current",i===state.cur?"true":"false");
+    b.onclick=()=>{state.cur=i;save();render();window.scrollTo({top:0});};
+    stopsEl.appendChild(b);
+  });
+  const act=stopsEl.querySelector(".active"); if(act) act.scrollIntoView({block:"nearest",inline:"center"});
+}
+
+function fill(s,word){return s.replace("___",`<span class="gap">${word??"&nbsp;"}</span>`);}
+
+function itemEl(t,it,i,key,onAnswer){
+  const d=document.createElement("div");d.className="item";
+  const chosen=state.ans[key];
+  const isPassive=t.id==="pas"; const isWould=t.id==="would";
+  let sent=isPassive||isWould?it.s:fill(it.s, chosen!==undefined?it.o[it.a].replace(/^Impossible.*/,""):null);
+  const label=isPassive?"Mets à la voix passive :":isWould?"Peut-on remplacer par would + BV ?":"";
+  d.innerHTML=`<div class="n">${label?label:("Phrase "+(i+1))}</div><div class="s">${sent}</div>`;
+  const opts=document.createElement("div");opts.className="opts";
+  it.o.forEach((o,j)=>{
+    const b=document.createElement("button");b.className="opt";b.textContent=o;
+    if(chosen!==undefined){b.disabled=true; if(j===it.a)b.classList.add("good"); else if(j===chosen)b.classList.add("bad");}
+    b.onclick=()=>{state.ans[key]=j;save();onAnswer();};
+    opts.appendChild(b);
+  });
+  d.appendChild(opts);
+  if(chosen!==undefined){
+    const ok=chosen===it.a;const w=document.createElement("div");w.className="why "+(ok?"good":"bad");
+    w.innerHTML=`<b>${ok?"Exact.":"Pas tout à fait. La bonne réponse : "+it.o[it.a]}</b>${it.w}`;
+    d.appendChild(w);
+  }
+  return d;
+}
+
+function renderTopic(t){
+  const sc=topicScore(t);
+  main.innerHTML=`<div class="kicker">Exercice ${t.num} de la fiche</div><h2>${t.title}</h2><p class="lead">${t.lead}</p>
+  <section class="rule" aria-label="La règle">${t.rule}</section>
+  <div class="train-head"><h3>À toi de jouer</h3><span class="score" id="sc">${sc.ok} / ${sc.total} juste${sc.done<sc.total?" · "+(sc.total-sc.done)+" restante(s)":""}</span></div>`;
+  const list=document.createElement("div");list.className="items";
+  t.items.forEach((it,i)=>list.appendChild(itemEl(t,it,i,t.id+"-"+i,()=>{const y=window.scrollY;render();window.scrollTo({top:y});})));
+  main.appendChild(list);
+  const row=document.createElement("div");row.className="row";
+  const reset=document.createElement("button");reset.className="btn ghost";reset.textContent="Recommencer ce point";
+  reset.onclick=()=>{t.items.forEach((_,i)=>delete state.ans[t.id+"-"+i]);save();render();};
+  row.appendChild(reset);
+  const idx=TOPICS.indexOf(t);
+  const next=document.createElement("button");next.className="btn";
+  next.textContent=idx<TOPICS.length-1?"Point suivant : "+TOPICS[idx+1].short:"Passer à l'examen blanc";
+  next.onclick=()=>{state.cur=idx+1;save();render();window.scrollTo({top:0});};
+  row.appendChild(next);main.appendChild(row);
+}
+
+// Examen blanc : 2 questions tirées au hasard par point, sans revoir la règle
+let exam=null;
+function newExam(){const q=[];TOPICS.forEach(t=>{const idx=[...t.items.keys()].sort(()=>Math.random()-.5).slice(0,2);idx.forEach(i=>q.push({t,i}));});exam={q:q.sort(()=>Math.random()-.5),pos:0,ok:0,ans:{},miss:{}};}
+function renderExam(){
+  if(!exam) newExam();
+  if(exam.pos>=exam.q.length){
+    const n=exam.q.length, pct=Math.round(exam.ok/n*100);
+    const weak=Object.keys(exam.miss).map(id=>TOPICS.find(t=>t.id===id));
+    main.innerHTML=`<div class="kicker">Examen blanc</div><h2>Résultat</h2><div class="final"><div class="big">${exam.ok} / ${n}</div><p>${pct} % de bonnes réponses</p>
+    ${weak.length?`<p><b>À revoir en priorité :</b></p><ul>${weak.map(t=>`<li>Exercice ${t.num} – ${t.title}</li>`).join("")}</ul>`:"<p>Aucune erreur. Tu es prêt pour la fiche.</p>"}
+    <div class="row" style="justify-content:center"><button class="btn" id="again">Nouvel examen</button></div></div>`;
+    document.getElementById("again").onclick=()=>{newExam();render();};
+    return;
+  }
+  const {t,i}=exam.q[exam.pos], it=t.items[i], key="exam-"+exam.pos;
+  main.innerHTML=`<div class="kicker">Examen blanc · 16 questions mélangées</div><h2>Question ${exam.pos+1} / ${exam.q.length}</h2>
+  <p class="lead">Point testé : ${t.title} <span class="score">· score ${exam.ok}</span></p>`;
+  // utilise un état temporaire pour l'examen
+  const saved=state.ans[key]; if(exam.ans[key]!==undefined) state.ans[key]=exam.ans[key]; else delete state.ans[key];
+  const el=itemEl(t,it,exam.pos,key,()=>{exam.ans[key]=state.ans[key]; if(state.ans[key]===it.a) exam.ok++; else exam.miss[t.id]=1; delete state.ans[key]; render();});
+  if(saved===undefined) delete state.ans[key];
+  main.appendChild(el);
+  if(exam.ans[key]!==undefined){
+    const row=document.createElement("div");row.className="row";
+    const nx=document.createElement("button");nx.className="btn";nx.textContent=exam.pos===exam.q.length-1?"Voir mon score":"Question suivante";
+    nx.onclick=()=>{exam.pos++;render();window.scrollTo({top:0});};
+    row.appendChild(nx);main.appendChild(row);
+  }
+}
+
+function render(){renderStops(); if(state.cur>=TOPICS.length) renderExam(); else renderTopic(TOPICS[state.cur]);}
+render();
+</script>
+
+</body></html>

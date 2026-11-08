@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lewis et géométrie — Révisions</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Work+Sans:wght@400;500;600&display=swap');
+:root{
+  --bg:#0F2A2E; --bg2:#163A3F; --ink:#14201F; --paper:#F3F1EA; --paper2:#E4E1D6;
+  --accent:#E8A33D; --accent2:#F2C26B; --ok:#3F7D4E; --okbg:#E3F0E5; --ko:#A8443B; --kobg:#F6E2DF;
+  --muted:#B9C9C6; --shadow:rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:radial-gradient(ellipse at top,#1D4A50 0%,var(--bg) 60%);font-family:'Work Sans',sans-serif;color:var(--paper);display:flex;flex-direction:column;align-items:center;padding:28px 14px 56px}
+.header{text-align:center;max-width:620px;margin-bottom:22px}
+.eyebrow{font-size:12px;letter-spacing:.06em;color:var(--accent2);margin-bottom:6px}
+h1{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(26px,5vw,38px);margin:0 0 6px;line-height:1.1}
+.subtitle{font-size:14px;color:var(--muted)}
+.tabs{display:flex;gap:4px;background:rgba(0,0,0,.28);padding:4px;border-radius:999px;margin-bottom:24px;flex-wrap:wrap;justify-content:center}
+.tab{border:none;background:transparent;color:var(--muted);font-family:inherit;font-size:14px;font-weight:500;padding:10px 18px;border-radius:999px;cursor:pointer}
+.tab.active{background:var(--accent);color:var(--ink)}
+.stage{width:100%;max-width:560px;display:flex;flex-direction:column;align-items:center}
+.progress{font-size:13px;color:var(--accent2);margin-bottom:14px}
+.flash-wrap{perspective:1400px;width:100%;aspect-ratio:16/11;max-height:360px}
+.flash-card{position:relative;width:100%;height:100%;cursor:pointer;transform-style:preserve-3d;transition:transform .5s cubic-bezier(.4,.2,.2,1)}
+.flash-card.flipped{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;border-radius:14px;background:var(--paper);color:var(--ink);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:30px 24px;box-shadow:0 18px 40px var(--shadow)}
+.face .label{position:absolute;top:14px;left:18px;font-size:11px;letter-spacing:.06em;color:#9A6A1E;font-weight:600}
+.face p{font-family:'Space Grotesk',sans-serif;font-size:21px;line-height:1.35;margin:0;font-weight:500}
+.face.back{transform:rotateY(180deg);background:var(--bg2);color:var(--paper);border:1px solid rgba(232,163,61,.5)}
+.face.back .label{color:var(--accent2)}
+.face.back p{font-weight:600}
+.face.back .explain{font-size:14px;color:var(--muted);margin-top:12px;line-height:1.5}
+.hint{font-size:12px;color:var(--muted);margin-top:10px;min-height:16px;text-align:center}
+.nav-row{display:flex;gap:16px;margin-top:20px;align-items:center}
+.nav-btn{background:none;border:1px solid var(--accent);color:var(--accent2);width:42px;height:42px;border-radius:50%;font-size:18px;cursor:pointer}
+.nav-btn:disabled{opacity:.3;cursor:default}
+.shuffle{background:none;border:none;color:var(--muted);text-decoration:underline;cursor:pointer;font-size:13px}
+.card{width:100%;background:var(--paper);color:var(--ink);border-radius:14px;padding:26px 22px;box-shadow:0 18px 40px var(--shadow)}
+.prompt{font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:600;margin:0 0 18px;line-height:1.3}
+.option{display:block;width:100%;text-align:left;background:#fff;border:1.5px solid rgba(0,0,0,.14);border-radius:10px;padding:13px 15px;margin-bottom:10px;font-family:inherit;font-size:15px;cursor:pointer;color:var(--ink)}
+.option:hover:not(:disabled){border-color:var(--accent)}
+.option.correct{background:var(--okbg);border-color:var(--ok);color:#22482B;font-weight:600}
+.option.incorrect{background:var(--kobg);border-color:var(--ko);color:#5E231E;font-weight:600}
+.option:disabled{cursor:default}
+.feedback{margin-top:14px;padding:13px 15px;border-radius:10px;font-size:14px;line-height:1.5}
+.feedback.correct{background:var(--okbg);color:#22482B}
+.feedback.incorrect{background:var(--kobg);color:#5E231E}
+.feedback strong{display:block;margin-bottom:4px}
+.footer-row{margin-top:18px;display:flex;justify-content:flex-end}
+.primary{background:var(--bg);color:var(--paper);border:none;padding:11px 22px;border-radius:999px;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer}
+.primary:disabled{opacity:.35;cursor:default}
+.score{text-align:center;padding:40px 28px}
+.score .big{font-family:'Space Grotesk',sans-serif;font-size:52px;font-weight:700;color:#9A6A1E;margin:6px 0}
+.restart{margin-top:20px;background:var(--accent);color:var(--ink);border:none;padding:12px 26px;border-radius:999px;font-weight:600;font-family:inherit;cursor:pointer}
+.mol{font-family:'Space Grotesk',sans-serif;font-size:40px;font-weight:700;text-align:center;margin:4px 0 2px}
+.molname{text-align:center;font-size:14px;color:#55615F;margin-bottom:16px}
+.facts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:18px}
+.fact{background:var(--paper2);border-radius:10px;padding:10px 12px;font-size:13px;color:#3B4745}
+.fact b{display:block;font-size:22px;font-family:'Space Grotesk',sans-serif;color:var(--ink)}
+.reveal{background:none;border:1px dashed #9A6A1E;color:#7A5418;border-radius:8px;padding:8px 12px;font-family:inherit;font-size:13px;cursor:pointer;margin-bottom:16px}
+.cheat{width:100%;margin-top:22px;background:rgba(0,0,0,.22);border-radius:12px;padding:14px 16px;font-size:13px;color:var(--muted)}
+.cheat table{width:100%;border-collapse:collapse;margin-top:8px}
+.cheat td,.cheat th{padding:6px 4px;border-bottom:1px solid rgba(255,255,255,.08);text-align:left}
+.cheat th{color:var(--accent2);font-weight:500}
+.streak{font-size:13px;color:var(--accent2);margin-bottom:14px}
+.view3d{width:100%;background:#0F2A2E;border-radius:12px;margin-top:14px;overflow:hidden;position:relative}
+.view3d canvas{display:block}
+.view3d .tip{position:absolute;bottom:8px;left:0;right:0;text-align:center;font-size:12px;color:#B9C9C6;pointer-events:none}
+.chips{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:16px}
+.chip{border:1px solid rgba(232,163,61,.6);background:transparent;color:var(--paper);border-radius:999px;padding:7px 12px;font-family:'Space Grotesk',sans-serif;font-size:15px;cursor:pointer}
+.chip.active{background:var(--accent);color:var(--ink);border-color:var(--accent)}
+.legend{display:flex;flex-wrap:wrap;gap:10px;font-size:12px;color:#55615F;margin-top:10px}
+.legend span{display:inline-flex;align-items:center;gap:5px}
+.dot{width:11px;height:11px;border-radius:50%;display:inline-block;border:1px solid rgba(0,0,0,.25)}
+footer{margin-top:32px;font-size:12px;color:rgba(243,241,234,.45);text-align:center}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="eyebrow">PHYSIQUE-CHIMIE · PREMIÈRE SPÉCIALITÉ</div>
+  <h1>Lewis et géométrie des molécules</h1>
+  <div class="subtitle">Schémas de Lewis · formes des molécules en 3D</div>
+</div>
+<div class="tabs">
+  <button class="tab active" data-mode="flash">Flashcards</button>
+  <button class="tab" data-mode="quiz">Quiz noté</button>
+  <button class="tab" data-mode="geo">Atelier géométrie</button>
+  <button class="tab" data-mode="mol3d">Molécules 3D</button>
+</div>
+<div class="stage" id="stage"></div>
+<footer>14 flashcards · 12 questions · 17 molécules en 3D · fais glisser pour tourner</footer>
+
+<script>
+const CARDS = [
+ {q:"Que sont les électrons de valence ?", a:"Les électrons de la dernière couche", e:"Ex. : O (1s² 2s² 2p⁴) en a 6 ; Cl (… 3s² 3p⁵) en a 7. Ce sont eux qui forment les liaisons."},
+ {q:"Énonce la règle du duet.", a:"H s'entoure de 2 électrons (1 doublet)", e:"Comme l'hélium, le gaz noble le plus proche."},
+ {q:"Énonce la règle de l'octet.", a:"C, N, O, F, Cl… s'entourent de 8 électrons (4 doublets)", e:"Comme le gaz noble le plus proche (néon, argon)."},
+ {q:"Combien de liaisons forment H, C, N, O ?", a:"H : 1 · C : 4 · N : 3 · O : 2", e:"Et il reste des doublets non liants : 0 pour C, 1 pour N, 2 pour O."},
+ {q:"Doublet liant ou non liant ?", a:"Liant = partagé entre 2 atomes ; non liant = à un seul atome", e:"Liant : trait entre les symboles. Non liant : trait à côté du symbole."},
+ {q:"Méthode pour un schéma de Lewis ?", a:"1) Compter les électrons de valence 2) diviser par 2 3) placer les liaisons 4) compléter les octets", e:"Pour un ion : retirer un électron par charge + et ajouter un électron par charge −."},
+ {q:"Qu'est-ce qu'une lacune électronique ?", a:"Un doublet manquant pour respecter l'octet", e:"Représentée par un petit rectangle vide. Exemple : le bore dans BF₃."},
+ {q:"Quand un atome porte-t-il une charge dans un ion ?", a:"Quand il n'a pas autant d'électrons « à lui » qu'à l'état isolé", e:"Ex. : dans H₃O⁺, O porte la charge +."},
+ {q:"Pourquoi les molécules ont-elles une forme ?", a:"Les doublets autour de l'atome central se repoussent et s'écartent au maximum", e:"On compte les liaisons (une double compte pour un seul groupe) et les doublets non liants."},
+ {q:"4 atomes liés, 0 doublet non liant ?", a:"Tétraédrique — 109,5°", e:"Exemple : CH₄."},
+ {q:"3 atomes liés, 1 doublet non liant ?", a:"Pyramidale à base triangulaire — ≈ 107°", e:"Exemple : NH₃."},
+ {q:"2 atomes liés, 2 doublets non liants ?", a:"Coudée — ≈ 105°", e:"Exemple : H₂O."},
+ {q:"3 atomes liés, 0 doublet non liant ?", a:"Triangulaire plane — 120°", e:"Exemples : BF₃, CH₂O (la double liaison compte pour un seul groupe)."},
+ {q:"2 atomes liés, 0 doublet non liant ?", a:"Linéaire — 180°", e:"Exemples : CO₂, HCN."},
+ {q:"NH₃ et NH₄⁺ : même forme ?", a:"Non : NH₃ pyramidale, NH₄⁺ tétraédrique", e:"Dans NH₄⁺, le doublet non liant de N forme la 4ᵉ liaison N–H."}
+];
+
+const QUIZ = [
+ {q:"Combien d'électrons de valence possède l'atome d'azote (Z = 7) ?", o:["3","5","7","2"], c:1, e:"1s² 2s² 2p³ : 2 + 3 = 5 électrons sur la couche n = 2."},
+ {q:"Combien de doublets au total dans le schéma de Lewis de NH₃ ?", o:["3","4","5","8"], c:1, e:"5 + 3×1 = 8 électrons, soit 4 doublets : 3 liants et 1 non liant."},
+ {q:"Dans CO₂, comment sont liés C et chaque O ?", o:["Liaison simple","Liaison double","Liaison triple","Pas de liaison"], c:1, e:"O=C=O : 16 électrons, soit 8 doublets. Avec des doubles liaisons, C et O respectent l'octet."},
+ {q:"Combien de doublets non liants porte l'atome de bore dans BF₃ ?", o:["0, et il a une lacune","1","2","3"], c:0, e:"B forme 3 liaisons et n'a pas de doublet non liant : il lui manque un doublet, c'est une lacune électronique."},
+ {q:"Combien d'électrons de valence faut-il compter pour H₃O⁺ ?", o:["9","8","10","7"], c:1, e:"6 + 3×1 − 1 = 8 : on retire un électron à cause de la charge +."},
+ {q:"Quelle est la géométrie de CH₄ ?", o:["Plane carrée","Tétraédrique","Pyramidale","Linéaire"], c:1, e:"4 atomes liés, aucun doublet non liant : tétraèdre, angles de 109,5°."},
+ {q:"Quelle est la géométrie de NH₃ ?", o:["Triangulaire plane","Tétraédrique","Pyramidale à base triangulaire","Coudée"], c:2, e:"3 atomes liés et 1 doublet non liant sur N : pyramide."},
+ {q:"Pourquoi H₂O est-elle coudée ?", o:["À cause des 2 doublets non liants de O","Parce que O est plus gros que H","Parce que la liaison O–H est double","Parce que H est très petit"], c:0, e:"O a 4 groupes de doublets (2 liaisons + 2 non liants) qui se repoussent : les deux H forment un angle d'environ 105°."},
+ {q:"Quelle molécule est triangulaire plane ?", o:["NH₃","CH₂O (méthanal)","H₂O","CH₄"], c:1, e:"C est lié à 3 atomes (2 H et 1 O par une double liaison) et n'a aucun doublet non liant : triangle plan à 120°."},
+ {q:"Quelle molécule est linéaire ?", o:["H₂O","HCN","NH₃","CH₃OH"], c:1, e:"H–C≡N : C est lié à 2 atomes et n'a pas de doublet non liant, donc les angles sont de 180°."},
+ {q:"Quelle est la géométrie autour de chaque carbone de l'éthène C₂H₄ ?", o:["Tétraédrique","Triangulaire plane","Linéaire","Pyramidale"], c:1, e:"Chaque C est lié à 3 atomes (2 H et l'autre C : la double liaison compte pour un groupe) sans doublet non liant : triangulaire plane."},
+ {q:"Quel schéma de N₂ est correct ?", o:["N–N avec 3 doublets non liants par N","N=N avec 2 doublets non liants par N","N≡N avec 1 doublet non liant par N","N≡N sans doublet non liant"], c:2, e:"10 électrons, 5 doublets : la liaison triple + 1 doublet non liant par N donne l'octet à chaque atome."}
+];
+
+const MOLS = [
+ {lig:["H","H","H","H"],f:"CH₄",n:"méthane",c:"C",l:4,nl:0,g:"Tétraédrique"},
+ {lig:["H","H","H"],f:"NH₃",n:"ammoniac",c:"N",l:3,nl:1,g:"Pyramidale"},
+ {lig:["H","H"],f:"H₂O",n:"eau",c:"O",l:2,nl:2,g:"Coudée"},
+ {lig:["O2","O2"],f:"CO₂",n:"dioxyde de carbone",c:"C",l:2,nl:0,g:"Linéaire"},
+ {lig:["F","F","F"],f:"BF₃",n:"trifluorure de bore",c:"B",l:3,nl:0,g:"Triangulaire plane"},
+ {lig:["O2","H","H"],f:"CH₂O",n:"méthanal",c:"C",l:3,nl:0,g:"Triangulaire plane"},
+ {lig:["H","N3"],f:"HCN",n:"cyanure d'hydrogène",c:"C",l:2,nl:0,g:"Linéaire"},
+ {lig:["H","H","H"],f:"H₃O⁺",n:"ion oxonium",c:"O",l:3,nl:1,g:"Pyramidale"},
+ {lig:["H","H","H","H"],f:"NH₄⁺",n:"ion ammonium",c:"N",l:4,nl:0,g:"Tétraédrique"},
+ {lig:["Cl","Cl","Cl","Cl"],f:"CCl₄",n:"tétrachlorométhane",c:"C",l:4,nl:0,g:"Tétraédrique"},
+ {lig:["H","H"],f:"H₂S",n:"sulfure d'hydrogène",c:"S",l:2,nl:2,g:"Coudée"},
+ {lig:["H","H","H"],f:"PH₃",n:"phosphine",c:"P",l:3,nl:1,g:"Pyramidale"},
+ {lig:["F","F"],f:"OF₂",n:"difluorure d'oxygène",c:"O",l:2,nl:2,g:"Coudée"},
+ {lig:["H","Cl","Cl","Cl"],f:"CHCl₃",n:"chloroforme",c:"C",l:4,nl:0,g:"Tétraédrique"},
+ {special:"C2H2",f:"C₂H₂",n:"éthyne (autour de chaque C)",c:"C",l:2,nl:0,g:"Linéaire"},
+ {special:"C2H4",f:"C₂H₄",n:"éthène (autour de chaque C)",c:"C",l:3,nl:0,g:"Triangulaire plane"},
+ {lig:["Cl","Cl","Cl"],f:"NCl₃",n:"trichlorure d'azote",c:"N",l:3,nl:1,g:"Pyramidale"}
+];
+const GEOS = ["Tétraédrique","Pyramidale","Coudée","Triangulaire plane","Linéaire"];
+const ANGLES = {"Tétraédrique":"109,5°","Pyramidale":"≈ 107°","Coudée":"≈ 105°","Triangulaire plane":"120°","Linéaire":"180°"};
+
+const stage = document.getElementById('stage');
+let mode = 'flash';
+let fOrder = CARDS.map((_,i)=>i), fi = 0, flipped = false;
+let qi = 0, qs = 0, qAns = false, qDone = false;
+let geo = {order:[], i:0, shown:false, answered:false, good:0, total:0, streak:0};
+
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function el(tag, cls, html){const e=document.createElement(tag); if(cls) e.className=cls; if(html!==undefined) e.innerHTML=html; return e;}
+
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+  t.classList.add('active'); mode=t.dataset.mode; render();
+}));
+
+function render(){ stage.innerHTML=''; if(mode==='flash') renderFlash(); else if(mode==='quiz') renderQuiz(); else if(mode==='geo') renderGeo(); else renderMol3d(); }
+
+function renderFlash(){
+  const c = CARDS[fOrder[fi]];
+  stage.appendChild(el('div','progress',`Carte ${fi+1} / ${CARDS.length}`));
+  const wrap = el('div','flash-wrap');
+  const card = el('div','flash-card'+(flipped?' flipped':''));
+  card.addEventListener('click',()=>{flipped=!flipped; card.classList.toggle('flipped',flipped); hint.textContent=flipped?'':'Touche la carte pour voir la réponse';});
+  card.appendChild(el('div','face front',`<div class="label">QUESTION</div><p>${c.q}</p>`));
+  card.appendChild(el('div','face back',`<div class="label">RÉPONSE</div><p>${c.a}</p><div class="explain">${c.e}</div>`));
+  wrap.appendChild(card); stage.appendChild(wrap);
+  const hint = el('div','hint',flipped?'':'Touche la carte pour voir la réponse'); stage.appendChild(hint);
+  const nav = el('div','nav-row');
+  const p = el('button','nav-btn','‹'); p.disabled = fi===0; p.onclick=()=>{fi--;flipped=false;render();};
+  const s = el('button','shuffle','Mélanger'); s.onclick=()=>{fOrder=shuffle(fOrder);fi=0;flipped=false;render();};
+  const n = el('button','nav-btn','›'); n.disabled = fi===CARDS.length-1; n.onclick=()=>{fi++;flipped=false;render();};
+  nav.append(p,s,n); stage.appendChild(nav);
+}
+
+function renderQuiz(){
+  if(qDone){
+    const box = el('div','card score');
+    const pct = Math.round(qs/QUIZ.length*100);
+    const msg = pct>=80?'Très bien, le chapitre est maîtrisé.':pct>=50?'Pas mal : revois les flashcards des questions ratées.':'Repasse par les flashcards et l\'atelier géométrie avant de recommencer.';
+    box.innerHTML = `<div style="font-size:14px;color:#55615F">Score final</div><div class="big">${qs} / ${QUIZ.length}</div><p style="margin:4px 0;color:#3B4745">${pct} % de bonnes réponses</p><p style="margin:10px 0 0;color:#3B4745">${msg}</p>`;
+    const r = el('button','restart','Recommencer'); r.onclick=()=>{qi=0;qs=0;qAns=false;qDone=false;render();};
+    box.appendChild(r); stage.appendChild(box); return;
+  }
+  const it = QUIZ[qi];
+  stage.appendChild(el('div','progress',`Question ${qi+1} / ${QUIZ.length} · Score : ${qs}`));
+  const card = el('div','card');
+  const pr = el('p','prompt'); pr.textContent = it.q; card.appendChild(pr);
+  const btns = it.o.map((o,i)=>{
+    const b = el('button','option'); b.textContent=o;
+    b.onclick=()=>{ if(qAns) return; qAns=true; const ok = i===it.c; if(ok) qs++;
+      btns.forEach((x,j)=>{x.disabled=true; if(j===it.c) x.classList.add('correct'); else if(j===i) x.classList.add('incorrect');});
+      fb.innerHTML = `<div class="feedback ${ok?'correct':'incorrect'}"><strong>${ok?'Exact !':'Pas tout à fait.'}</strong>${it.e}</div>`;
+      next.disabled=false; stage.querySelector('.progress').textContent=`Question ${qi+1} / ${QUIZ.length} · Score : ${qs}`; };
+    card.appendChild(b); return b;
+  });
+  const fb = el('div'); card.appendChild(fb);
+  const row = el('div','footer-row');
+  const next = el('button','primary', qi===QUIZ.length-1?'Voir le score':'Question suivante'); next.disabled=true;
+  next.onclick=()=>{qAns=false; if(qi===QUIZ.length-1) qDone=true; else qi++; render();};
+  row.appendChild(next); card.appendChild(row); stage.appendChild(card);
+}
+
+function renderGeo(){
+  if(!geo.order.length){ geo.order = shuffle(MOLS.map((_,i)=>i)); geo.i=0; }
+  const m = MOLS[geo.order[geo.i]];
+  stage.appendChild(el('div','streak',`Réussies : ${geo.good} / ${geo.total}${geo.streak>=3?` · ${geo.streak} d'affilée`:''}`));
+  const card = el('div','card');
+  card.appendChild(el('div','mol',m.f));
+  card.appendChild(el('div','molname',m.n+` · atome central : ${m.c}`));
+  if(!geo.shown && !geo.answered){
+    const rv = el('button','reveal','Je bloque : montrer le schéma de Lewis (atomes liés et doublets)');
+    rv.onclick=()=>{geo.shown=true; render();};
+    card.appendChild(rv);
+  }
+  if(geo.shown || geo.answered){
+    card.appendChild(el('div','facts',`<div class="fact"><b>${m.l}</b>atomes liés à ${m.c}</div><div class="fact"><b>${m.nl}</b>doublet${m.nl>1?'s':''} non liant${m.nl>1?'s':''} sur ${m.c}</div>`));
+  }
+  const pr = el('p','prompt','Quelle est la géométrie autour de l\'atome central ?'); card.appendChild(pr);
+  const btns = GEOS.map(g=>{
+    const b = el('button','option'); b.textContent=g;
+    b.onclick=()=>{ if(geo.answered) return; geo.answered=true; geo.total++;
+      const ok = g===m.g; if(ok){geo.good++;geo.streak++;} else geo.streak=0;
+      render();
+      const all = stage.querySelectorAll('.option');
+      all.forEach(x=>{x.disabled=true; if(x.textContent===m.g) x.classList.add('correct'); else if(x.textContent===g) x.classList.add('incorrect');});
+      const why = `${m.c} a ${m.l} atome${m.l>1?'s':''} lié${m.l>1?'s':''} et ${m.nl} doublet${m.nl>1?'s':''} non liant${m.nl>1?'s':''} : ${m.g.toLowerCase()} (${ANGLES[m.g]}).`;
+      stage.querySelector('#geofb').innerHTML = `<div class="feedback ${ok?'correct':'incorrect'}"><strong>${ok?'Bravo !':'Raté.'}</strong>${why}</div>`;
+      stage.querySelector('#geonext').disabled=false;
+      const vd = el('div','view3d'); stage.querySelector('#geofb').after(vd); mount3D(vd, m);
+    };
+    card.appendChild(b); return b;
+  });
+  const fb = el('div'); fb.id='geofb'; card.appendChild(fb);
+  const row = el('div','footer-row');
+  const next = el('button','primary','Molécule suivante'); next.id='geonext'; next.disabled=!geo.answered;
+  next.onclick=()=>{ geo.answered=false; geo.shown=false; geo.i++; if(geo.i>=geo.order.length){geo.order=shuffle(geo.order);geo.i=0;} render(); };
+  row.appendChild(next); card.appendChild(row);
+  stage.appendChild(card);
+  stage.appendChild(el('div','cheat',`<b style="color:var(--paper)">Aide-mémoire</b> — on compte les groupes autour de l'atome central (une liaison double ou triple compte pour un seul groupe).
+  <table><tr><th>Atomes liés</th><th>Doublets non liants</th><th>Géométrie</th></tr>
+  <tr><td>4</td><td>0</td><td>Tétraédrique (109,5°)</td></tr>
+  <tr><td>3</td><td>1</td><td>Pyramidale (≈ 107°)</td></tr>
+  <tr><td>2</td><td>2</td><td>Coudée (≈ 105°)</td></tr>
+  <tr><td>3</td><td>0</td><td>Triangulaire plane (120°)</td></tr>
+  <tr><td>2</td><td>0</td><td>Linéaire (180°)</td></tr></table>`));
+}
+const COL={H:0xf4f4f4,C:0x6a6a6a,N:0x3f6fd8,O:0xe0453a,F:0x8fd36b,Cl:0x3fb34f,B:0xf0a0a0,Al:0xbfa6ad,P:0xf08a24,S:0xe8d23a};
+const CSSCOL={H:'#f4f4f4',C:"#6a6a6a",N:'#3f6fd8',O:'#e0453a',F:'#8fd36b',Cl:'#3fb34f',B:'#f0a0a0',Al:'#bfa6ad',P:'#f08a24',S:'#e8d23a'};
+const RAD={H:0.26,C:0.38,N:0.37,O:0.36,F:0.34,Cl:0.46,B:0.36,Al:0.46,P:0.45,S:0.45};
+function nz(v){const l=Math.hypot(v[0],v[1],v[2]);return v.map(x=>x/l);}
+const DIRS={4:[[0,1,0],[0.943,-0.333,0],[-0.471,-0.333,0.816],[-0.471,-0.333,-0.816]].map(nz),
+            3:[[0,1,0],[0.866,-0.5,0],[-0.866,-0.5,0]], 2:[[1,0,0],[-1,0,0]]};
+function buildModel(m){
+  const atoms=[],bonds=[],lps=[];
+  if(m.special==='C2H4'){
+    atoms.push({e:'C',p:[-0.67,0,0]},{e:'C',p:[0.67,0,0]}); bonds.push([0,1,2]);
+    [[-1,1],[-1,-1],[1,1],[1,-1]].forEach(([sx,sy])=>{atoms.push({e:'H',p:[sx*1.2,sy*0.91,0]}); bonds.push([sx<0?0:1,atoms.length-1,1]);});
+    return {atoms,bonds,lps};
+  }
+  if(m.special==='C2H2'){
+    atoms.push({e:'C',p:[-0.6,0,0]},{e:'C',p:[0.6,0,0]},{e:'H',p:[-1.65,0,0]},{e:'H',p:[1.65,0,0]});
+    bonds.push([0,1,3],[0,2,1],[1,3,1]); return {atoms,bonds,lps};
+  }
+  const total=m.lig.length+m.nl, D=DIRS[total];
+  atoms.push({e:m.c,p:[0,0,0]});
+  for(let k=0;k<m.nl;k++) lps.push(D[k]);
+  m.lig.forEach((L,i)=>{const e=L.replace(/\d/,''), o=+(L.match(/\d/)||[1])[0], d=D[m.nl+i], len=e==='H'?1.05:1.45;
+    atoms.push({e,p:d.map(x=>x*len)}); bonds.push([0,atoms.length-1,o]);});
+  return {atoms,bonds,lps};
+}
+let V=null;
+function getViewer(){
+  if(V) return V; if(!window.THREE) return null;
+  const r=new THREE.WebGLRenderer({antialias:true,alpha:true}); r.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
+  const sc=new THREE.Scene(), cam=new THREE.PerspectiveCamera(38,1,0.1,100); cam.position.set(0,0,6.0);
+  sc.add(new THREE.AmbientLight(0xffffff,0.55)); const dl=new THREE.DirectionalLight(0xffffff,0.85); dl.position.set(3,4,5); sc.add(dl);
+  const g=new THREE.Group(); sc.add(g);
+  V={r,sc,cam,g,rx:0.3,ry:0,drag:false,last:null,auto:true};
+  const c=r.domElement; c.style.touchAction='none'; c.style.cursor='grab';
+  c.addEventListener('pointerdown',e=>{V.drag=true;V.auto=false;V.last=[e.clientX,e.clientY];try{c.setPointerCapture(e.pointerId);}catch(_){}});
+  c.addEventListener('pointermove',e=>{if(!V.drag)return;V.ry+=(e.clientX-V.last[0])*0.012;V.rx+=(e.clientY-V.last[1])*0.012;V.last=[e.clientX,e.clientY];});
+  const up=()=>{V.drag=false;}; c.addEventListener('pointerup',up); c.addEventListener('pointercancel',up);
+  (function loop(){requestAnimationFrame(loop); if(!c.isConnected) return; if(V.auto) V.ry+=0.007; g.rotation.set(V.rx,V.ry,0); r.render(sc,cam);})();
+  return V;
+}
+function stick(g,a,b,rad){
+  const A=new THREE.Vector3(...a),B=new THREE.Vector3(...b),dir=B.clone().sub(A),len=dir.length();
+  const mesh=new THREE.Mesh(new THREE.CylinderGeometry(rad,rad,len,14),new THREE.MeshStandardMaterial({color:0xcfcfcf,roughness:.5}));
+  mesh.position.copy(A.clone().add(B).multiplyScalar(.5));
+  mesh.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),dir.normalize()); g.add(mesh);
+}
+function mount3D(container,m){
+  const v=getViewer();
+  if(!v){container.innerHTML='<p style="color:#B9C9C6;padding:20px;text-align:center;margin:0">Vue 3D indisponible (vérifie la connexion internet).</p>';return;}
+  const w=container.clientWidth||320,h=Math.round(Math.min(w*0.8,340));
+  v.r.setSize(w,h); v.cam.aspect=w/h; v.cam.updateProjectionMatrix();
+  while(v.g.children.length){const o=v.g.children[0]; v.g.remove(o); o.geometry&&o.geometry.dispose(); o.material&&o.material.dispose();}
+  const M=buildModel(m);
+  M.atoms.forEach(a=>{const s=new THREE.Mesh(new THREE.SphereGeometry(RAD[a.e],32,24),new THREE.MeshStandardMaterial({color:COL[a.e],roughness:.35,metalness:.05}));s.position.set(...a.p);v.g.add(s);});
+  M.bonds.forEach(([i,j,o])=>{
+    const a=M.atoms[i].p,b=M.atoms[j].p, d=nz([b[0]-a[0],b[1]-a[1],b[2]-a[2]]);
+    let perp=[d[1]*1-d[2]*0, d[2]*0-d[0]*1, 0]; if(Math.hypot(...perp)<0.1) perp=[0,0,1]; perp=nz(perp);
+    const offs=o===1?[0]:o===2?[-0.09,0.09]:[-0.13,0,0.13], rad=o===1?0.08:0.05;
+    offs.forEach(k=>stick(v.g,a.map((x,q)=>x+perp[q]*k),b.map((x,q)=>x+perp[q]*k),rad));
+  });
+  M.lps.forEach(d=>{
+    const lp=new THREE.Mesh(new THREE.SphereGeometry(1,24,16),new THREE.MeshStandardMaterial({color:0xc9a8ff,emissive:0x5a3a9a,transparent:true,opacity:.55,roughness:.6}));
+    lp.scale.set(0.22,0.42,0.22); lp.position.set(...d.map(x=>x*0.62));
+    lp.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),new THREE.Vector3(...d)); v.g.add(lp);
+  });
+  v.auto=true; v.rx=0.3; v.ry=0;
+  container.appendChild(v.r.domElement);
+  container.appendChild(el('div','tip','Fais glisser pour tourner la molécule'));
+}
+let molSel=0;
+function renderMol3d(){
+  const chips=el('div','chips');
+  MOLS.forEach((m,i)=>{const b=el('button','chip'+(i===molSel?' active':''),m.f); b.onclick=()=>{molSel=i;render();}; chips.appendChild(b);});
+  stage.appendChild(chips);
+  const m=MOLS[molSel], card=el('div','card');
+  card.appendChild(el('div','mol',m.f)); card.appendChild(el('div','molname',m.n));
+  card.appendChild(el('div','facts',`<div class="fact"><b>${m.l}</b>atomes liés à ${m.c}</div><div class="fact"><b>${m.nl}</b>doublet${m.nl>1?'s':''} non liant${m.nl>1?'s':''} sur ${m.c}</div>`));
+  card.appendChild(el('div','',`<p style="margin:0;font-size:16px"><b>${m.g}</b> · ${ANGLES[m.g]}</p>`));
+  const vd=el('div','view3d'); card.appendChild(vd);
+  const els=[...new Set(buildModel(m).atoms.map(a=>a.e))];
+  card.appendChild(el('div','legend',els.map(e=>`<span><i class="dot" style="background:${CSSCOL[e]}"></i>${e}</span>`).join('')+(m.nl?`<span><i class="dot" style="background:#b48cff;opacity:.7"></i>doublet non liant de ${m.c}</span>`:'')+'<span>double trait = liaison double, triple trait = liaison triple</span>'));
+  stage.appendChild(card);
+  mount3D(vd,m);
+}
+render();
+</script>
+</body>
+</html>

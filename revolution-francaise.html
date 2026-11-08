@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>La Révolution française — Réviser le chapitre 1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,600;0,6..96,700;1,6..96,400&family=Archivo:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    box-sizing:border-box;
+    padding-top:env(safe-area-inset-top, 0px);
+    padding-bottom:env(safe-area-inset-bottom, 0px);
+
+    --bg:#E7E2D5;
+    --bg-deep:#DAD3C2;
+    --surface:#F4F1E8;
+    --fg:#1B2230;
+    --fg-soft:#4E5668;
+    --blue:#27477C;
+    --blue-soft:#DDE4F0;
+    --red:#95282B;
+    --red-soft:#F2E0DD;
+    --green:#3E6247;
+    --green-soft:#E0EAE0;
+    --brass:#9A7332;
+    --rule:rgba(27,34,48,.20);
+    --shadow:0 2px 0 rgba(27,34,48,.10);
+  }
+
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#14171E;
+      --bg-deep:#0E1117;
+      --surface:#1D222C;
+      --fg:#EBE6D9;
+      --fg-soft:#A9B0BF;
+      --blue:#8DAEE0;
+      --blue-soft:#22304A;
+      --red:#DE8A83;
+      --red-soft:#3A2223;
+      --green:#8FBF9B;
+      --green-soft:#1E2E24;
+      --brass:#C9A25C;
+      --rule:rgba(235,230,217,.20);
+      --shadow:0 2px 0 rgba(0,0,0,.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#14171E;
+    --bg-deep:#0E1117;
+    --surface:#1D222C;
+    --fg:#EBE6D9;
+    --fg-soft:#A9B0BF;
+    --blue:#8DAEE0;
+    --blue-soft:#22304A;
+    --red:#DE8A83;
+    --red-soft:#3A2223;
+    --green:#8FBF9B;
+    --green-soft:#1E2E24;
+    --brass:#C9A25C;
+    --rule:rgba(235,230,217,.20);
+    --shadow:0 2px 0 rgba(0,0,0,.35);
+  }
+
+  *{box-sizing:inherit;}
+  html{scroll-padding-top:env(safe-area-inset-top, 0px);}
+
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--fg);
+    font-family:'Archivo', system-ui, sans-serif;
+    font-size:16px;
+    line-height:1.5;
+    -webkit-text-size-adjust:100%;
+  }
+
+  .sheet{
+    max-width:620px;
+    margin:0 auto;
+    padding:22px 16px 56px;
+  }
+
+  /* ---------- En-tête ---------- */
+  .masthead{
+    border-top:2px solid var(--fg);
+    border-bottom:1px solid var(--rule);
+    padding:14px 0 12px;
+    margin-bottom:18px;
+  }
+  .masthead .over{
+    font-size:12.5px;
+    letter-spacing:.02em;
+    color:var(--fg-soft);
+    margin-bottom:6px;
+  }
+  h1{
+    font-family:'Bodoni Moda', Georgia, serif;
+    font-weight:700;
+    font-size:clamp(30px,8.5vw,46px);
+    line-height:1.02;
+    margin:0 0 8px;
+    letter-spacing:-.01em;
+  }
+  h1 .second{
+    display:block;
+    font-weight:400;
+    font-style:italic;
+    font-size:.52em;
+    letter-spacing:.01em;
+    color:var(--fg-soft);
+    margin-top:6px;
+  }
+
+  /* ---------- Onglets ---------- */
+  nav.tabs{
+    display:flex;
+    gap:0;
+    border:1px solid var(--rule);
+    background:var(--bg-deep);
+    margin-bottom:20px;
+  }
+  .tab{
+    flex:1 1 0;
+    appearance:none;
+    border:none;
+    border-right:1px solid var(--rule);
+    background:transparent;
+    color:var(--fg-soft);
+    font-family:'Archivo', sans-serif;
+    font-size:14px;
+    font-weight:500;
+    padding:11px 4px;
+    cursor:pointer;
+  }
+  .tab:last-child{border-right:none;}
+  .tab[aria-selected="true"]{
+    background:var(--fg);
+    color:var(--bg);
+    font-weight:600;
+  }
+  .tab:focus-visible, button:focus-visible{
+    outline:2px solid var(--brass);
+    outline-offset:2px;
+  }
+
+  /* ---------- Éléments communs ---------- */
+  .lede{
+    font-size:14.5px;
+    color:var(--fg-soft);
+    margin:0 0 18px;
+    max-width:56ch;
+  }
+  .counter{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    font-size:13px;
+    color:var(--fg-soft);
+    border-bottom:1px solid var(--rule);
+    padding-bottom:6px;
+    margin-bottom:16px;
+  }
+  .counter b{
+    font-family:'Bodoni Moda', serif;
+    font-size:17px;
+    font-weight:600;
+    color:var(--fg);
+  }
+  .btn{
+    appearance:none;
+    border:1px solid var(--fg);
+    background:var(--fg);
+    color:var(--bg);
+    font-family:'Archivo', sans-serif;
+    font-size:14.5px;
+    font-weight:600;
+    padding:11px 20px;
+    cursor:pointer;
+  }
+  .btn:disabled{opacity:.3;cursor:default;}
+  .btn.ghost{
+    background:transparent;
+    color:var(--fg);
+  }
+  .row{display:flex;gap:10px;align-items:center;}
+  .row.end{justify-content:flex-end;}
+  .row.between{justify-content:space-between;}
+
+  /* ---------- Frise ---------- */
+  .placed{
+    list-style:none;
+    margin:0 0 18px;
+    padding:0;
+  }
+  .placed li{
+    display:grid;
+    grid-template-columns:96px 1fr;
+    gap:12px;
+    padding:9px 0;
+    border-bottom:1px solid var(--rule);
+    align-items:baseline;
+  }
+  .placed .date{
+    font-family:'Bodoni Moda', serif;
+    font-weight:600;
+    font-size:14.5px;
+    color:var(--blue);
+    line-height:1.3;
+  }
+  .placed .what{font-size:14.5px;}
+
+  .pool{display:flex;flex-direction:column;gap:9px;}
+  .chip{
+    text-align:left;
+    width:100%;
+    background:var(--surface);
+    border:1px solid var(--rule);
+    box-shadow:var(--shadow);
+    color:var(--fg);
+    font-family:'Archivo',sans-serif;
+    font-size:15px;
+    line-height:1.4;
+    padding:12px 14px;
+    cursor:pointer;
+  }
+  .chip:hover{border-color:var(--fg);}
+  .chip.wrong{
+    animation:shake .34s;
+    border-color:var(--red);
+    background:var(--red-soft);
+  }
+  @keyframes shake{
+    20%{transform:translateX(-6px);}
+    50%{transform:translateX(5px);}
+    80%{transform:translateX(-3px);}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .chip.wrong{animation:none;}
+    .card-inner{transition:none !important;}
+  }
+  .note{
+    font-size:13.5px;
+    color:var(--fg-soft);
+    min-height:20px;
+    margin:12px 0 0;
+  }
+  .note.bad{color:var(--red);}
+
+  /* ---------- Cartes ---------- */
+  .card-stage{perspective:1400px;}
+  .card-inner{
+    position:relative;
+    width:100%;
+    min-height:230px;
+    transition:transform .5s cubic-bezier(.4,.15,.2,1);
+    transform-style:preserve-3d;
+    cursor:pointer;
+    text-align:left;
+    border:none;
+    background:none;
+    padding:0;
+    font:inherit;
+    color:inherit;
+    display:block;
+  }
+  .card-inner.flipped{transform:rotateY(180deg);}
+  .face{
+    position:absolute;
+    inset:0;
+    backface-visibility:hidden;
+    -webkit-backface-visibility:hidden;
+    border:1px solid var(--rule);
+    box-shadow:var(--shadow);
+    padding:26px 22px 24px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+  }
+  .face.front{background:var(--surface);}
+  .face.back{
+    transform:rotateY(180deg);
+    background:var(--blue-soft);
+    border-color:var(--blue);
+  }
+  .face .kind{
+    position:absolute;
+    top:12px;
+    left:22px;
+    font-size:11.5px;
+    letter-spacing:.03em;
+    color:var(--fg-soft);
+  }
+  .face .q{
+    font-family:'Bodoni Moda', serif;
+    font-size:21px;
+    line-height:1.28;
+    margin:0;
+  }
+  .face .a{
+    font-family:'Bodoni Moda', serif;
+    font-weight:600;
+    font-size:19px;
+    line-height:1.3;
+    margin:0 0 8px;
+    color:var(--fg);
+  }
+  .face .a-more{font-size:14px;color:var(--fg-soft);margin:0;}
+
+  /* ---------- Quiz ---------- */
+  .quiz-q{
+    font-family:'Bodoni Moda', serif;
+    font-size:21px;
+    line-height:1.28;
+    margin:0 0 16px;
+  }
+  .opt{
+    display:block;
+    width:100%;
+    text-align:left;
+    background:var(--surface);
+    border:1px solid var(--rule);
+    box-shadow:var(--shadow);
+    color:var(--fg);
+    font-family:'Archivo',sans-serif;
+    font-size:15px;
+    line-height:1.4;
+    padding:12px 14px;
+    margin-bottom:9px;
+    cursor:pointer;
+  }
+  .opt:hover:not(:disabled){border-color:var(--fg);}
+  .opt:disabled{cursor:default;}
+  .opt.good{background:var(--green-soft);border-color:var(--green);font-weight:600;}
+  .opt.bad{background:var(--red-soft);border-color:var(--red);font-weight:600;}
+  .verdict{
+    border-left:3px solid var(--blue);
+    padding:10px 0 10px 13px;
+    margin:16px 0 0;
+    font-size:14.5px;
+    color:var(--fg-soft);
+  }
+  .verdict b{display:block;color:var(--fg);font-size:15px;margin-bottom:3px;}
+  .verdict.good{border-color:var(--green);}
+  .verdict.bad{border-color:var(--red);}
+
+  .result{
+    border:1px solid var(--rule);
+    background:var(--surface);
+    box-shadow:var(--shadow);
+    padding:34px 22px;
+    text-align:center;
+  }
+  .result .score{
+    font-family:'Bodoni Moda', serif;
+    font-size:58px;
+    font-weight:700;
+    line-height:1;
+    margin:10px 0 6px;
+    color:var(--blue);
+  }
+  .result p{margin:0 0 4px;color:var(--fg-soft);font-size:14.5px;}
+  .result .again{margin-top:22px;}
+  .miss{
+    text-align:left;
+    margin-top:24px;
+    border-top:1px solid var(--rule);
+    padding-top:14px;
+  }
+  .miss h3{
+    font-family:'Archivo',sans-serif;
+    font-size:14px;
+    font-weight:600;
+    margin:0 0 8px;
+  }
+  .miss li{font-size:14px;color:var(--fg-soft);margin-bottom:7px;line-height:1.45;}
+
+  /* ---------- Mémo ---------- */
+  .memo h2{
+    font-family:'Bodoni Moda', serif;
+    font-size:22px;
+    font-weight:600;
+    margin:26px 0 10px;
+    padding-bottom:5px;
+    border-bottom:1px solid var(--rule);
+  }
+  .memo h2:first-child{margin-top:0;}
+  .memo p, .memo li{font-size:14.8px;}
+  .memo ul{padding-left:18px;margin:0 0 4px;}
+  .memo li{margin-bottom:6px;}
+  .timeline{list-style:none;padding:0;margin:0;}
+  .timeline li{
+    display:grid;
+    grid-template-columns:104px 1fr;
+    gap:12px;
+    padding:8px 0;
+    border-bottom:1px solid var(--rule);
+    align-items:baseline;
+  }
+  .timeline .date{
+    font-family:'Bodoni Moda',serif;
+    font-weight:600;
+    font-size:14.5px;
+    color:var(--blue);
+    line-height:1.3;
+  }
+  .defs{margin:0;}
+  .defs dt{
+    font-weight:600;
+    font-size:15px;
+    margin-top:12px;
+  }
+  .defs dd{margin:2px 0 0;font-size:14.5px;color:var(--fg-soft);}
+
+  footer{
+    margin-top:38px;
+    padding-top:12px;
+    border-top:1px solid var(--rule);
+    font-size:12.5px;
+    color:var(--fg-soft);
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <header class="masthead">
+    <div class="over">Histoire · Première · Chapitre 1</div>
+    <h1>La Révolution française
+      <span class="second">et l'Empire : vers une conception moderne de la nation</span>
+    </h1>
+  </header>
+
+  <nav class="tabs" role="tablist" id="tabs">
+    <button class="tab" role="tab" data-mode="frise" aria-selected="true">Frise</button>
+    <button class="tab" role="tab" data-mode="cartes" aria-selected="false">Cartes</button>
+    <button class="tab" role="tab" data-mode="quiz" aria-selected="false">Quiz</button>
+    <button class="tab" role="tab" data-mode="memo" aria-selected="false">Mémo</button>
+  </nav>
+
+  <main id="stage"></main>
+
+  <footer>Révisions du cahier : la rupture révolutionnaire (1789-1792) et la fondation d'une France nouvelle.</footer>
+</div>
+
+<script>
+/* ------------------------------------------------------------------ */
+/* Contenu                                                             */
+/* ------------------------------------------------------------------ */
+
+const FRISE = [
+  {date:"Mars - mai 1789", what:"Rédaction des cahiers de doléances"},
+  {date:"5 mai 1789", what:"Ouverture des États généraux à Versailles"},
+  {date:"17 juin 1789", what:"Les députés du tiers état se proclament Assemblée nationale"},
+  {date:"20 juin 1789", what:"Serment du Jeu de paume"},
+  {date:"14 juillet 1789", what:"Prise de la Bastille"},
+  {date:"4 août 1789", what:"Abolition des privilèges"},
+  {date:"26 août 1789", what:"Déclaration des droits de l'homme et du citoyen"},
+  {date:"3 septembre 1791", what:"Constitution : la monarchie constitutionnelle est officialisée"},
+  {date:"21 septembre 1792", what:"Proclamation de la République et de la Convention"},
+  {date:"21 janvier 1793", what:"Exécution de Louis XVI"}
+];
+
+const CARTES = [
+  {kind:"Repère", q:"Quelles sont les bornes chronologiques du chapitre ?",
+   a:"1789 - 1815",
+   more:"La Révolution abolit l'Ancien Régime et installe des principes modernes ; l'Empire napoléonien les consolide tout en s'étendant en Europe."},
+  {kind:"Cause", q:"Quelles crises frappent la monarchie à la fin du règne de Louis XVI ?",
+   a:"Une crise financière, sociale, économique et politique",
+   more:"Dette colossale, contestation de la société d'ordres et des impôts, crises frumentaires (pénurie puis hausse des prix), réformes fiscales bloquées."},
+  {kind:"Notion", q:"Qu'est-ce que la société d'ordres ?",
+   a:"Une société divisée en trois ordres aux droits différents",
+   more:"Noblesse, clergé, tiers état : tous les Français n'ont pas les mêmes droits. Il faut attendre la Révolution pour que l'égalité des droits soit proclamée."},
+  {kind:"Notion", q:"Que sont les banalités ?",
+   a:"Des taxes payées par le paysan au seigneur",
+   more:"Elles correspondent à l'usage obligatoire du four, du moulin et du pressoir du seigneur."},
+  {kind:"Notion", q:"Qu'est-ce qu'une charge anoblissante ?",
+   a:"Une fonction qui donne automatiquement la noblesse",
+   more:"Certains offices ou conseils municipaux permettaient ainsi d'entrer dans la noblesse."},
+  {kind:"Notion", q:"Qu'est-ce qu'une corporation ?",
+   a:"L'association des gens d'un même métier",
+   more:"Elle fixe les règlements du métier : conditions de travail, façon de fabriquer les produits."},
+  {kind:"Notion", q:"Qui forme la bourgeoisie ?",
+   a:"Les gens des villes qui ne sont ni nobles ni clercs",
+   more:"Peu à peu, un certain niveau de richesse devient nécessaire pour être considéré comme bourgeois. Le groupe reste très varié : métiers et fortunes très différents."},
+  {kind:"Date", q:"Que sont les cahiers de doléances et quand sont-ils rédigés ?",
+   a:"Les plaintes et attentes des trois ordres, rédigées de mars à mai 1789",
+   more:"Ils accompagnent la convocation des États généraux par Louis XVI, le 5 mai 1789 à Versailles."},
+  {kind:"Chiffre", q:"Combien de députés se réunissent aux États généraux ?",
+   a:"1139 députés des trois ordres",
+   more:"Réunis à Versailles à partir du 5 mai 1789 pour résoudre la crise de la monarchie, mais leur travail est paralysé par les divergences politiques."},
+  {kind:"Événement", q:"Que se passe-t-il le 17 juin 1789 ?",
+   a:"Les députés du tiers état se proclament Assemblée nationale",
+   more:"Élus par 96 % de la nation, ils se déclarent détenteurs de la souveraineté nationale : c'est un acte révolutionnaire."},
+  {kind:"Événement", q:"Que jurent les députés le 20 juin 1789 dans la salle du Jeu de paume ?",
+   a:"De ne pas se séparer avant d'avoir rédigé une Constitution",
+   more:"Avec le 17 juin, ce serment met fin au pouvoir absolu du roi et à la société d'ordres de droit divin."},
+  {kind:"Événement", q:"Comment le peuple parisien s'insurge-t-il en juillet 1789 ?",
+   a:"Une garde nationale s'organise, les arsenaux sont pillés, la Bastille est prise le 14 juillet",
+   more:"Les manœuvres de Louis XVI contre l'Assemblée nationale provoquent l'exaspération d'un peuple déjà excédé par la misère."},
+  {kind:"Événement", q:"Qu'est-ce que la Grande Peur ?",
+   a:"Des violences contre les nobles qui embrasent plusieurs régions à l'été 1789",
+   more:"Pour mettre fin aux troubles, les députés votent dans la nuit du 4 août l'abolition de tous les privilèges : c'est la fin de la société d'ordres."},
+  {kind:"Texte", q:"Qu'affirme la Déclaration des droits de l'homme et du citoyen ?",
+   a:"Les droits naturels, la souveraineté de la nation et l'autorité de la loi",
+   more:"Adoptée le 26 août 1789 et inspirée des Lumières : liberté et égalité comme droits naturels, la loi comme expression de la volonté générale."},
+  {kind:"Réforme", q:"Comment les députés réorganisent-ils le royaume après 1789 ?",
+   a:"Départements, Constitution civile du clergé, libéralisme économique",
+   more:"L'administration est simplifiée par la création des départements ; l'Église est soumise à la Constitution civile du clergé et ses biens sont vendus."},
+  {kind:"Réforme", q:"Que prévoit la loi Le Chapelier (1791) ?",
+   a:"L'interdiction des associations ouvrières",
+   more:"Elle traduit le libéralisme économique imposé par les députés."},
+  {kind:"Régime", q:"Comment les pouvoirs sont-ils séparés par la Constitution de 1791 ?",
+   a:"Le législatif à une Assemblée de 745 députés, l'exécutif au « roi des Français »",
+   more:"Le roi garde des prérogatives étendues, dont le droit de veto qui lui permet d'interdire l'application des lois."},
+  {kind:"Notion", q:"Qui sont les « citoyens actifs » ?",
+   a:"Les hommes payant un certain niveau d'impôt, soit environ 15 %",
+   more:"Eux seuls votent : c'est le suffrage censitaire. Tous les autres sont des « citoyens passifs »."},
+  {kind:"Société", q:"Comment la société change-t-elle après 1789 ?",
+   a:"Journaux, pétitions, clubs et sociétés populaires se multiplient",
+   more:"Avec la liberté d'expression, toute la société se passionne pour les débats, à Paris comme en province ; les femmes sont de toutes les mobilisations."},
+  {kind:"Événement", q:"Que se passe-t-il le 21 septembre 1792 ?",
+   a:"La République et la Convention sont proclamées",
+   more:"La royauté était tombée le 10 août 1792 ; Louis XVI est exécuté le 21 janvier 1793, avant la Terreur (septembre 1793 - juillet 1794)."}
+];
+
+const QUIZ = [
+  {q:"Combien de députés se réunissent aux États généraux le 5 mai 1789 ?",
+   o:["577","745","1139","96"], c:2,
+   e:"1139 députés des trois ordres se réunissent à Versailles pour résoudre la crise de la monarchie."},
+  {q:"Que font les députés du tiers état le 17 juin 1789 ?",
+   o:["Ils quittent Versailles","Ils se proclament Assemblée nationale","Ils votent la Déclaration des droits de l'homme","Ils arrêtent le roi"], c:1,
+   e:"Élus par 96 % de la nation, ils se déclarent détenteurs de la souveraineté nationale."},
+  {q:"Que jurent les députés réunis dans la salle du Jeu de paume, le 20 juin 1789 ?",
+   o:["De rédiger une Constitution","De destituer Louis XVI","De déclarer la guerre à l'Autriche","De supprimer tous les impôts"], c:0,
+   e:"Le serment du Jeu de paume engage les députés à donner une Constitution au royaume."},
+  {q:"À quel régime le serment du Jeu de paume met-il fin ?",
+   o:["À la République","À l'Empire","À la monarchie constitutionnelle","À la monarchie absolue de droit divin"], c:3,
+   e:"Il met fin à la monarchie absolue et à la société d'ordres de droit divin, c'est-à-dire à l'Ancien Régime."},
+  {q:"Quelle décision les députés votent-ils dans la nuit du 4 août 1789 ?",
+   o:["L'abolition des privilèges","La mort du roi","La création des départements","La Constitution civile du clergé"], c:0,
+   e:"L'abolition de tous les privilèges met fin à la société d'ordres. Elle répond aux troubles de la Grande Peur."},
+  {q:"Qu'est-ce que la Grande Peur ?",
+   o:["Une épidémie qui frappe Paris","Des violences contre les nobles dans plusieurs régions, à l'été 1789","La panique des députés à Versailles","La disette de l'hiver 1788"], c:1,
+   e:"Ces violences en province poussent les députés à abolir les privilèges le 4 août."},
+  {q:"Quand la Déclaration des droits de l'homme et du citoyen est-elle adoptée ?",
+   o:["Le 14 juillet 1789","Le 4 août 1789","Le 26 août 1789","Le 3 septembre 1791"], c:2,
+   e:"L'Ancien Régime aboli, il faut définir les bases d'une société nouvelle : c'est l'objet de la DDHC, adoptée le 26 août 1789."},
+  {q:"De quelles idées la Déclaration des droits de l'homme et du citoyen s'inspire-t-elle ?",
+   o:["Des idées des Lumières","De la doctrine de l'Église","Du droit féodal","Du modèle prussien"], c:0,
+   e:"Elle énonce les droits naturels des individus (liberté, égalité), proclame la souveraineté de la nation et affirme que la loi est l'expression de la volonté générale."},
+  {q:"Que fait la loi Le Chapelier de 1791 ?",
+   o:["Elle crée les départements","Elle interdit les associations ouvrières","Elle vend les biens du clergé","Elle supprime la gabelle"], c:1,
+   e:"C'est une mesure de libéralisme économique imposée par les députés."},
+  {q:"Comment les députés réforment-ils l'Église ?",
+   o:["Ils la suppriment","Ils la soumettent à la Constitution civile du clergé et vendent ses biens","Ils lui confient l'administration des départements","Ils lui rendent ses privilèges"], c:1,
+   e:"C'est l'un des grands chantiers de la réorganisation du royaume, avec la création des départements."},
+  {q:"Combien de députés compte l'Assemblée sous la Constitution de 1791 ?",
+   o:["1139","745","577","300"], c:1,
+   e:"Le pouvoir législatif revient à une Assemblée de 745 députés élus au suffrage censitaire."},
+  {q:"Qui a le droit de vote sous la Constitution de 1791 ?",
+   o:["Tous les Français","Tous les hommes de plus de 21 ans","Les « citoyens actifs », environ 15 % des hommes payant un certain impôt","Les nobles uniquement"], c:2,
+   e:"C'est le suffrage censitaire. Tous les autres sont des « citoyens passifs »."},
+  {q:"De quel pouvoir Louis XVI dispose-t-il face aux lois après 1791 ?",
+   o:["Aucun","Le droit de veto","Le droit de nommer les députés","Le droit de lever l'impôt seul"], c:1,
+   e:"Le « roi des Français » garde des prérogatives étendues : le veto lui permet d'interdire l'application des lois."},
+  {q:"Quand la République est-elle proclamée ?",
+   o:["Le 10 août 1792","Le 21 septembre 1792","Le 21 janvier 1793","En 1794"], c:1,
+   e:"La République et la Convention sont proclamées le 21 septembre 1792, après la chute de la royauté le 10 août."},
+  {q:"Que se passe-t-il le 21 janvier 1793 ?",
+   o:["La prise des Tuileries","L'exécution de Louis XVI","Le début de la Terreur","Le sacre de Napoléon"], c:1,
+   e:"Louis XVI est exécuté ; la Terreur suit, de septembre 1793 à juillet 1794."},
+  {q:"Quelle situation pousse Louis XVI à convoquer les États généraux ?",
+   o:["Une crise uniquement financière","Une crise uniquement religieuse","Une crise à la fois financière, sociale, économique et politique","Une défaite militaire"], c:2,
+   e:"Dette et déficit, contestation de la société d'ordres et des impôts, pénuries et hausse des prix, blocage des réformes : la crise est multidimensionnelle."},
+  {q:"Que sont les banalités ?",
+   o:["Les taxes payées pour l'usage du four, du moulin et du pressoir du seigneur","Les corvées dues au roi","Les impôts payés par le clergé","Les amendes des tribunaux seigneuriaux"], c:0,
+   e:"Elles pèsent sur le paysan, qui est obligé d'utiliser les installations du seigneur."},
+  {q:"Qu'est-ce qu'une charge anoblissante ?",
+   o:["Un titre acheté au roi chaque année","Une fonction qui donne automatiquement la noblesse","Une dette contractée par un noble","Une taxe sur les nobles"], c:1,
+   e:"Certains offices ou conseils municipaux donnaient ainsi accès à la noblesse."},
+  {q:"Quand les cahiers de doléances sont-ils rédigés ?",
+   o:["De mars à mai 1789","En juillet 1789","En 1788","En 1791"], c:0,
+   e:"Ils précèdent l'ouverture des États généraux, le 5 mai 1789."},
+  {q:"Comment la société se transforme-t-elle après 1789 ?",
+   o:["Les débats publics sont interdits","Journaux, pétitions, clubs et sociétés populaires se multiplient","Seuls les nobles peuvent se réunir","La presse reste censurée par le roi"], c:1,
+   e:"Avec la liberté d'expression, toute la société se passionne pour les débats, à Paris comme en province, et les femmes sont de toutes les mobilisations."}
+];
+
+const QUIZ_LENGTH = 12;
+
+/* ------------------------------------------------------------------ */
+/* Squelette                                                           */
+/* ------------------------------------------------------------------ */
+
+const stage = document.getElementById('stage');
+const tabs = Array.from(document.querySelectorAll('.tab'));
+let mode = 'frise';
+
+tabs.forEach(t => t.addEventListener('click', () => {
+  tabs.forEach(x => x.setAttribute('aria-selected', String(x === t)));
+  mode = t.dataset.mode;
+  render();
+  window.scrollTo({top:0});
+}));
+
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i = a.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function el(tag, cls, text){
+  const n = document.createElement(tag);
+  if(cls) n.className = cls;
+  if(text !== undefined) n.textContent = text;
+  return n;
+}
+
+function render(){
+  stage.innerHTML = '';
+  if(mode === 'frise') renderFrise();
+  else if(mode === 'cartes') renderCartes();
+  else if(mode === 'quiz') renderQuiz();
+  else renderMemo();
+}
+
+/* ------------------------------------------------------------------ */
+/* Frise                                                               */
+/* ------------------------------------------------------------------ */
+
+let frisePool = shuffle(FRISE);
+let frisePlaced = 0;
+let friseErrors = 0;
+let friseMsg = '';
+let friseMsgBad = false;
+
+function resetFrise(){
+  frisePool = shuffle(FRISE);
+  frisePlaced = 0;
+  friseErrors = 0;
+  friseMsg = '';
+  friseMsgBad = false;
+}
+
+function renderFrise(){
+  const lede = el('p','lede',"Remets les dix moments de la Révolution dans l'ordre. Choisis d'abord le plus ancien : la date apparaît quand l'événement est bien placé.");
+  stage.appendChild(lede);
+
+  const counter = el('div','counter');
+  const left = el('span'); left.innerHTML = 'Placés <b>' + frisePlaced + ' / ' + FRISE.length + '</b>';
+  counter.appendChild(left);
+  counter.appendChild(el('span', null, friseErrors === 0 ? 'Sans erreur' : friseErrors + (friseErrors > 1 ? ' erreurs' : ' erreur')));
+  stage.appendChild(counter);
+
+  if(frisePlaced > 0){
+    const ol = el('ul','placed');
+    FRISE.slice(0, frisePlaced).forEach(ev => {
+      const li = el('li');
+      li.appendChild(el('span','date', ev.date));
+      li.appendChild(el('span','what', ev.what));
+      ol.appendChild(li);
+    });
+    stage.appendChild(ol);
+  }
+
+  if(frisePlaced === FRISE.length){
+    const done = el('div','result');
+    done.appendChild(el('p', null, 'Frise reconstituée'));
+    const sc = el('div','score', friseErrors === 0 ? 'Sans faute' : friseErrors + (friseErrors > 1 ? ' erreurs' : ' erreur'));
+    sc.style.fontSize = '34px';
+    done.appendChild(sc);
+    done.appendChild(el('p', null, "Des États généraux à l'exécution de Louis XVI."));
+    const again = el('button','btn again','Recommencer');
+    again.addEventListener('click', () => { resetFrise(); render(); });
+    done.appendChild(again);
+    stage.appendChild(done);
+    return;
+  }
+
+  const pool = el('div','pool');
+  frisePool.forEach(ev => {
+    if(FRISE.indexOf(ev) < frisePlaced) return;
+    const b = el('button','chip', ev.what);
+    b.addEventListener('click', () => {
+      if(ev === FRISE[frisePlaced]){
+        frisePlaced++;
+        friseMsg = 'Bien placé.';
+        friseMsgBad = false;
+        render();
+      }else{
+        friseErrors++;
+        friseMsgBad = true;
+        friseMsg = "Pas encore : un autre événement vient avant celui-là.";
+        b.classList.add('wrong');
+        const n = stage.querySelector('.note');
+        if(n){ n.textContent = friseMsg; n.classList.add('bad'); }
+        const c = stage.querySelector('.counter span:last-child');
+        if(c) c.textContent = friseErrors + (friseErrors > 1 ? ' erreurs' : ' erreur');
+        setTimeout(() => b.classList.remove('wrong'), 360);
+      }
+    });
+    pool.appendChild(b);
+  });
+  stage.appendChild(pool);
+
+  const note = el('p','note' + (friseMsgBad ? ' bad' : ''), friseMsg);
+  stage.appendChild(note);
+}
+
+/* ------------------------------------------------------------------ */
+/* Cartes                                                              */
+/* ------------------------------------------------------------------ */
+
+let carteIndex = 0;
+let carteFlipped = false;
+
+function renderCartes(){
+  const item = CARTES[carteIndex];
+
+  const counter = el('div','counter');
+  const left = el('span'); left.innerHTML = 'Carte <b>' + (carteIndex + 1) + ' / ' + CARTES.length + '</b>';
+  counter.appendChild(left);
+  counter.appendChild(el('span', null, item.kind));
+  stage.appendChild(counter);
+
+  const cage = el('div','card-stage');
+  const inner = document.createElement('button');
+  inner.className = 'card-inner' + (carteFlipped ? ' flipped' : '');
+  inner.setAttribute('aria-label', carteFlipped ? 'Voir la question' : 'Voir la réponse');
+
+  const front = el('div','face front');
+  front.appendChild(el('div','kind','Question'));
+  front.appendChild(el('p','q', item.q));
+
+  const back = el('div','face back');
+  back.appendChild(el('div','kind','Réponse'));
+  back.appendChild(el('p','a', item.a));
+  back.appendChild(el('p','a-more', item.more));
+
+  inner.appendChild(front);
+  inner.appendChild(back);
+  inner.addEventListener('click', () => { carteFlipped = !carteFlipped; render(); });
+  cage.appendChild(inner);
+  stage.appendChild(cage);
+
+  const nav = el('div','row between');
+  nav.style.marginTop = '18px';
+
+  const prev = el('button','btn ghost','Précédente');
+  prev.disabled = carteIndex === 0;
+  prev.addEventListener('click', () => { carteIndex--; carteFlipped = false; render(); });
+
+  const flip = el('button','btn ghost', carteFlipped ? 'Cacher' : 'Retourner');
+  flip.addEventListener('click', () => { carteFlipped = !carteFlipped; render(); });
+
+  const next = el('button','btn ghost','Suivante');
+  next.disabled = carteIndex === CARTES.length - 1;
+  next.addEventListener('click', () => { carteIndex++; carteFlipped = false; render(); });
+
+  nav.appendChild(prev);
+  nav.appendChild(flip);
+  nav.appendChild(next);
+  stage.appendChild(nav);
+}
+
+/* ------------------------------------------------------------------ */
+/* Quiz                                                                */
+/* ------------------------------------------------------------------ */
+
+let quizSet = shuffle(QUIZ).slice(0, QUIZ_LENGTH);
+let quizIndex = 0;
+let quizScore = 0;
+let quizPicked = null;
+let quizMissed = [];
+let quizDone = false;
+
+function resetQuiz(){
+  quizSet = shuffle(QUIZ).slice(0, QUIZ_LENGTH);
+  quizIndex = 0;
+  quizScore = 0;
+  quizPicked = null;
+  quizMissed = [];
+  quizDone = false;
+}
+
+function renderQuiz(){
+  if(quizDone){
+    const box = el('div','result');
+    box.appendChild(el('p', null, 'Score'));
+    box.appendChild(el('div','score', quizScore + ' / ' + quizSet.length));
+    const pct = Math.round((quizScore / quizSet.length) * 100);
+    box.appendChild(el('p', null, pct + ' % de bonnes réponses'));
+
+    if(quizMissed.length){
+      const miss = el('div','miss');
+      miss.appendChild(el('h3','', 'À revoir'));
+      const ul = document.createElement('ul');
+      ul.style.paddingLeft = '18px';
+      quizMissed.forEach(m => {
+        const li = document.createElement('li');
+        li.textContent = m.q + ' → ' + m.o[m.c];
+        ul.appendChild(li);
+      });
+      miss.appendChild(ul);
+      box.appendChild(miss);
+    }
+
+    const again = el('button','btn again','Refaire un quiz');
+    again.addEventListener('click', () => { resetQuiz(); render(); });
+    box.appendChild(again);
+    stage.appendChild(box);
+    return;
+  }
+
+  const item = quizSet[quizIndex];
+
+  const counter = el('div','counter');
+  const left = el('span'); left.innerHTML = 'Question <b>' + (quizIndex + 1) + ' / ' + quizSet.length + '</b>';
+  counter.appendChild(left);
+  counter.appendChild(el('span', null, 'Score : ' + quizScore));
+  stage.appendChild(counter);
+
+  stage.appendChild(el('p','quiz-q', item.q));
+
+  const buttons = [];
+  item.o.forEach((opt, i) => {
+    const b = el('button','opt', opt);
+    b.addEventListener('click', () => {
+      if(quizPicked !== null) return;
+      quizPicked = i;
+      if(i === item.c) quizScore++;
+      else quizMissed.push(item);
+      buttons.forEach((bb, j) => {
+        bb.disabled = true;
+        if(j === item.c) bb.classList.add('good');
+        else if(j === i) bb.classList.add('bad');
+      });
+      counter.querySelector('span:last-child').textContent = 'Score : ' + quizScore;
+      const good = i === item.c;
+      const v = el('div','verdict ' + (good ? 'good' : 'bad'));
+      v.appendChild(el('b', null, good ? 'Exact.' : 'Pas tout à fait.'));
+      v.appendChild(document.createTextNode(item.e));
+      stage.insertBefore(v, footerRow);
+      nextBtn.disabled = false;
+      nextBtn.focus();
+    });
+    buttons.push(b);
+    stage.appendChild(b);
+  });
+
+  const footerRow = el('div','row end');
+  footerRow.style.marginTop = '20px';
+  const nextBtn = el('button','btn', quizIndex === quizSet.length - 1 ? 'Voir le score' : 'Question suivante');
+  nextBtn.disabled = true;
+  nextBtn.addEventListener('click', () => {
+    quizPicked = null;
+    if(quizIndex === quizSet.length - 1) quizDone = true;
+    else quizIndex++;
+    render();
+    window.scrollTo({top:0});
+  });
+  footerRow.appendChild(nextBtn);
+  stage.appendChild(footerRow);
+}
+
+/* ------------------------------------------------------------------ */
+/* Mémo                                                                */
+/* ------------------------------------------------------------------ */
+
+function renderMemo(){
+  const wrap = el('div','memo');
+
+  wrap.appendChild(el('h2', null, 'La question du chapitre'));
+  wrap.appendChild(el('p', null, "Comment les événements de 1789-1792 conduisent-ils à un nouveau régime et à une société nouvelle ?"));
+  wrap.appendChild(el('p', null, "Entre 1789 et 1815, la France abolit l'Ancien Régime — monarchie absolue et société d'ordres — et instaure des principes modernes : souveraineté nationale, citoyenneté et égalité civile, libertés. L'Empire napoléonien consolide ensuite ces changements en étendant son influence sur l'Europe."));
+
+  wrap.appendChild(el('h2', null, 'Pourquoi la monarchie craque'));
+  const ul1 = document.createElement('ul');
+  [
+    "Crise financière : caisses vides, dette liée au financement de la guerre en Amérique ; Louis XVI veut augmenter les impôts du tiers état.",
+    "Crise sociale : contestation de la société d'ordres et des privilèges, aspiration à l'égalité devant l'impôt.",
+    "Crise économique : mauvaises récoltes, pénuries, hausse des prix, chômage ; douanes intérieures et péages entravent la circulation.",
+    "Crise politique : réformes impossibles, désacralisation du roi, influence des Lumières et des modèles anglo-saxons."
+  ].forEach(t => { const li = document.createElement('li'); li.textContent = t; ul1.appendChild(li); });
+  wrap.appendChild(ul1);
+  wrap.appendChild(el('p', null, "Résultat : les cahiers de doléances sont rédigés de mars à mai 1789 et Louis XVI convoque les États généraux, qui s'ouvrent à Versailles le 5 mai 1789."));
+
+  wrap.appendChild(el('h2', null, 'La frise'));
+  const tl = el('ul','timeline');
+  FRISE.forEach(ev => {
+    const li = document.createElement('li');
+    li.appendChild(el('span','date', ev.date));
+    li.appendChild(el('span', null, ev.what));
+    tl.appendChild(li);
+  });
+  [
+    {date:"10 août 1792", what:"Chute de la royauté"},
+    {date:"1793 - 1794", what:"La Terreur (5 septembre 1793 - 28 juillet 1794)"}
+  ].forEach(ev => {
+    const li = document.createElement('li');
+    li.appendChild(el('span','date', ev.date));
+    li.appendChild(el('span', null, ev.what));
+    tl.appendChild(li);
+  });
+  wrap.appendChild(tl);
+
+  wrap.appendChild(el('h2', null, 'Les chiffres à retenir'));
+  const ul2 = document.createElement('ul');
+  [
+    "1139 députés des trois ordres aux États généraux (5 mai 1789).",
+    "Les députés du tiers état sont élus par 96 % de la nation.",
+    "745 députés à l'Assemblée sous la Constitution de 1791.",
+    "Environ 15 % des hommes sont « citoyens actifs » et peuvent voter."
+  ].forEach(t => { const li = document.createElement('li'); li.textContent = t; ul2.appendChild(li); });
+  wrap.appendChild(ul2);
+
+  wrap.appendChild(el('h2', null, 'La France nouvelle'));
+  const ul3 = document.createElement('ul');
+  [
+    "DDHC (26 août 1789) : droits naturels, souveraineté de la nation, loi comme expression de la volonté générale.",
+    "Une société qui débat : journaux, pétitions, clubs et sociétés populaires, à Paris comme en province ; les femmes sont de toutes les mobilisations.",
+    "Un royaume réorganisé : création des départements, Constitution civile du clergé et vente des biens de l'Église, libéralisme économique (loi Le Chapelier, 1791).",
+    "Une monarchie constitutionnelle (Constitution de 1791) : pouvoirs séparés, suffrage censitaire, droit de veto du « roi des Français »."
+  ].forEach(t => { const li = document.createElement('li'); li.textContent = t; ul3.appendChild(li); });
+  wrap.appendChild(ul3);
+
+  wrap.appendChild(el('h2', null, 'Vocabulaire'));
+  const dl = el('dl','defs');
+  [
+    ["La société d'ordres","Société d'Ancien Régime divisée en trois ordres aux droits spécifiques : noblesse, clergé, tiers état."],
+    ["La bourgeoisie","À l'origine, les gens des villes qui ne sont ni nobles ni clercs ; peu à peu, un certain niveau de richesse est attendu. Le groupe reste très varié."],
+    ["Les banalités","Taxes payées par le paysan en échange de l'usage obligatoire du four, du moulin et du pressoir du seigneur."],
+    ["Une charge anoblissante","Fonction qui donne automatiquement la noblesse (certains offices, conseils municipaux)."],
+    ["Une corporation","Association des gens d'un même métier, chargée d'en fixer les règlements : conditions de travail, façon de fabriquer les produits."],
+    ["Le suffrage censitaire","Droit de vote réservé à ceux qui paient un certain niveau d'impôt."]
+  ].forEach(([t, d]) => {
+    dl.appendChild(el('dt', null, t));
+    dl.appendChild(el('dd', null, d));
+  });
+  wrap.appendChild(dl);
+
+  stage.appendChild(wrap);
+}
+
+render();
+</script>
+</body>
+</html>

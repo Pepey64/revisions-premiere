@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Les ondes — Révisions de première</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#EDF2F4; --grid:#D3DEE4; --grid-strong:#BCCCD5;
+  --ink:#1C2B39; --ink-soft:#4E6070;
+  --trace:#1F5FA8; --trace-pale:#DCE7F3;
+  --mark:#C8641E; --mark-pale:#F8E7DA;
+  --ok:#3D7A4F; --ok-pale:#E1EFE4;
+  --card:#FFFFFF; --line:#C9D5DC;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#141C24; --grid:#1D2833; --grid-strong:#27353F;
+    --ink:#E6EDF2; --ink-soft:#9DB0BF;
+    --trace:#6FA8E8; --trace-pale:#1B2C40;
+    --mark:#E8904F; --mark-pale:#3A2518;
+    --ok:#7CC191; --ok-pale:#18301F;
+    --card:#1A242E; --line:#2D3C48;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#141C24; --grid:#1D2833; --grid-strong:#27353F;
+  --ink:#E6EDF2; --ink-soft:#9DB0BF;
+  --trace:#6FA8E8; --trace-pale:#1B2C40;
+  --mark:#E8904F; --mark-pale:#3A2518;
+  --ok:#7CC191; --ok-pale:#18301F;
+  --card:#1A242E; --line:#2D3C48;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{
+  font-family:'Atkinson Hyperlegible', 'Segoe UI', system-ui, sans-serif;
+  color:var(--ink);
+  background-color:var(--paper);
+  background-image:
+    linear-gradient(var(--grid-strong) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-strong) 1px, transparent 1px),
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size:50px 50px,50px 50px,10px 10px,10px 10px;
+  min-height:100vh;
+  font-size:17px;
+  line-height:1.5;
+}
+.wrap{max-width:720px;margin:0 auto;padding:28px 18px 60px}
+
+header{margin-bottom:22px}
+.hero-wave{width:100%;height:84px;display:block;overflow:visible}
+.hero-wave path{fill:none;stroke:var(--trace);stroke-width:3;stroke-linecap:round}
+h1{
+  font-family:'Bricolage Grotesque', 'Segoe UI', sans-serif;
+  font-weight:800;
+  font-size:clamp(40px,9vw,68px);
+  line-height:.95;
+  letter-spacing:-0.02em;
+  margin:4px 0 8px;
+}
+.lead{color:var(--ink-soft);margin:0;max-width:52ch}
+
+nav{
+  display:flex;gap:6px;flex-wrap:wrap;
+  margin:22px 0 20px;
+  border-bottom:2px solid var(--ink);
+}
+nav button{
+  font:inherit;font-weight:700;font-size:15px;
+  background:transparent;color:var(--ink-soft);
+  border:2px solid transparent;border-bottom:none;
+  padding:9px 14px;border-radius:8px 8px 0 0;cursor:pointer;
+  margin-bottom:-2px;
+}
+nav button[aria-selected="true"]{
+  background:var(--card);color:var(--ink);
+  border-color:var(--ink);border-bottom:2px solid var(--card);
+}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--mark);outline-offset:2px}
+
+.panel{background:var(--card);border:2px solid var(--ink);border-radius:0 10px 10px 10px;padding:22px}
+.panel[hidden]{display:none}
+.meta{font-size:14px;color:var(--ink-soft);display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+
+/* Flashcards */
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+.chip{font:inherit;font-size:14px;border:1.5px solid var(--line);background:transparent;color:var(--ink);padding:5px 12px;border-radius:99px;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--card);border-color:var(--ink)}
+.flash{
+  width:100%;min-height:230px;border:2px dashed var(--line);border-radius:10px;
+  background:var(--paper);color:var(--ink);font:inherit;cursor:pointer;
+  display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;
+  padding:26px 22px;
+}
+.flash .q{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:23px;line-height:1.25}
+.flash .a{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:24px;color:var(--trace);line-height:1.25}
+.flash .x{color:var(--ink-soft);font-size:15px;margin-top:10px;max-width:46ch}
+.flash.shown{border-style:solid;border-color:var(--trace);background:var(--trace-pale)}
+.flash .tap{margin-top:14px;font-size:13px;color:var(--ink-soft)}
+.row{display:flex;gap:10px;justify-content:space-between;align-items:center;margin-top:16px;flex-wrap:wrap}
+.btn{
+  font:inherit;font-weight:700;font-size:15px;
+  padding:10px 18px;border-radius:8px;cursor:pointer;
+  border:2px solid var(--ink);background:var(--card);color:var(--ink);
+}
+.btn.primary{background:var(--ink);color:var(--card)}
+.btn.good{border-color:var(--ok);color:var(--ok)}
+.btn.again{border-color:var(--mark);color:var(--mark)}
+.btn:disabled{opacity:.35;cursor:default}
+
+/* Quiz */
+.qtext{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:22px;line-height:1.3;margin:0 0 16px}
+.opt{
+  display:block;width:100%;text-align:left;font:inherit;
+  background:var(--card);color:var(--ink);
+  border:2px solid var(--line);border-radius:8px;padding:12px 14px;margin-bottom:9px;cursor:pointer;
+}
+.opt:hover:not(:disabled){border-color:var(--trace)}
+.opt.right{border-color:var(--ok);background:var(--ok-pale);font-weight:700}
+.opt.wrong{border-color:var(--mark);background:var(--mark-pale)}
+.opt:disabled{cursor:default}
+.fb{border-left:4px solid;padding:10px 14px;margin-top:12px;border-radius:0 8px 8px 0;font-size:15.5px}
+.fb.ok{border-color:var(--ok);background:var(--ok-pale)}
+.fb.ko{border-color:var(--mark);background:var(--mark-pale)}
+.score{text-align:center;padding:18px 0}
+.score .big{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:72px;line-height:1;color:var(--trace)}
+.bar{height:10px;background:var(--grid);border-radius:99px;overflow:hidden;margin-bottom:16px}
+.bar i{display:block;height:100%;background:var(--trace);transition:width .3s}
+
+/* Calculs */
+.problem{font-size:18px;margin:0 0 14px}
+.given{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;color:var(--trace)}
+.answer{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.answer input{
+  font:inherit;font-size:18px;width:170px;padding:10px 12px;border-radius:8px;
+  border:2px solid var(--line);background:var(--paper);color:var(--ink);
+}
+.unit{font-weight:700}
+.steps{margin:8px 0 0;padding-left:20px}
+.steps li{margin-bottom:4px}
+.hintline{font-size:14px;color:var(--ink-soft);margin-top:10px}
+select{font:inherit;font-size:15px;padding:8px 10px;border-radius:8px;border:2px solid var(--line);background:var(--card);color:var(--ink)}
+
+/* Labo */
+.scope{width:100%;background:var(--paper);border:2px solid var(--line);border-radius:10px;display:block}
+.sliders{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
+@media (max-width:520px){.sliders{grid-template-columns:1fr}}
+.sliders label{display:block;font-weight:700;font-size:15px;margin-bottom:4px}
+.sliders input[type=range]{width:100%;accent-color:var(--trace)}
+.readout{
+  margin-top:16px;padding:14px 16px;border-radius:8px;background:var(--trace-pale);
+  font-size:17px;
+}
+.readout b{font-family:'Bricolage Grotesque',sans-serif;font-size:22px}
+.note{font-size:14px;color:var(--ink-soft);margin-top:10px}
+
+footer{margin-top:22px;font-size:13px;color:var(--ink-soft);text-align:center}
+@media (prefers-reduced-motion: reduce){ .bar i{transition:none} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <svg class="hero-wave" viewBox="0 0 700 84" preserveAspectRatio="none" aria-hidden="true"><path id="heroPath" d=""/></svg>
+    <h1>Les ondes</h1>
+    <p class="lead">Révisions de physique-chimie, classe de première : ondes mécaniques, son, lumière et photon.</p>
+  </header>
+
+  <nav role="tablist">
+    <button role="tab" aria-selected="true" data-tab="cards">Flashcards</button>
+    <button role="tab" aria-selected="false" data-tab="quiz">Quiz</button>
+    <button role="tab" aria-selected="false" data-tab="calc">Calculs</button>
+    <button role="tab" aria-selected="false" data-tab="lab">Labo</button>
+  </nav>
+
+  <section class="panel" id="cards"></section>
+  <section class="panel" id="quiz" hidden></section>
+  <section class="panel" id="calc" hidden></section>
+  <section class="panel" id="lab" hidden></section>
+
+  <footer>Va avec le cours PDF « Les ondes ». Astuce : fais les flashcards, puis le quiz, puis 5 calculs d'affilée sans erreur.</footer>
+</div>
+
+<script>
+/* ---------- Données ---------- */
+const CARDS = [
+ {t:"Bases", q:"Qu'est-ce qu'une onde mécanique progressive ?", a:"La propagation d'une perturbation dans un milieu matériel", x:"Elle transporte de l'énergie, mais pas de matière."},
+ {t:"Bases", q:"Une onde mécanique transporte-t-elle de la matière ?", a:"Non, seulement de l'énergie", x:"Un bouchon sur l'eau monte et descend sur place : il n'avance pas avec la vague."},
+ {t:"Bases", q:"Une onde mécanique peut-elle se propager dans le vide ?", a:"Non", x:"Il faut un milieu matériel (air, eau, corde…). C'est pour ça qu'on n'entend rien dans l'espace."},
+ {t:"Bases", q:"Onde transversale : comment bouge le milieu ?", a:"Perpendiculairement à la propagation", x:"Exemple : une corde qu'on secoue de haut en bas."},
+ {t:"Bases", q:"Onde longitudinale : comment bouge le milieu ?", a:"Dans la même direction que la propagation", x:"Compressions et dilatations. Exemples : ressort, son."},
+ {t:"Célérité", q:"Formule de la célérité d'une onde ?", a:"v = d / Δt", x:"v en m/s, d en m, Δt en s."},
+ {t:"Célérité", q:"Formule du retard τ entre deux points séparés de d ?", a:"τ = d / v", x:"Le second point refait le mouvement du premier, τ secondes plus tard."},
+ {t:"Célérité", q:"De quoi dépend la célérité d'une onde mécanique ?", a:"Du milieu de propagation", x:"Pas de l'amplitude : crier plus fort ne fait pas aller le son plus vite."},
+ {t:"Célérité", q:"Célérité du son dans l'air (ordre de grandeur) ?", a:"≈ 340 m/s", x:"≈ 1 500 m/s dans l'eau, ≈ 5 000 à 6 000 m/s dans l'acier."},
+ {t:"Périodiques", q:"Définition de la période T ?", a:"La plus petite durée au bout de laquelle un point retrouve le même état de vibration", x:"Unité : la seconde. On la lit sur un graphique en fonction du temps."},
+ {t:"Périodiques", q:"Relation entre fréquence et période ?", a:"f = 1 / T", x:"f en hertz (Hz), T en secondes."},
+ {t:"Périodiques", q:"Définition de la longueur d'onde λ ?", a:"La plus petite distance entre deux points qui vibrent en phase", x:"C'est aussi la distance parcourue par l'onde pendant une période."},
+ {t:"Périodiques", q:"Relation entre λ, v et T (ou f) ?", a:"λ = v × T = v / f", x:"À connaître par cœur : c'est la formule la plus utilisée."},
+ {t:"Périodiques", q:"Deux points séparés de λ/2 vibrent…", a:"En opposition de phase", x:"Quand l'un est en haut, l'autre est en bas. Séparés de λ, 2λ… : en phase."},
+ {t:"Périodiques", q:"Quand une onde change de milieu, qu'est-ce qui ne change pas ?", a:"La fréquence", x:"Elle est imposée par la source. La célérité change, donc λ aussi."},
+ {t:"Son", q:"Domaine des fréquences audibles par l'oreille humaine ?", a:"De 20 Hz à 20 000 Hz", x:"En dessous : infrasons. Au-dessus : ultrasons."},
+ {t:"Son", q:"À quelle grandeur est liée la hauteur d'un son (grave / aigu) ?", a:"À sa fréquence", x:"Plus la fréquence est grande, plus le son est aigu. Le la du diapason : 440 Hz."},
+ {t:"Son", q:"Qu'est-ce qui distingue une flûte et un piano jouant la même note ?", a:"Le timbre", x:"Il dépend de la forme du signal (des harmoniques)."},
+ {t:"Lumière", q:"Célérité de la lumière dans le vide ?", a:"c = 3,00 × 10⁸ m/s", x:"La lumière, onde électromagnétique, n'a pas besoin de milieu matériel."},
+ {t:"Lumière", q:"Domaine des longueurs d'onde de la lumière visible ?", a:"Environ 400 nm à 800 nm", x:"Du violet (400 nm) au rouge (800 nm). 1 nm = 10⁻⁹ m."},
+ {t:"Lumière", q:"Énergie d'un photon ?", a:"E = h × ν = h × c / λ", x:"h = 6,63 × 10⁻³⁴ J·s. E en joules."},
+ {t:"Lumière", q:"Quel photon est le plus énergétique : UV ou rouge ?", a:"Le photon UV", x:"Plus λ est petite, plus E est grande (E = hc/λ)."},
+ {t:"Lumière", q:"Quand un atome émet-il ou absorbe-t-il un photon ?", a:"Quand l'énergie du photon est égale à l'écart entre deux niveaux d'énergie", x:"|ΔE| = h × ν : l'énergie de l'atome est quantifiée."},
+ {t:"Lumière", q:"Conversion électron-volt → joule ?", a:"1 eV = 1,60 × 10⁻¹⁹ J", x:"Pour passer des joules aux eV, on divise par 1,60 × 10⁻¹⁹."}
+];
+
+const QUIZ = [
+ {q:"Un bouchon flotte sur l'eau quand une vague passe. Que fait-il ?", o:["Il avance avec la vague","Il monte et descend à peu près sur place","Il coule","Il recule"], c:1, x:"L'onde transporte de l'énergie, pas de matière."},
+ {q:"Le son est une onde…", o:["transversale","longitudinale","électromagnétique","qui se propage dans le vide"], c:1, x:"Le son est une succession de compressions et dilatations du milieu, dans la direction de propagation."},
+ {q:"Pourquoi n'entend-on aucun son dans l'espace ?", o:["Il fait trop froid","Le son y va trop vite","Il n'y a pas de milieu matériel","Les ondes y sont absorbées par la lumière"], c:2, x:"Une onde mécanique a besoin de matière pour se propager."},
+ {q:"On crie deux fois plus fort. La célérité du son…", o:["double","est divisée par deux","ne change pas","augmente un peu"], c:2, x:"La célérité dépend du milieu, pas de l'amplitude."},
+ {q:"Sur un graphique y en fonction du temps t, on peut lire directement…", o:["la longueur d'onde λ","la période T","la célérité v","la distance d"], c:1, x:"Axe en secondes → durée → période T. Axe en mètres → λ."},
+ {q:"Une onde a une fréquence de 50 Hz. Sa période vaut :", o:["50 s","0,50 s","0,020 s","2,0 s"], c:2, x:"T = 1/f = 1/50 = 0,020 s = 20 ms."},
+ {q:"v = 340 m/s et f = 170 Hz. La longueur d'onde vaut :", o:["2,0 m","0,50 m","57 800 m","510 m"], c:0, x:"λ = v/f = 340/170 = 2,0 m."},
+ {q:"Deux points d'une corde sont séparés de 3λ. Ils vibrent :", o:["en phase","en opposition de phase","sans rapport","l'un après l'autre avec un retard de 3 s"], c:0, x:"Un nombre entier de longueurs d'onde → en phase."},
+ {q:"Deux points séparés de λ/2 vibrent :", o:["en phase","en opposition de phase","à la même amplitude, en même temps","ils ne vibrent pas"], c:1, x:"Une demi-longueur d'onde → opposition de phase."},
+ {q:"Un son passe de l'air à l'eau. Qu'est-ce qui reste identique ?", o:["La célérité","La longueur d'onde","La fréquence","Rien du tout"], c:2, x:"La fréquence est imposée par la source ; v et λ changent."},
+ {q:"Un son de 25 000 Hz est…", o:["un infrason","un son audible aigu","un ultrason","une onde lumineuse"], c:2, x:"Au-delà de 20 000 Hz : ultrason (échographie, chauve-souris)."},
+ {q:"Plus la fréquence d'un son est grande, plus le son est…", o:["fort","grave","aigu","lent"], c:2, x:"La hauteur est liée à la fréquence."},
+ {q:"Un écho revient 2,0 s après le cri (v = 340 m/s). La paroi est à :", o:["680 m","340 m","170 m","1 360 m"], c:1, x:"Aller-retour : 2d = 340 × 2,0 = 680 m, donc d = 340 m."},
+ {q:"Quelle onde peut se propager dans le vide ?", o:["Le son","Une vague","La lumière","L'onde d'un séisme"], c:2, x:"La lumière est une onde électromagnétique."},
+ {q:"Une lumière de longueur d'onde 1 000 nm est dans le domaine…", o:["ultraviolet","visible (violet)","visible (rouge)","infrarouge"], c:3, x:"Au-delà de 800 nm : infrarouge."},
+ {q:"Quand λ diminue, l'énergie d'un photon…", o:["augmente","diminue","ne change pas","devient nulle"], c:0, x:"E = hc/λ : λ au dénominateur."},
+ {q:"L'énergie d'un atome est dite « quantifiée ». Cela signifie :", o:["qu'elle est très grande","qu'elle ne peut prendre que certaines valeurs","qu'on peut la mesurer","qu'elle est toujours nulle"], c:1, x:"D'où des raies bien précises dans les spectres."},
+ {q:"λ = 2,0 cm et f = 5,0 Hz. La célérité vaut :", o:["10 m/s","0,10 m/s","2,5 m/s","0,40 m/s"], c:1, x:"Convertir d'abord ! λ = 0,020 m, donc v = 0,020 × 5,0 = 0,10 m/s."}
+];
+
+/* ---------- Outils ---------- */
+const $ = (s, r=document) => r.querySelector(s);
+const shuffle = a => { a=[...a]; for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; };
+const store = {
+  get(k,d){ try{ const v=localStorage.getItem(k); return v===null?d:JSON.parse(v);}catch(e){return d;} },
+  set(k,v){ try{ localStorage.setItem(k,JSON.stringify(v)); }catch(e){} }
+};
+const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+function fmt(x, sig=3){
+  if(x===0) return "0";
+  const e=Math.floor(Math.log10(Math.abs(x)));
+  if(e>=-2 && e<5){ return Number(x.toPrecision(sig)).toLocaleString('fr-FR',{maximumSignificantDigits:sig}); }
+  const m=x/Math.pow(10,e);
+  const sup={"-":"⁻","0":"⁰","1":"¹","2":"²","3":"³","4":"⁴","5":"⁵","6":"⁶","7":"⁷","8":"⁸","9":"⁹"};
+  return Number(m.toPrecision(sig)).toLocaleString('fr-FR',{minimumFractionDigits:sig-1,maximumFractionDigits:sig-1})+" × 10"+String(e).split("").map(c=>sup[c]).join("");
+}
+
+/* ---------- Onglets ---------- */
+const tabs = document.querySelectorAll('nav button');
+tabs.forEach(b => b.addEventListener('click', () => {
+  tabs.forEach(x => x.setAttribute('aria-selected', x===b ? 'true':'false'));
+  document.querySelectorAll('.panel').forEach(p => p.hidden = p.id !== b.dataset.tab);
+  if(b.dataset.tab==='lab') startLab();
+}));
+
+/* ---------- Vague d'en-tête ---------- */
+(function hero(){
+  const path=$('#heroPath'); let t0=null;
+  function draw(t){
+    const ph = reduce ? 0 : t/900;
+    let d="";
+    for(let x=0;x<=700;x+=5){
+      const env = Math.sin(Math.PI*x/700);
+      const y = 42 + 30*env*Math.sin(x/34 - ph);
+      d += (x?"L":"M")+x+" "+y.toFixed(1)+" ";
+    }
+    path.setAttribute('d',d);
+    if(!reduce) requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
+})();
+
+/* ---------- Flashcards ---------- */
+const topics = ["Tout", ...new Set(CARDS.map(c=>c.t))];
+let fTopic="Tout", fDeck=[], fIdx=0, fShown=false, fKnown=0;
+function buildDeck(){ fDeck = shuffle(fTopic==="Tout"?CARDS:CARDS.filter(c=>c.t===fTopic)); fIdx=0; fShown=false; fKnown=0; }
+function renderCards(){
+  const el=$('#cards');
+  if(fIdx>=fDeck.length){
+    el.innerHTML = `<div class="score"><div class="big">${fKnown}/${fDeck.length}</div>
+      <p>cartes sues du premier coup.</p>
+      <button class="btn primary" id="fRestart">Mélanger et recommencer</button></div>`;
+    $('#fRestart').onclick=()=>{buildDeck();renderCards();};
+    return;
+  }
+  const c=fDeck[fIdx];
+  el.innerHTML = `
+    <div class="chips">${topics.map(t=>`<button class="chip" aria-pressed="${t===fTopic}" data-t="${t}">${t}</button>`).join("")}</div>
+    <div class="meta"><span>Carte ${fIdx+1} sur ${fDeck.length}</span><span>${c.t}</span></div>
+    <div class="bar"><i style="width:${fIdx/fDeck.length*100}%"></i></div>
+    <button class="flash ${fShown?'shown':''}" id="flash" aria-live="polite">
+      ${fShown
+        ? `<span class="a">${c.a}</span><span class="x">${c.x}</span>`
+        : `<span class="q">${c.q}</span><span class="tap">Réponds dans ta tête, puis touche la carte</span>`}
+    </button>
+    <div class="row">
+      ${fShown
+        ? `<button class="btn again" id="fAgain">Je ne savais pas</button><button class="btn good" id="fGood">Je savais</button>`
+        : `<span></span><button class="btn primary" id="fShow">Voir la réponse</button>`}
+    </div>`;
+  el.querySelectorAll('.chip').forEach(ch=>ch.onclick=()=>{fTopic=ch.dataset.t;buildDeck();renderCards();});
+  $('#flash').onclick=()=>{fShown=!fShown;renderCards();};
+  if(fShown){
+    $('#fGood').onclick=()=>{fKnown++;fIdx++;fShown=false;renderCards();};
+    $('#fAgain').onclick=()=>{ fDeck.push(c); fDeck.splice(fIdx,1); fShown=false; renderCards(); };
+  } else $('#fShow').onclick=()=>{fShown=true;renderCards();};
+}
+buildDeck(); renderCards();
+
+/* ---------- Quiz ---------- */
+let qList=[], qIdx=0, qScore=0, qDone=false, qAnswered=false, qMistakes=[];
+function startQuiz(){ qList=shuffle(QUIZ).slice(0,12).map(q=>{const order=shuffle(q.o.map((t,i)=>({t,i})));return {...q,order};}); qIdx=0;qScore=0;qDone=false;qAnswered=false;qMistakes=[]; renderQuiz(); }
+function renderQuiz(){
+  const el=$('#quiz');
+  if(qDone){
+    const best=Math.max(store.get('ondes-best',0),qScore); store.set('ondes-best',best);
+    el.innerHTML=`<div class="score"><div class="big">${qScore}/${qList.length}</div>
+      <p>${qScore===qList.length?"Parfait, rien à revoir.":qScore>=9?"Très bien. Relis juste les points ci-dessous.":"Reprends les flashcards sur les points ci-dessous, puis refais le quiz."}</p>
+      <p class="note">Meilleur score : ${best}/${qList.length}</p></div>
+      ${qMistakes.length?`<div class="fb ko"><b>À revoir :</b><ul class="steps">${qMistakes.map(m=>`<li>${m}</li>`).join("")}</ul></div>`:""}
+      <div class="row"><span></span><button class="btn primary" id="qRestart">Nouveau quiz</button></div>`;
+    $('#qRestart').onclick=startQuiz; return;
+  }
+  const q=qList[qIdx];
+  el.innerHTML=`<div class="meta"><span>Question ${qIdx+1} sur ${qList.length}</span><span>Score : ${qScore}</span></div>
+    <div class="bar"><i style="width:${qIdx/qList.length*100}%"></i></div>
+    <p class="qtext">${q.q}</p>
+    <div id="opts">${q.order.map(o=>`<button class="opt" data-i="${o.i}">${o.t}</button>`).join("")}</div>
+    <div id="qfb" aria-live="polite"></div>
+    <div class="row"><span></span><button class="btn primary" id="qNext" disabled>${qIdx===qList.length-1?"Voir mon score":"Question suivante"}</button></div>`;
+  el.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
+    if(qAnswered) return; qAnswered=true;
+    const i=+b.dataset.i, ok=i===q.c; if(ok) qScore++; else qMistakes.push(q.x);
+    el.querySelectorAll('.opt').forEach(o=>{o.disabled=true; if(+o.dataset.i===q.c)o.classList.add('right'); else if(o===b)o.classList.add('wrong');});
+    $('#qfb').innerHTML=`<div class="fb ${ok?'ok':'ko'}"><b>${ok?'Exact.':'Non.'}</b> ${q.x}</div>`;
+    $('#qNext').disabled=false; $('#qNext').focus();
+  });
+  $('#qNext').onclick=()=>{qAnswered=false; if(qIdx===qList.length-1) qDone=true; else qIdx++; renderQuiz();};
+}
+startQuiz();
+
+/* ---------- Calculs ---------- */
+const pick = a => a[Math.floor(Math.random()*a.length)];
+const GEN = {
+  lambda(){ const v=pick([340,340,1500,0.20,0.30,2.0]); const f=v>100?pick([170,200,440,500,850,1000]):pick([2.0,4.0,5.0,10]);
+    const ans=v/f; return {txt:`Une onde de fréquence <span class="given">f = ${fmt(f)} Hz</span> se propage à <span class="given">v = ${fmt(v)} m/s</span>. Calcule sa longueur d'onde λ.`, ans, unit:"m",
+      steps:[`Formule : λ = v / f`,`Calcul : λ = ${fmt(v)} / ${fmt(f)}`,`Résultat : λ ≈ ${fmt(ans)} m`]}; },
+  period(){ const f=pick([50,100,250,440,500,1000,2000]); const ans=1/f;
+    return {txt:`Un son a une fréquence <span class="given">f = ${fmt(f)} Hz</span>. Calcule sa période T en secondes.`, ans, unit:"s",
+      steps:[`Formule : T = 1 / f`,`Calcul : T = 1 / ${fmt(f)}`,`Résultat : T ≈ ${fmt(ans)} s (soit ${fmt(ans*1000)} ms)`]}; },
+  celerity(){ const d=pick([0.60,1.2,3.0,34,68,170]); const dt=pick([0.20,0.50,2.0,4.0]); const ans=d/dt;
+    return {txt:`Une perturbation parcourt <span class="given">d = ${fmt(d)} m</span> en <span class="given">Δt = ${fmt(dt)} s</span>. Calcule sa célérité v.`, ans, unit:"m/s",
+      steps:[`Formule : v = d / Δt`,`Calcul : v = ${fmt(d)} / ${fmt(dt)}`,`Résultat : v ≈ ${fmt(ans)} m/s`]}; },
+  delay(){ const d=pick([17,34,85,170,680]); const v=340; const ans=d/v;
+    return {txt:`Deux micros sont séparés de <span class="given">d = ${fmt(d)} m</span> dans l'air (<span class="given">v = 340 m/s</span>). Calcule le retard τ du son entre les deux micros, en secondes.`, ans, unit:"s",
+      steps:[`Formule : τ = d / v`,`Calcul : τ = ${fmt(d)} / 340`,`Résultat : τ ≈ ${fmt(ans)} s`]}; },
+  cmconv(){ const lcm=pick([1.5,2.0,2.5,4.0,6.0]); const f=pick([4.0,5.0,8.0,10,20]); const ans=lcm/100*f;
+    return {txt:`À la surface de l'eau, <span class="given">λ = ${fmt(lcm)} cm</span> et <span class="given">f = ${fmt(f)} Hz</span>. Calcule la célérité v en m/s.`, ans, unit:"m/s",
+      steps:[`Conversion : λ = ${fmt(lcm)} cm = ${fmt(lcm/100)} m`,`Formule : v = λ × f`,`Calcul : v = ${fmt(lcm/100)} × ${fmt(f)}`,`Résultat : v ≈ ${fmt(ans)} m/s`]}; },
+  echo(){ const dt=pick([0.40,0.80,1.0,1.2,2.0,3.0]); const ans=340*dt/2;
+    return {txt:`Face à une paroi, l'écho revient <span class="given">Δt = ${fmt(dt)} s</span> après le cri (<span class="given">v = 340 m/s</span>). À quelle distance d est la paroi, en m ?`, ans, unit:"m",
+      steps:[`Le son fait un aller-retour : il parcourt 2d`,`2d = v × Δt = 340 × ${fmt(dt)} = ${fmt(340*dt)} m`,`Résultat : d ≈ ${fmt(ans)} m`]}; },
+  photon(){ const nm=pick([400,450,500,532,589,650,700]); const ans=6.63e-34*3.00e8/(nm*1e-9);
+    return {txt:`Calcule l'énergie E (en joules) d'un photon de longueur d'onde <span class="given">λ = ${nm} nm</span>. Données : h = 6,63 × 10⁻³⁴ J·s ; c = 3,00 × 10⁸ m/s.`, ans, unit:"J", sci:true,
+      steps:[`Conversion : λ = ${nm} × 10⁻⁹ m`,`Formule : E = h × c / λ`,`Calcul : E = 6,63 × 10⁻³⁴ × 3,00 × 10⁸ / (${nm} × 10⁻⁹)`,`Résultat : E ≈ ${fmt(ans)} J`]}; },
+  photonEv(){ const nm=pick([400,500,620,650,800]); const J=6.63e-34*3.00e8/(nm*1e-9); const ans=J/1.60e-19;
+    return {txt:`Un photon a une énergie de <span class="given">${fmt(J)} J</span>. Convertis-la en électron-volts. Donnée : 1 eV = 1,60 × 10⁻¹⁹ J.`, ans, unit:"eV",
+      steps:[`On divise par 1,60 × 10⁻¹⁹`,`Calcul : E = ${fmt(J)} / (1,60 × 10⁻¹⁹)`,`Résultat : E ≈ ${fmt(ans)} eV`]}; }
+};
+const GEN_LABEL = {tout:"Tous les types", lambda:"Longueur d'onde", period:"Période", celerity:"Célérité", delay:"Retard", cmconv:"Avec conversion", echo:"Écho", photon:"Photon (J)", photonEv:"Photon (eV)"};
+let cType="tout", cur=null, streak=0, cChecked=false;
+function newProblem(){ const k=cType==="tout"?pick(Object.keys(GEN)):cType; cur=GEN[k](); cChecked=false; renderCalc(); }
+function parseAnswer(s){
+  s=s.trim().replace(/\s/g,"").replace(/,/g,".").replace(/×|x|\*/gi,"*");
+  let m=s.match(/^(-?[\d.]+)\*10\^?\(?(-?\d+)\)?$/); if(m) return parseFloat(m[1])*Math.pow(10,+m[2]);
+  m=s.match(/^(-?[\d.]+)e(-?\d+)$/i); if(m) return parseFloat(m[1])*Math.pow(10,+m[2]);
+  const v=parseFloat(s); return isNaN(v)?null:v;
+}
+function renderCalc(){
+  const el=$('#calc');
+  el.innerHTML=`<div class="meta"><label>Type : <select id="cType">${Object.entries(GEN_LABEL).map(([k,v])=>`<option value="${k}" ${k===cType?'selected':''}>${v}</option>`).join("")}</select></label>
+      <span>Série sans faute : <b>${streak}</b></span></div>
+    <p class="problem">${cur.txt}</p>
+    <div class="answer"><input id="cIn" inputmode="decimal" autocomplete="off" placeholder="${cur.sci?'ex : 3,1e-19':'ta réponse'}" aria-label="Ta réponse"><span class="unit">${cur.unit}</span>
+      <button class="btn primary" id="cCheck">Vérifier</button></div>
+    ${cur.sci?`<p class="hintline">Pour écrire 3,1 × 10⁻¹⁹, tape 3,1e-19</p>`:`<p class="hintline">Virgule ou point acceptés. On tolère 2 % d'écart (arrondis).</p>`}
+    <div id="cfb" aria-live="polite"></div>
+    <div class="row"><button class="btn" id="cSkip">Voir la correction</button><button class="btn primary" id="cNew">Nouvel exercice</button></div>`;
+  $('#cType').onchange=e=>{cType=e.target.value;newProblem();};
+  const check=(reveal)=>{
+    const v=parseAnswer($('#cIn').value);
+    const ok=!reveal && v!==null && Math.abs(v-cur.ans)/Math.abs(cur.ans)<=0.02;
+    if(!cChecked){ streak = ok ? streak+1 : 0; cChecked=true; }
+    $('#cfb').innerHTML=`<div class="fb ${ok?'ok':'ko'}"><b>${ok?'Bravo, c\'est juste.':(reveal?'Correction :':'Pas tout à fait. Voici la méthode :')}</b>
+      <ol class="steps">${cur.steps.map(s=>`<li>${s}</li>`).join("")}</ol></div>`;
+    el.querySelector('.meta b').textContent=streak;
+  };
+  $('#cCheck').onclick=()=>check(false);
+  $('#cIn').addEventListener('keydown',e=>{if(e.key==='Enter')check(false);});
+  $('#cSkip').onclick=()=>check(true);
+  $('#cNew').onclick=newProblem;
+}
+newProblem();
+
+/* ---------- Labo ---------- */
+let labOn=false;
+function startLab(){
+  if(labOn) return; labOn=true;
+  const el=$('#lab');
+  el.innerHTML=`<p style="margin-top:0">Fais varier la fréquence et la célérité, et observe comment change la longueur d'onde. La corde est montrée au ralenti.</p>
+    <canvas class="scope" id="scope" width="680" height="240" role="img" aria-label="Onde progressive sur une corde, avec la longueur d'onde indiquée"></canvas>
+    <div class="sliders">
+      <div><label for="sf">Fréquence f : <span id="vf"></span> Hz</label><input type="range" id="sf" min="0.5" max="5" step="0.5" value="1"></div>
+      <div><label for="sv">Célérité v : <span id="vv"></span> m/s</label><input type="range" id="sv" min="0.5" max="4" step="0.5" value="2"></div>
+    </div>
+    <div class="readout" id="ro"></div>
+    <p class="note">À observer : double f → λ divisée par 2. Double v → λ multipliée par 2. Les deux points orange sont séparés d'exactement λ : ils bougent toujours ensemble (en phase).</p>`;
+  const cv=$('#scope'), ctx=cv.getContext('2d'), sf=$('#sf'), sv=$('#sv');
+  const css=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+  const L=4; // m affichés
+  let t=0, last=null;
+  function frame(ts){
+    if(last===null) last=ts; const dt=(ts-last)/1000; last=ts;
+    if(!reduce) t+=dt*0.25; // ralenti ×4
+    const f=+sf.value, v=+sv.value, lam=v/f;
+    $('#vf').textContent=f.toLocaleString('fr-FR'); $('#vv').textContent=v.toLocaleString('fr-FR');
+    $('#ro').innerHTML=`λ = v / f = ${v.toLocaleString('fr-FR')} / ${f.toLocaleString('fr-FR')} = <b>${fmt(lam)} m</b> &nbsp;·&nbsp; T = 1 / f = <b>${fmt(1/f)} s</b>`;
+    const W=cv.width,H=cv.height,pad=30,mid=H/2+10,A=55;
+    const X=x=>pad+(W-2*pad)*x/L;
+    ctx.clearRect(0,0,W,H);
+    ctx.strokeStyle=css('--grid-strong'); ctx.lineWidth=1;
+    for(let m=0;m<=L;m+=0.5){ctx.beginPath();ctx.moveTo(X(m),20);ctx.lineTo(X(m),H-22);ctx.stroke();}
+    ctx.fillStyle=css('--ink-soft'); ctx.font='13px Atkinson Hyperlegible, sans-serif'; ctx.textAlign='center';
+    for(let m=0;m<=L;m+=1) ctx.fillText(m+' m',X(m),H-6);
+    ctx.strokeStyle=css('--ink-soft'); ctx.beginPath();ctx.moveTo(X(0),mid);ctx.lineTo(X(L),mid);ctx.stroke();
+    // onde progressive (source à gauche)
+    const front=v*t;
+    const y=x=> x>front?0:A*Math.sin(2*Math.PI*(f*t - x/lam));
+    ctx.strokeStyle=css('--trace'); ctx.lineWidth=3; ctx.beginPath();
+    for(let px=0;px<=W-2*pad;px+=2){const x=px/(W-2*pad)*L; const yy=mid-y(x); px?ctx.lineTo(X(x),yy):ctx.moveTo(X(x),yy);}
+    ctx.stroke();
+    // repère λ
+    const x0=0.3, x1=x0+lam;
+    if(x1<=L && front>x1){
+      ctx.fillStyle=css('--mark');
+      [x0,x1].forEach(x=>{ctx.beginPath();ctx.arc(X(x),mid-y(x),6,0,7);ctx.fill();});
+      ctx.strokeStyle=css('--mark'); ctx.lineWidth=2; const yb=24;
+      ctx.beginPath();ctx.moveTo(X(x0),yb);ctx.lineTo(X(x1),yb);ctx.stroke();
+      [x0,x1].forEach(x=>{ctx.beginPath();ctx.moveTo(X(x),yb-6);ctx.lineTo(X(x),yb+6);ctx.stroke();});
+      ctx.fillStyle=css('--mark'); ctx.font='bold 14px Atkinson Hyperlegible, sans-serif'; ctx.fillText('λ',(X(x0)+X(x1))/2,yb-8);
+    } else if(x1>L){
+      ctx.fillStyle=css('--mark'); ctx.font='bold 14px Atkinson Hyperlegible, sans-serif'; ctx.fillText('λ est plus grande que la zone affichée',W/2,22);
+    }
+    requestAnimationFrame(frame);
+  }
+  const reset=()=>{t=reduce?10:0;}; sf.oninput=reset; sv.oninput=reset;
+  if(reduce) t=10;
+  requestAnimationFrame(frame);
+}
+</script>
+</body>
+</html>

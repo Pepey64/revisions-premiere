@@ -1,0 +1,505 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>La cellule vivante</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Public+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: une colonne de lecture type cahier, pensée pour le téléphone.
+   Couleurs : papier gris-bleu, bleu de méthylène (accent), rouge de correction, vert/ambre du schéma de la membrane. */
+:root{
+  --paper:#EEF2F6; --card:#FFFFFF; --ink:#14213A; --muted:#566377; --line:#D3DBE5;
+  --stain:#2447A8; --stain-soft:#E1E8F8; --on-stain:#FFFFFF;
+  --ok:#1F7A55; --ok-soft:#E2F2EA; --bad:#B8322C; --bad-soft:#F8E6E4;
+  --head:#1F8A70; --tail:#C27A1E; --field:#F8FAFC;
+  --display:'Familjen Grotesk',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --body:'Public Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0C1422; --card:#152036; --ink:#E7EDF8; --muted:#9AA9C0; --line:#263552;
+    --stain:#8FAEFF; --stain-soft:#1C2B52; --on-stain:#0C1422;
+    --ok:#5FD1A0; --ok-soft:#14332A; --bad:#FF8A82; --bad-soft:#3A1D1F;
+    --head:#4FC9A9; --tail:#E8A545; --field:#0E1829; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0C1422; --card:#152036; --ink:#E7EDF8; --muted:#9AA9C0; --line:#263552;
+  --stain:#8FAEFF; --stain-soft:#1C2B52; --on-stain:#0C1422;
+  --ok:#5FD1A0; --ok-soft:#14332A; --bad:#FF8A82; --bad-soft:#3A1D1F;
+  --head:#4FC9A9; --tail:#E8A545; --field:#0E1829; color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font:400 16px/1.5 var(--body);padding-inline:16px;padding-block:20px 40px}
+.wrap{max-width:640px;margin-inline:auto;min-width:0}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--stain);outline-offset:2px}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.15}
+p{margin:0}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.eyebrow{font:500 12px/1.3 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+
+/* Accueil */
+.hero{display:flex;gap:14px;align-items:center;margin-block:6px 22px}
+.hero svg{flex:none;width:64px;height:64px}
+.hero h1{font-size:clamp(30px,8vw,42px);font-weight:700;letter-spacing:-.01em}
+.lede{color:var(--muted);font-size:15px;margin-top:6px;max-width:54ch}
+.exam{display:block;width:100%;text-align:left;border:0;background:var(--stain);color:var(--on-stain);border-radius:14px;padding:18px 18px 16px}
+.exam h2{font-size:22px;font-weight:600}
+.exam p{margin-top:4px;font-size:14px}
+.exam .go{display:inline-block;margin-top:12px;font:600 14px var(--display);border:1.5px solid currentColor;border-radius:999px;padding:7px 14px}
+.exam .bst{float:right;font:500 13px var(--mono)}
+.sec{font:500 12px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:28px 0 4px}
+.rows{border-top:1px solid var(--line)}
+.row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 12px;align-items:center;width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--line);padding:14px 2px}
+.row h3{font-size:19px;font-weight:600}
+.row .s{color:var(--muted);font-size:14px;grid-column:1}
+.row .r{grid-column:2;grid-row:1 / span 2;font:500 13px var(--mono);color:var(--stain);text-align:right;white-space:nowrap}
+.row:hover h3{color:var(--stain)}
+.weak{display:flex;justify-content:space-between;gap:12px;align-items:center;width:100%;margin-top:10px;background:var(--bad-soft);color:var(--bad);border:1.5px solid var(--bad);border-radius:12px;padding:12px 14px;font:600 15px var(--display);text-align:left}
+.foot{margin-top:30px;color:var(--muted);font-size:13px;max-width:60ch}
+
+/* Barre haute */
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px}
+.back{background:none;border:0;padding:6px 0;color:var(--stain);font:600 15px var(--display)}
+.count{font-size:14px;color:var(--muted)}
+
+/* Fiche */
+.fh h1{font-size:clamp(26px,7vw,34px);font-weight:700}
+.fh .eyebrow{margin-bottom:6px}
+.block{margin-top:26px;min-width:0}
+.block>h2{font-size:20px;font-weight:600;margin-bottom:10px}
+.pts{margin:0;padding-left:20px;display:grid;gap:8px}
+.pts li::marker{color:var(--stain)}
+.callout{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:grid;gap:6px}
+.callout b{font-family:var(--display);font-weight:600}
+.formula{font:500 14px/1.6 var(--mono);background:var(--stain-soft);border-radius:10px;padding:12px 14px;display:grid;gap:4px}
+.tl{list-style:none;margin:0;padding:0;display:grid;gap:0}
+.tl li{display:grid;grid-template-columns:3.4rem minmax(0,1fr);gap:12px;position:relative;padding-bottom:16px}
+.tl li::before{content:"";position:absolute;left:3.4rem;top:8px;bottom:-8px;border-left:1.5px solid var(--line);margin-left:-7px}
+.tl li:last-child::before{display:none}
+.tl time{font:500 15px var(--mono);color:var(--stain);text-align:right}
+.tl li::after{content:"";position:absolute;left:3.4rem;top:8px;width:9px;height:9px;border-radius:50%;background:var(--stain);margin-left:-11.5px}
+.tl b{font-family:var(--display);font-weight:600;display:block}
+.tl span{color:var(--muted);font-size:14px}
+.vocab{display:grid;gap:8px;margin:0}
+.vocab div{display:grid;gap:0}
+.vocab dt{font-family:var(--display);font-weight:600}
+.vocab dd{margin:0;color:var(--muted);font-size:15px}
+.scroll{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--card)}
+table{border-collapse:collapse;width:100%;min-width:540px;font-size:14px}
+th,td{padding:9px 10px;border-bottom:1px solid var(--line);border-right:1px solid var(--line);text-align:left;vertical-align:top}
+th:last-child,td:last-child{border-right:0}
+tr:last-child td{border-bottom:0}
+thead th{font-family:var(--display);font-weight:600;background:var(--stain-soft)}
+tbody th{font-weight:600;color:var(--muted);white-space:nowrap}
+.ruler{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--card);padding:12px 4px 10px}
+.rin{min-width:580px}
+.rr{display:grid;grid-template-columns:9.5rem minmax(0,1fr);align-items:center;padding-right:26px;min-height:26px}
+.rl{font-size:13px;padding-left:10px;color:var(--ink)}
+.rt{position:relative;height:14px;border-radius:4px;background:var(--field)}
+.rt i{position:absolute;top:0;bottom:0;border-radius:4px;min-width:6px}
+.rt i.obj{background:var(--stain)}
+.rt i.vis{background:var(--head)}
+.ax{position:relative;height:22px;border-top:1.5px solid var(--ink);margin-top:6px}
+.ax b{position:absolute;top:4px;transform:translateX(-50%);font:500 10.5px var(--mono);color:var(--muted);white-space:nowrap}
+.note{color:var(--muted);font-size:13px;margin-top:8px}
+.bilayer{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:6px}
+.bilayer svg{display:block;width:100%;height:auto;max-width:100%}
+.hd{fill:var(--head)}
+.tl2{fill:none;stroke:var(--tail);stroke-width:2.2;stroke-linecap:round}
+.prot{fill:var(--stain-soft);stroke:var(--stain);stroke-width:1.6}
+.wat{fill:var(--stain)}
+.lb{font:500 11px var(--body);fill:var(--muted)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;margin-top:10px;font-size:14px}
+.legend span{display:inline-flex;align-items:center;gap:7px}
+.legend i{width:12px;height:12px;border-radius:50%;display:inline-block}
+.cta{position:sticky;bottom:0;margin-top:26px;padding-block:12px calc(12px + env(safe-area-inset-bottom,0px));background:linear-gradient(to bottom,transparent,var(--paper) 30%)}
+.btn{display:block;width:100%;border:0;background:var(--stain);color:var(--on-stain);border-radius:12px;padding:14px 18px;font:600 16px var(--display);text-align:center}
+.btn.alt{background:transparent;color:var(--stain);border:1.5px solid var(--stain)}
+
+/* Quiz */
+.bar{height:6px;border-radius:99px;background:var(--line);overflow:hidden;margin-bottom:20px}
+.bar i{display:block;height:100%;background:var(--stain);transition:width .3s ease}
+.tag{font:500 12px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.q{font-size:clamp(21px,5.6vw,26px);font-weight:600;margin-bottom:18px}
+.opts{display:grid;gap:10px}
+.opt{display:grid;grid-template-columns:2rem minmax(0,1fr);gap:10px;align-items:start;text-align:left;background:var(--card);border:1.5px solid var(--line);border-radius:12px;padding:12px 14px}
+.opt .L{font:500 13px var(--mono);color:var(--stain);border:1.5px solid var(--stain);border-radius:50%;width:26px;height:26px;display:grid;place-items:center}
+.opt span{padding-top:2px;overflow-wrap:anywhere}
+.opt:hover:not(:disabled){border-color:var(--stain)}
+.opt:disabled{cursor:default}
+.opt.good{background:var(--ok-soft);border-color:var(--ok);color:var(--ok);font-weight:600}
+.opt.good .L{color:var(--ok);border-color:var(--ok)}
+.opt.bad{background:var(--bad-soft);border-color:var(--bad);color:var(--bad);font-weight:600}
+.opt.bad .L{color:var(--bad);border-color:var(--bad)}
+.fb{margin-top:16px;border-radius:12px;padding:14px 16px;display:grid;gap:8px;font-size:15px}
+.fb.ok{background:var(--ok-soft)}
+.fb.ko{background:var(--bad-soft)}
+.fb b{font-family:var(--display);font-size:17px}
+.fb.ok b{color:var(--ok)}
+.fb.ko b{color:var(--bad)}
+.fb .ans{font-weight:600}
+.fb .btn{margin-top:6px}
+
+/* Résultat */
+.res{text-align:center;padding-block:10px}
+.mark{display:inline-grid;place-items:center;font:500 46px/1 var(--mono);color:var(--bad);border:2.5px solid var(--bad);border-radius:50%;padding:26px 30px;transform:rotate(-5deg);margin:14px 0 18px}
+.res h1{font-size:26px;font-weight:600}
+.res .sub{color:var(--muted);margin-top:6px}
+.acts{display:grid;gap:10px;margin-top:22px}
+.revw{text-align:left;margin-top:28px}
+.revw h2{font-size:18px;margin-bottom:10px}
+.ri{border-top:1px solid var(--line);padding-block:12px;display:grid;gap:4px}
+.ri .rq{font-weight:600}
+.ri .ra{color:var(--ok);font-weight:600;font-size:15px}
+.ri .re{color:var(--muted);font-size:14px}
+@media (prefers-reduced-motion: reduce){.bar i{transition:none}}
+</style>
+
+<div class="wrap" id="app"></div>
+
+<script>
+(function(){
+var THEMES=[
+ {id:'theorie',n:'La théorie cellulaire',s:'De Hooke à Pasteur, trois principes',p:'Activité 1 · manuel p. 56-57'},
+ {id:'micro',n:'Microscopes et échelles',s:'MO, MET, MEB, calcul d’une taille',p:'Activité 2'},
+ {id:'membrane',n:'La membrane plasmique',s:'Phospholipides, protéines, aquaporines',p:'Activité 3'},
+ {id:'echanges',n:'Les échanges membranaires',s:'Diffusion simple, Glut4, hypotonique, HgCl₂',p:'Activité 4'}
+];
+
+/* [thème, question, bonne réponse, [mauvaises réponses], explication] */
+var RAW=[
+['theorie','Qui utilise pour la première fois le mot « cellule » en 1665 ?','Robert Hooke',['Antoni van Leeuwenhoek','Matthias Schleiden','Theodor Schwann'],'Hooke observe du liège au microscope et décrit des espaces bien délimités qu’il compare aux cellules des moines. Ses dessins sont publiés dans Micrographia.'],
+['theorie','Que voit réellement Hooke dans le liège ?','Les parois de cellules mortes',['Des cellules vivantes avec leur noyau','Des bactéries','Des globules rouges'],'Le liège est fait de cellules mortes : Hooke observe les parois cellulaires qui entourent des espaces vides. Son microscope grossit jusqu’à × 30.'],
+['theorie','Que découvre Leeuwenhoek en 1673 dans une goutte d’eau d’étang ?','Des micro-organismes qu’il nomme « animalcules »',['Les parois du liège','Des cellules végétales','Des cellules animales'],'Il s’agit en réalité de protozoaires et d’algues unicellulaires. Ses observations sont d’abord accueillies avec scepticisme.'],
+['theorie','Quel grossissement atteint le microscope de Leeuwenhoek ?','× 300',['× 30','× 450','× 1 500'],'Hooke : × 30. Leeuwenhoek : × 300. Schleiden : × 450. Le grossissement progresse avec les améliorations du microscope.'],
+['theorie','Que conclut le botaniste Schleiden en 1838 ?','Toutes les parties d’un organisme végétal sont constituées de cellules',['Les animaux sont faits de cellules','Toute cellule provient d’une autre cellule','Les cellules naissent de la matière non vivante'],'Schleiden observe les tissus de végétaux pluricellulaires et retrouve les structures décrites par Hooke 150 ans plus tôt.'],
+['theorie','En 1839, que fait Theodor Schwann des résultats de Schleiden ?','Il les étend aux animaux',['Il les réfute','Il invente le microscope électronique','Il invente le mot « cellule »'],'Schwann observe de nombreux tissus animaux : dans tous, il trouve des cellules avec une membrane et un noyau. Plantes et animaux sont des assemblages de cellules.'],
+['theorie','Qui complète la théorie cellulaire en 1858 ?','Rudolf Virchow',['Louis Pasteur','Robert Hooke','Matthias Schleiden'],'Le médecin allemand Virchow publie que toute cellule est formée par la division d’une cellule préexistante. On comprend ainsi qu’un organisme pluricellulaire se forme à partir d’une cellule unique.'],
+['theorie','Laquelle de ces phrases n’est PAS un principe de la théorie cellulaire ?','Les cellules apparaissent spontanément à partir de matière non vivante',['Tous les êtres vivants sont constitués d’une ou plusieurs cellules','La cellule est l’unité de base du vivant','Toute cellule provient d’une autre cellule préexistante'],'Les trois principes : la cellule est l’unité de base du vivant ; tous les êtres vivants sont faits d’une ou plusieurs cellules ; toute cellule provient d’une cellule préexistante. L’apparition spontanée est la génération spontanée, réfutée.'],
+['theorie','Qu’affirme la théorie de la génération spontanée ?','Des êtres vivants peuvent apparaître spontanément à partir de matière non vivante',['Toute cellule provient d’une autre cellule','Les micro-organismes voyagent avec les poussières','La cellule est le plus petit être vivant'],'Cette idée a prévalu pendant plus de 2 000 ans, avant que la théorie cellulaire ne s’impose.'],
+['theorie','Dans l’expérience de Pasteur (1864), dans quel ballon le bouillon reste-t-il stérile ?','Celui au col de cygne recourbé',['Celui dont le col est cassé','Dans les deux','Dans aucun des deux'],'Dans le col en S, les poussières porteuses de micro-organismes se déposent dans la courbure et n’atteignent pas le bouillon.'],
+['theorie','Pourquoi le bouillon se trouble-t-il quand le col du ballon est cassé ?','Les poussières de l’air, porteuses de micro-organismes, entrent en contact avec le bouillon',['Des micro-organismes apparaissent spontanément dans le bouillon','Le bouillon contenait déjà des micro-organismes vivants','La chaleur a créé des moisissures'],'Au début, le bouillon est stérilisé par chauffage : il ne contient aucun micro-organisme. Ceux qui apparaissent viennent de l’extérieur.'],
+['theorie','Que démontre l’expérience du col de cygne de Pasteur ?','Les micro-organismes viennent de l’extérieur : la génération spontanée est réfutée',['Les micro-organismes naissent de la matière non vivante','Le microscope optique ne suffit pas','Les cellules végétales sont mortes'],'Elle permet d’imposer le 3e principe de la théorie cellulaire : toute cellule provient d’une autre cellule.'],
+['theorie','Quel est l’ordre chronologique correct ?','Hooke, Leeuwenhoek, Schleiden, Schwann, Virchow, Pasteur',['Leeuwenhoek, Hooke, Schwann, Schleiden, Pasteur, Virchow','Hooke, Schleiden, Leeuwenhoek, Schwann, Virchow, Pasteur','Schleiden, Schwann, Hooke, Leeuwenhoek, Pasteur, Virchow'],'1665, 1673, 1838, 1839, 1858, 1864.'],
+['theorie','Qu’est-ce qui a permis les premières observations de cellules au XVIIe siècle ?','L’invention du microscope optique',['Le microscope électronique','La découverte de l’ADN','Les rayons X'],'Le microscope optique (1595) puis ses améliorations ont permis d’observer ce qui est invisible à l’œil nu.'],
+['theorie','Un protozoaire est…','un organisme unicellulaire eucaryote (avec un noyau)',['un organisme pluricellulaire','une couche rigide autour de la membrane','un ensemble de cellules spécialisées'],'Vocabulaire du manuel. Paroi cellulaire : couche rigide à l’extérieur de la membrane des cellules végétales, bactériennes et des champignons.'],
+['theorie','Qu’est-ce qu’un tissu ?','Un ensemble de cellules similaires spécialisées dans une même fonction',['Une cellule qui possède un noyau','Une couche rigide autour de la cellule','Un organisme unicellulaire'],'Un tissu est un niveau d’organisation intermédiaire entre la cellule et l’organe.'],
+
+['micro','Dans quel ordre ces microscopes ont-ils été inventés ?','Optique (1595), à transmission (1931), à balayage (1937)',['À transmission (1931), optique (1595), à balayage (1937)','À balayage (1937), à transmission (1931), optique (1595)','Optique (1595), à balayage (1931), à transmission (1937)'],'Dates du document 1 de l’activité 2.'],
+['micro','Quel faisceau utilisent les microscopes électroniques ?','Un faisceau d’électrons',['Un faisceau lumineux','Des rayons X','Un faisceau laser'],'Le microscope optique utilise un faisceau lumineux.'],
+['micro','Quel microscope permet d’observer un échantillon vivant, après une préparation rapide ?','Le microscope optique',['Le microscope électronique à transmission','Le microscope électronique à balayage','Les deux microscopes électroniques'],'Les microscopes électroniques demandent plusieurs journées de préparation et un échantillon mort et déshydraté.'],
+['micro','Quel microscope atteint le plus fort grossissement ?','Le MET : jusqu’à 5 000 000 ×',['Le MO : jusqu’à 1 500 ×','Le MEB : jusqu’à 5 000 000 ×','Le MO : jusqu’à 100 000 ×'],'MO : 40 à 1 500 × ; MET : jusqu’à 5 000 000 × ; MEB : jusqu’à 100 000 ×.'],
+['micro','Quelle image est en relief (3D), en noir et blanc, et montre la surface d’une cellule ?','Celle du microscope électronique à balayage (MEB)',['Celle du microscope optique (MO)','Celle du microscope électronique à transmission (MET)','Aucune : les cellules ne se voient qu’en 2D'],'Le MEB montre la surface cellulaire en 3D, en noir et blanc.'],
+['micro','Une photo de cellules en couleurs, colorées au bleu de méthylène, vient d’un…','microscope optique',['MET','MEB','MET ou MEB selon le grossissement'],'Seul le MO donne des images en couleurs. Les images des microscopes électroniques sont en noir et blanc.'],
+['micro','Le MET donne une image…','de la structure interne, en 2D, en noir et blanc',['de la surface, en 3D, en noir et blanc','de la structure interne, en 2D, en couleurs','de la surface, en 2D, en couleurs'],'Le MET montre la structure interne d’un échantillon.'],
+['micro','Quel est un inconvénient commun aux deux microscopes électroniques ?','Un coût très élevé et plusieurs jours de préparation',['Un grossissement trop faible','Une observation uniquement à travers les oculaires','Des images uniquement en couleurs'],'Ils s’utilisent via une interface numérique, avec un échantillon mort et déshydraté.'],
+['micro','Quel est un avantage du microscope optique ?','Un faible coût et une préparation rapide',['Une résolution de 0,5 nm','Des images en 3D','Un grossissement de 5 000 000 ×'],'Il permet aussi une observation directe à travers les oculaires, avec des couleurs.'],
+['micro','Que permettent d’observer les microscopes optiques ?','Des cellules, des bactéries et certains organites comme les chloroplastes',['Des molécules comme l’ADN','Des atomes','Des virus et des molécules de collagène'],'Le MO donne accès à l’échelle cellulaire ; les microscopes électroniques à l’échelle moléculaire (virus, ADN, collagène…).'],
+['micro','Quel objet ne peut être observé qu’avec un microscope électronique ?','Une molécule d’ADN',['Un grain de pollen','Une cellule d’épiderme d’oignon','Une cellule buccale'],'Une molécule d’ADN mesure quelques nanomètres, bien en dessous de la résolution du MO (0,35 µm).'],
+['micro','Combien de nanomètres y a-t-il dans 1 micromètre ?','1 000 nm',['10 nm','100 nm','1 000 000 nm'],'1 nm = 10⁻⁹ m et 1 µm = 10⁻⁶ m.'],
+['micro','Quelle valeur en mètres correspond à 1 cm ?','10⁻² m',['10⁻³ m','10⁻⁶ m','10⁻⁹ m'],'Rappel : 1 nm = 10⁻⁹ m ; 1 µm = 10⁻⁶ m ; 1 cm = 10⁻² m.'],
+['micro','Classe ces objets du plus petit au plus grand.','Molécule, organite, cellule, organe',['Organite, molécule, cellule, organe','Cellule, organite, molécule, organe','Molécule, cellule, organite, organe'],'Atome (0,1 nm) &lt; molécule (1 à 10 nm) &lt; organites et bactéries (environ 1 µm) &lt; cellules (10 à 100 µm) &lt; organes (mm à cm) &lt; humains (environ 1 m).'],
+['micro','Comment calcule-t-on la taille réelle d’une cellule à partir du grossissement ?','Taille réelle = taille mesurée sur l’image ÷ grossissement',['Taille réelle = taille mesurée sur l’image × grossissement','Taille réelle = grossissement ÷ taille mesurée','Taille réelle = taille mesurée + grossissement'],'Exemple du cours : 1,1 cm ÷ 700 ≈ 0,0016 cm = 16 µm (diamètre d’un phagocyte).'],
+['micro','Sur l’image, la bactérie Salmonella mesure 3,3 cm et la barre d’échelle (200 nm) mesure 0,4 cm. Quelle est la longueur réelle de la bactérie ?','1 650 nm (1,65 µm)',['165 nm','16 500 nm','660 nm'],'3,3 ÷ 0,4 = 8,25 ; 8,25 × 200 nm = 1 650 nm.'],
+['micro','Un phagocyte mesure 1,1 cm sur une photo au grossissement × 700. Quel est son diamètre réel ?','Environ 16 µm',['Environ 1,6 µm','Environ 160 µm','Environ 770 µm'],'1,1 cm ÷ 700 ≈ 0,0016 cm. Comme 1 cm = 10 000 µm, cela donne environ 16 µm.'],
+
+['membrane','Quel est le rôle de la membrane plasmique ?','Délimiter la cellule en séparant le milieu intracellulaire du milieu extracellulaire',['Fabriquer l’énergie de la cellule','Stocker l’ADN','Donner sa rigidité à la cellule'],'La rigidité vient de la paroi, une couche située à l’extérieur de la membrane chez les végétaux, les bactéries et les champignons.'],
+['membrane','Que signifie « hydrophile » ?','Soluble dans l’eau',['Insoluble dans l’eau','Soluble uniquement dans les corps gras','Qui repousse les ions'],'Hydrophile : qui aime l’eau.'],
+['membrane','Que signifie « hydrophobe » ?','Insoluble dans l’eau, mais soluble dans les corps gras',['Soluble dans l’eau','Qui attire l’eau','Qui dissout les protéines'],'Hydrophobe : qui craint l’eau.'],
+['membrane','Comment est faite une molécule de phospholipide ?','Une tête hydrophile et deux queues hydrophobes',['Une tête hydrophobe et deux queues hydrophiles','Deux têtes hydrophiles et une queue hydrophobe','Une tête et deux queues, toutes hydrophiles'],'Sur le schéma : tête en vert (zone hydrophile), queues en rouge (zone hydrophobe).'],
+['membrane','Comment les phospholipides sont-ils organisés dans la membrane ?','En double couche (bicouche)',['En une seule couche','En un amas désordonné','En un tube creux'],'La membrane est une bicouche de phospholipides dans laquelle sont insérées des protéines.'],
+['membrane','Dans la bicouche, vers quoi sont orientées les têtes hydrophiles ?','Vers le milieu extracellulaire et vers le cytoplasme',['Vers le centre de la membrane','Vers le noyau uniquement','Dans toutes les directions'],'Les queues hydrophobes sont regroupées au centre de la membrane.'],
+['membrane','Pourquoi les queues hydrophobes se placent-elles au centre de la membrane ?','Elles sont ainsi à l’abri de l’eau des deux milieux',['Elles attirent l’eau vers l’intérieur','Elles sont accrochées au noyau','Elles s’y trouvent par hasard'],'Les milieux extracellulaire et intracellulaire sont aqueux : les têtes sont au contact de l’eau, les queues à l’abri.'],
+['membrane','La membrane plasmique contient aussi…','des protéines, dont certaines sont transmembranaires',['uniquement des phospholipides','de l’ADN','des chloroplastes'],'Les protéines transmembranaires permettent des échanges de molécules entre le milieu extracellulaire et le cytoplasme.'],
+['membrane','La membrane mesure environ 7,5 nm d’épaisseur. Peut-on distinguer sa structure en bicouche au microscope optique (résolution 0,35 µm) ?','Non : il faut un microscope électronique, à la résolution bien meilleure',['Oui, avec un bon éclairage','Oui, mais seulement avec une coloration','Oui, grâce aux oculaires'],'0,35 µm = 350 nm, bien plus que 7,5 nm. Le MET permet de voir la structure de la membrane.'],
+['membrane','Que sont les aquaporines ?','Des petites protéines transmembranaires qui forment des canaux pour l’eau',['Des phospholipides spécialisés','Des organites','Des molécules d’eau'],'Découvertes en 1992, d’abord dans les globules rouges (érythrocytes), puis dans les cellules végétales.'],
+['membrane','Combien de molécules d’eau une aquaporine laisse-t-elle passer par seconde ?','3 milliards',['3 millions','300','30 000'],'Les transferts d’eau par les aquaporines sont bidirectionnels.'],
+['membrane','Pourquoi l’eau a-t-elle besoin des aquaporines pour traverser rapidement la membrane ?','Les queues hydrophobes des phospholipides ne laissent pas passer l’eau',['Les têtes hydrophiles bloquent l’eau','La membrane est trop épaisse pour une molécule','L’eau ne traverse jamais une membrane'],'Les aquaporines forment des canaux avec un espace central appelé « pore ».'],
+
+['echanges','Comment les molécules peuvent-elles traverser la membrane ?','Par diffusion simple entre les phospholipides, ou par une protéine transmembranaire',['Uniquement par diffusion simple','Uniquement par des protéines','En détruisant la membrane'],'Le chemin dépend de la nature de la molécule.'],
+['echanges','Pourquoi le glucose ne traverse-t-il pas la membrane par diffusion simple ?','Il est hydrophile et ne peut pas traverser les queues hydrophobes',['Il est hydrophobe','Il est trop gros pour le noyau','Il est détruit par les têtes hydrophiles'],'Il entre dans la cellule par une protéine transmembranaire, Glut4 (exemple de la cellule musculaire).'],
+['echanges','Comment les acides gras entrent-ils dans la cellule ?','Par diffusion simple, en passant entre les phospholipides',['Par la protéine Glut4','Par les aquaporines','Ils n’y entrent pas'],'Les acides gras sont hydrophobes : ils traversent la zone hydrophobe de la membrane.'],
+['echanges','Quelle règle permet de prévoir le mode de passage d’une molécule ?','Hydrophobe : diffusion simple ; hydrophile : protéine transmembranaire',['Hydrophile : diffusion simple ; hydrophobe : protéine transmembranaire','Toutes les molécules passent par diffusion simple','Toutes les molécules passent par des protéines'],'C’est le bilan de l’activité 4.'],
+['echanges','Que devient le glucose entré dans une cellule musculaire ?','Il est stocké sous forme de glycogène ou utilisé pour la respiration',['Il est rejeté dans le milieu extracellulaire','Il se transforme en acide gras','Il est stocké dans le noyau'],'Voir le schéma « Mécanisme d’entrée et devenir du glucose dans la cellule musculaire ».'],
+['echanges','Quel est le diamètre approximatif d’un globule rouge ?','7 µm',['7 nm','70 µm','7 mm'],'Forme arrondie et aplatie ; sa forme et son diamètre varient avec la concentration en ions du plasma.'],
+['echanges','Que devient un globule rouge dans un milieu hypotonique (peu concentré en ions) ?','L’eau entre : il gonfle et peut éclater',['L’eau sort : il se rétracte','Rien ne change','Les ions sortent et l’eau reste'],'Hypotonique : l’eau entre dans le globule rouge.'],
+['echanges','Que devient un globule rouge dans un milieu hypertonique (très concentré en ions) ?','L’eau sort : il se rétracte',['L’eau entre : il gonfle','Il éclate','Il garde son volume, la membrane est étanche'],'Hypertonique : l’eau sort du globule rouge.'],
+['echanges','Dans quel sens l’eau se déplace-t-elle ?','Du milieu pauvre en ions vers le milieu riche en ions',['Du milieu riche en ions vers le milieu pauvre en ions','Elle ne se déplace pas','Toujours vers l’extérieur de la cellule'],'Pauvre en ions : hypotonique. Riche en ions : hypertonique.'],
+['echanges','Dans l’expérience de Preston et Agre (1992), pourquoi utilise-t-on des ovocytes de xénope ?','Ils sont habituellement dépourvus d’aquaporines',['Ils contiennent beaucoup d’aquaporines','Ils résistent au mercure','Ils vivent en milieu hypertonique'],'Les chercheurs ajoutent des aquaporines dans la membrane de certaines cellules (lot « avec AQP »).'],
+['echanges','En milieu hypotonique, que montre le graphique de l’expérience de 1992 ?','Les ovocytes avec AQP gonflent, les ovocytes témoins gardent leur volume',['Les ovocytes témoins gonflent plus vite','Il n’y a aucune différence entre les deux lots','Les ovocytes avec AQP rétrécissent'],'Les aquaporines permettent et accélèrent le passage de l’eau à travers la membrane.'],
+['echanges','À quoi sert le lot « témoin » ?','À comparer avec les cellules modifiées pour isoler l’effet des aquaporines',['À fournir des aquaporines','À remplacer le milieu hypotonique','À mesurer la température'],'Le témoin ne diffère des cellules modifiées que par l’absence d’aquaporines.'],
+['echanges','Quel est l’effet du chlorure de mercure (HgCl₂) sur les aquaporines ?','Il inhibe leur fonctionnement et réduit le passage de l’eau',['Il augmente le nombre d’aquaporines','Il accélère les échanges d’eau','Il n’a aucun effet'],'Avec HgCl₂, le volume des ovocytes varie peu en milieu hypotonique (document 4).'],
+['echanges','Que montre l’effet du HgCl₂ de façon plus générale ?','Des molécules exogènes peuvent modifier le fonctionnement des protéines transmembranaires',['Le mercure détruit toutes les protéines','Seuls les phospholipides sont modifiables','Les molécules exogènes ne passent jamais la membrane'],'C’est le bilan de l’activité 4.']
+];
+
+function hid(s){var h=0,i;for(i=0;i<s.length;i++){h=(h*31+s.charCodeAt(i))|0}return 'q'+(h>>>0).toString(36)}
+var QS=RAW.map(function(r){return {t:r[0],q:r[1],c:r[2],w:r[3],e:r[4],id:hid(r[1])}});
+var BYID={};QS.forEach(function(q){BYID[q.id]=q});
+
+function fmt(n,d){return n.toLocaleString('fr-FR',{maximumFractionDigits:d==null?2:d})}
+function pick(a){return a[Math.floor(Math.random()*a.length)]}
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var x=a[i];a[i]=a[j];a[j]=x}return a}
+
+function genGross(){
+  var p=pick([[20,500],[30,700],[16,700],[25,400],[12,1000],[40,600],[50,400],[8,1500]]);
+  var S=p[0],G=p[1],L=S*G/10000;
+  return {t:'micro',dyn:true,id:'dyn',
+    q:'Une cellule mesure '+fmt(L)+' cm sur une photo prise au grossissement × '+fmt(G)+'. Quelle est sa taille réelle ?',
+    c:fmt(S)+' µm',w:[fmt(S*10)+' µm',fmt(S/10)+' µm',fmt(S*100)+' µm'],
+    e:'Taille réelle = '+fmt(L)+' cm ÷ '+fmt(G)+' = '+fmt(L/G,5)+' cm. Comme 1 cm = 10 000 µm, on obtient '+fmt(S)+' µm.'};
+}
+function genEch(){
+  var a=pick([0.4,0.5,0.8,1]),V=pick([100,200,500]),r=pick([4,5,6,8,10,12]);
+  var b=Math.round(a*r*100)/100,size=r*V;
+  var tail=size>=1000?' ('+fmt(size/1000)+' µm)':'';
+  return {t:'micro',dyn:true,id:'dyn',
+    q:'Sur une image, la barre d’échelle de '+fmt(V)+' nm mesure '+fmt(a)+' cm. Un objet mesure '+fmt(b)+' cm. Quelle est sa taille réelle ?',
+    c:fmt(size)+' nm',w:[fmt(size*10)+' nm',fmt(size/10)+' nm',fmt(size/2)+' nm'],
+    e:fmt(b)+' ÷ '+fmt(a)+' = '+fmt(r)+' ; '+fmt(r)+' × '+fmt(V)+' nm = '+fmt(size)+' nm'+tail+'.'};
+}
+function byTheme(id){return QS.filter(function(q){return q.t===id})}
+function themeSet(id){
+  var s=byTheme(id);
+  if(id==='micro'){s=s.concat([genGross(),genEch()])}
+  return shuffle(s);
+}
+function examSet(){
+  var out=[];
+  THEMES.forEach(function(th){
+    var s=shuffle(byTheme(th.id));
+    if(th.id==='micro'){out=out.concat(s.slice(0,4));out.push(pick([genGross,genEch])())}
+    else out=out.concat(s.slice(0,5));
+  });
+  return shuffle(out);
+}
+function themeName(id){for(var i=0;i<THEMES.length;i++){if(THEMES[i].id===id)return THEMES[i].n}return ''}
+
+function load(k,d){try{var v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}}
+function store(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+var best=load('cv-best',{}),miss=load('cv-miss',[]);
+function saveMiss(){store('cv-miss',miss)}
+
+var app=document.getElementById('app');
+var S={view:'home',quiz:null};
+function top(){window.scrollTo(0,0)}
+
+/* ---------- Fiches ---------- */
+var TICKS=['0,1 nm','1 nm','10 nm','100 nm','1 µm','10 µm','100 µm','1 mm','1 cm','10 cm','1 m','10 m'];
+var RROWS=[['Atome',0,0.35,'obj'],['Molécule',1,2.1,'obj'],['Organites, bactéries',3.7,4.6,'obj'],['Cellules',5,6,'obj'],['Organes',7,9.2,'obj'],['Humains',10,10.5,'obj'],['Visible au MET / MEB',1,6,'vis'],['Visible au MO',3.7,7.2,'vis'],['Visible à l’œil nu',6.9,11,'vis']];
+function ruler(){
+  var h='<div class="ruler"><div class="rin">';
+  RROWS.forEach(function(r){
+    h+='<div class="rr"><span class="rl">'+r[0]+'</span><div class="rt"><i class="'+r[3]+'" style="left:'+(r[1]/11*100)+'%;width:'+((r[2]-r[1])/11*100)+'%"></i></div></div>';
+  });
+  h+='<div class="rr"><span></span><div class="ax">';
+  TICKS.forEach(function(t,k){h+='<b style="left:'+(k/11*100)+'%">'+t+'</b>'});
+  h+='</div></div></div></div><p class="note">Échelle logarithmique : chaque graduation vaut 10 fois la précédente. Bleu : objets. Vert : ce qui est visible avec chaque instrument. Valeurs lues sur le schéma du cours, approximatives.</p>';
+  return h;
+}
+function bilayer(){
+  var s='',x;
+  for(x=18;x<=330;x+=22){
+    if(x>122&&x<222)continue;
+    s+='<circle cx="'+x+'" cy="62" r="7.5" class="hd"/>';
+    s+='<path class="tl2" d="M'+(x-3)+' 69 C'+(x-6)+' 82 '+(x-2)+' 92 '+(x-4)+' 104 M'+(x+3)+' 69 C'+(x+6)+' 82 '+(x+2)+' 92 '+(x+4)+' 104"/>';
+    s+='<circle cx="'+x+'" cy="146" r="7.5" class="hd"/>';
+    s+='<path class="tl2" d="M'+(x-3)+' 139 C'+(x-6)+' 126 '+(x-2)+' 116 '+(x-4)+' 108 M'+(x+3)+' 139 C'+(x+6)+' 126 '+(x+2)+' 116 '+(x+4)+' 108"/>';
+  }
+  s+='<rect class="prot" x="134" y="46" width="30" height="124" rx="10"/><rect class="prot" x="182" y="46" width="30" height="124" rx="10"/>';
+  for(var y=58;y<=160;y+=14){s+='<circle class="wat" cx="173" cy="'+y+'" r="3"/>'}
+  s+='<text class="lb" x="8" y="20">milieu extracellulaire (eau)</text>';
+  s+='<text class="lb" x="8" y="192">cytoplasme (eau)</text>';
+  s+='<text class="lb" x="173" y="36" text-anchor="middle">protéine transmembranaire</text>';
+  return '<div class="bilayer"><svg viewBox="0 0 344 200" role="img" aria-label="Schéma d’une membrane plasmique : double couche de phospholipides et protéine canal">'+s+'</svg></div>'+
+  '<div class="legend"><span><i style="background:var(--head)"></i>tête hydrophile, au contact de l’eau</span><span><i style="background:var(--tail)"></i>queues hydrophobes, au centre</span><span><i style="background:var(--stain)"></i>canal à eau (aquaporine)</span></div>';
+}
+function ficheTheorie(){return ''+
+ '<section class="block"><h2>Frise des découvertes</h2><ol class="tl">'+
+ '<li><time>1595</time><div><b>Microscope optique</b><span>Premier instrument pour observer l’invisible.</span></div></li>'+
+ '<li><time>1665</time><div><b>Hooke</b><span>Observe du liège (× 30) et emploie le mot « cellule ». Ce sont des parois de cellules mortes.</span></div></li>'+
+ '<li><time>1673</time><div><b>Leeuwenhoek</b><span>Microscope × 300. Découvre des micro-organismes, les « animalcules ».</span></div></li>'+
+ '<li><time>1838</time><div><b>Schleiden</b><span>Les végétaux sont constitués de cellules (× 450).</span></div></li>'+
+ '<li><time>1839</time><div><b>Schwann</b><span>Étend le résultat aux animaux : cellules avec membrane et noyau.</span></div></li>'+
+ '<li><time>1858</time><div><b>Virchow</b><span>Toute cellule provient de la division d’une cellule préexistante.</span></div></li>'+
+ '<li><time>1864</time><div><b>Pasteur</b><span>Col de cygne : la génération spontanée est réfutée.</span></div></li>'+
+ '</ol><p class="note">Frise non proportionnelle aux dates.</p></section>'+
+ '<section class="block"><h2>Les trois principes</h2><ol class="pts">'+
+ '<li>La cellule est l’unité de base du vivant.</li>'+
+ '<li>Tous les êtres vivants sont constitués d’une ou plusieurs cellules.</li>'+
+ '<li>Toute cellule provient d’une autre cellule préexistante, par division cellulaire.</li></ol></section>'+
+ '<section class="block"><h2>Le col de cygne en bref</h2><div class="callout">'+
+ '<p><b>Col recourbé :</b> les poussières sont piégées, le bouillon reste stérile.</p>'+
+ '<p><b>Col cassé :</b> les poussières entrent, le bouillon se trouble et des moisissures apparaissent.</p>'+
+ '<p>Les micro-organismes viennent donc de l’extérieur, pas de la matière non vivante.</p></div></section>'+
+ '<section class="block"><h2>Vocabulaire</h2><dl class="vocab">'+
+ '<div><dt>Paroi cellulaire</dt><dd>Couche rigide à l’extérieur de la membrane plasmique des cellules végétales, bactériennes et des champignons.</dd></div>'+
+ '<div><dt>Pluricellulaire</dt><dd>Constitué de plusieurs cellules.</dd></div>'+
+ '<div><dt>Protozoaire</dt><dd>Organisme unicellulaire eucaryote (avec un noyau).</dd></div>'+
+ '<div><dt>Théorie</dt><dd>Ensemble organisé de principes qui décrit et explique un corps de faits.</dd></div>'+
+ '<div><dt>Tissu</dt><dd>Ensemble de cellules similaires spécialisées dans une même fonction.</dd></div></dl></section>';}
+function ficheMicro(){return ''+
+ '<section class="block"><h2>Comparer les trois microscopes</h2><div class="scroll"><table>'+
+ '<thead><tr><th></th><th>Optique (MO)</th><th>Électronique à transmission (MET)</th><th>Électronique à balayage (MEB)</th></tr></thead><tbody>'+
+ '<tr><th>Invention</th><td>1595</td><td>1931</td><td>1937</td></tr>'+
+ '<tr><th>Préparation</th><td>Rapide, échantillon vivant ou mort</td><td colspan="2">Plusieurs jours, échantillon mort et déshydraté</td></tr>'+
+ '<tr><th>Faisceau</th><td>Lumineux</td><td colspan="2">D’électrons</td></tr>'+
+ '<tr><th>Image</th><td>Structure interne, 2D, couleurs</td><td>Structure interne, 2D, noir et blanc</td><td>Surface, 3D, noir et blanc</td></tr>'+
+ '<tr><th>Grossissement</th><td>40 à 1 500 ×</td><td>jusqu’à 5 000 000 ×</td><td>jusqu’à 100 000 ×</td></tr>'+
+ '<tr><th>Résolution</th><td>0,35 µm</td><td>10 à 0,5 nm</td><td>2 à 0,2 nm</td></tr>'+
+ '<tr><th>Coût</th><td>Faible</td><td colspan="2">Très élevé</td></tr>'+
+ '<tr><th>Observation</th><td>Par les oculaires</td><td colspan="2">Via une interface numérique</td></tr>'+
+ '</tbody></table></div></section>'+
+ '<section class="block"><h2>À retenir</h2><ul class="pts">'+
+ '<li>Le MO donne accès à l’échelle cellulaire : cellules, bactéries, certains organites (chloroplastes).</li>'+
+ '<li>Les microscopes électroniques donnent accès à l’échelle moléculaire : virus, ADN, collagène.</li>'+
+ '<li>Le MET se distingue par la résolution et le grossissement, le MEB par ses images en 3D.</li></ul></section>'+
+ '<section class="block"><h2>Calculer une taille</h2><div class="formula">'+
+ '<span>taille réelle = taille sur l’image ÷ grossissement</span>'+
+ '<span>taille réelle = (longueur de l’objet ÷ longueur de la barre) × valeur de la barre</span></div>'+
+ '<div class="callout" style="margin-top:10px"><p><b>Unités :</b> 1 nm = 10⁻⁹ m · 1 µm = 10⁻⁶ m · 1 cm = 10⁻² m · 1 µm = 1 000 nm · 1 cm = 10 000 µm.</p>'+
+ '<p><b>Exemples du cours :</b> Salmonella : 3,3 ÷ 0,4 = 8,25 puis × 200 nm = 1 650 nm. Phagocyte : 1,1 cm ÷ 700 ≈ 0,0016 cm = 16 µm.</p></div></section>'+
+ '<section class="block"><h2>L’échelle des tailles</h2>'+ruler()+'</section>';}
+function ficheMembrane(){return ''+
+ '<section class="block"><h2>Une double couche de phospholipides</h2>'+bilayer()+'</section>'+
+ '<section class="block"><h2>À retenir</h2><ul class="pts">'+
+ '<li>La membrane sépare le milieu intracellulaire du milieu extracellulaire (tous deux aqueux).</li>'+
+ '<li>Un phospholipide a une tête hydrophile et deux queues hydrophobes.</li>'+
+ '<li>Têtes vers le milieu extracellulaire et le cytoplasme, queues regroupées au centre, à l’abri de l’eau.</li>'+
+ '<li>Des protéines sont insérées dans la bicouche. Certaines, transmembranaires, permettent les échanges. Exemple : les aquaporines.</li>'+
+ '<li>Le MET révèle la structure de la membrane (environ 7,5 nm d’épaisseur), invisible au MO.</li></ul></section>'+
+ '<section class="block"><h2>Les aquaporines</h2><div class="callout">'+
+ '<p>Petites protéines transmembranaires qui forment des canaux à eau, avec un espace central appelé « pore ».</p>'+
+ '<p>Découvertes en 1992 dans les globules rouges, puis dans les cellules végétales.</p>'+
+ '<p>Transferts d’eau dans les deux sens : jusqu’à 3 milliards de molécules par seconde et par aquaporine.</p></div></section>'+
+ '<section class="block"><h2>Vocabulaire</h2><dl class="vocab">'+
+ '<div><dt>Hydrophile</dt><dd>Soluble dans l’eau.</dd></div>'+
+ '<div><dt>Hydrophobe</dt><dd>Insoluble dans l’eau, mais soluble dans les corps gras.</dd></div></dl></section>';}
+function ficheEchanges(){return ''+
+ '<section class="block"><h2>Quel chemin pour quelle molécule ?</h2><div class="scroll"><table>'+
+ '<thead><tr><th>Molécule</th><th>Nature</th><th>Passage de la membrane</th></tr></thead><tbody>'+
+ '<tr><td>Acides gras</td><td>Hydrophobes</td><td>Diffusion simple, entre les phospholipides</td></tr>'+
+ '<tr><td>Glucose</td><td>Hydrophile</td><td>Protéine transmembranaire Glut4</td></tr>'+
+ '<tr><td>Eau</td><td>Hydrophile</td><td>Aquaporines (canaux à eau)</td></tr>'+
+ '</tbody></table></div></section>'+
+ '<section class="block"><h2>Les globules rouges et l’eau</h2><div class="scroll"><table>'+
+ '<thead><tr><th>Milieu</th><th>Concentration en ions</th><th>Flux d’eau</th><th>Effet</th></tr></thead><tbody>'+
+ '<tr><td>Hypotonique</td><td>Faible</td><td>L’eau entre</td><td>Le globule gonfle, peut éclater</td></tr>'+
+ '<tr><td>Hypertonique</td><td>Forte</td><td>L’eau sort</td><td>Le globule se rétracte</td></tr>'+
+ '</tbody></table></div><p class="note">L’eau va du milieu pauvre en ions vers le milieu riche en ions. Un globule rouge mesure environ 7 µm.</p></section>'+
+ '<section class="block"><h2>L’expérience de 1992 (Preston et Agre)</h2><ul class="pts">'+
+ '<li>Ovocytes de xénope, habituellement sans aquaporines.</li>'+
+ '<li>On ajoute des aquaporines dans la membrane de certaines cellules (avec AQP). Les autres sont le témoin.</li>'+
+ '<li>En milieu hypotonique, seules les cellules avec AQP gonflent : les aquaporines permettent et accélèrent le passage de l’eau.</li></ul></section>'+
+ '<section class="block"><h2>Effet du chlorure de mercure</h2><div class="callout">'+
+ '<p>HgCl₂ inhibe le fonctionnement des aquaporines, donc ralentit les échanges d’eau.</p>'+
+ '<p>Des molécules exogènes peuvent modifier le fonctionnement des protéines transmembranaires.</p></div></section>';}
+var FICHES={theorie:ficheTheorie,micro:ficheMicro,membrane:ficheMembrane,echanges:ficheEchanges};
+
+/* ---------- Vues ---------- */
+var MARK='<svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="30" fill="var(--field)" stroke="var(--ink)" stroke-width="2"/><ellipse cx="30" cy="33" rx="19" ry="15" fill="var(--stain-soft)" stroke="var(--stain)" stroke-width="2.2"/><circle cx="34" cy="31" r="5.5" fill="var(--stain)"/><circle cx="21" cy="38" r="2" fill="var(--stain)"/><circle cx="26" cy="26" r="1.6" fill="var(--stain)"/></svg>';
+
+function home(){
+  S.view='home';S.quiz=null;top();
+  var be=best.exam;
+  var h='<div class="hero">'+MARK+'<div><div class="eyebrow">Enseignement scientifique · Première</div><h1>La cellule vivante</h1></div></div>';
+  h+='<p class="lede">Thème 1, une longue histoire de la matière. Chapitre 1, une structure complexe. Révisions pour l’évaluation en QCM, construites sur les activités 1 à 4 et les pages 56-57 du manuel.</p>';
+  h+='<div style="margin-top:20px"><button class="exam" data-act="exam"><h2>Évaluation blanche'+(be?'<span class="bst">meilleur : '+be.s+'/'+be.n+'</span>':'')+'</h2><p>20 questions tirées de tout le chapitre, dans le désordre. Note sur 20 à la fin.</p><span class="go">Commencer</span></button>';
+  if(miss.length){h+='<button class="weak" data-act="weak"><span>Revoir mes points faibles</span><span class="mono">'+miss.length+'</span></button>'}
+  h+='</div><div class="sec">Réviser par partie</div><div class="rows">';
+  THEMES.forEach(function(th){
+    var b=best[th.id],n=byTheme(th.id).length;
+    h+='<button class="row" data-act="theme" data-arg="'+th.id+'"><h3>'+th.n+'</h3><span class="r">'+(b?b.s+'/'+b.n:n+' questions')+'</span><span class="s">'+th.s+'</span></button>';
+  });
+  h+='</div><p class="foot">Chaque partie propose une fiche de révision puis un quiz. Les erreurs sont mémorisées sur cet appareil pour y revenir.</p>';
+  app.innerHTML=h;
+}
+
+function theme(id){
+  S.view='theme';top();
+  var th=THEMES.filter(function(t){return t.id===id})[0];
+  app.innerHTML='<div class="top"><button class="back" data-act="home">← Accueil</button></div>'+
+   '<header class="fh"><div class="eyebrow">'+th.p+'</div><h1>'+th.n+'</h1></header>'+
+   FICHES[id]()+
+   '<div class="cta"><button class="btn" data-act="quizTheme" data-arg="'+id+'">Faire le quiz de cette partie</button></div>';
+}
+
+function build(items){
+  return items.map(function(o){
+    var opts=shuffle([o.c].concat(o.w));
+    return {o:o,q:o.q,e:o.e,id:o.id,t:o.t,opts:opts,a:opts.indexOf(o.c)};
+  });
+}
+function startQuiz(items,title,key){
+  S.view='quiz';
+  S.quiz={title:title,key:key,qs:build(items),i:0,score:0,wrong:[],answered:false,done:false};
+  renderQ();
+}
+function renderQ(){
+  var z=S.quiz,Q=z.qs[z.i],n=z.qs.length;top();
+  var h='<div class="top"><button class="back" data-act="quit">← Quitter</button><span class="count mono">'+(z.i+1)+' / '+n+'</span></div>';
+  h+='<div class="bar"><i style="width:'+(z.i/n*100)+'%"></i></div>';
+  h+='<div class="tag">'+themeName(Q.t)+'</div><h2 class="q">'+Q.q+'</h2><div class="opts">';
+  Q.opts.forEach(function(o,k){h+='<button class="opt" data-act="pick" data-arg="'+k+'"><b class="L">'+'ABCD'.charAt(k)+'</b><span>'+o+'</span></button>'});
+  h+='</div><div id="fb"></div>';
+  app.innerHTML=h;
+}
+function pickOpt(k){
+  var z=S.quiz;if(z.answered)return;z.answered=true;
+  var Q=z.qs[z.i],ok=(k===Q.a),btns=app.querySelectorAll('.opt');
+  btns.forEach(function(b,i){b.disabled=true;if(i===Q.a)b.classList.add('good');else if(i===k)b.classList.add('bad')});
+  if(ok){z.score++;if(!Q.o.dyn){var ix=miss.indexOf(Q.id);if(ix>-1){miss.splice(ix,1);saveMiss()}}}
+  else{z.wrong.push(Q);if(!Q.o.dyn&&miss.indexOf(Q.id)<0){miss.push(Q.id);saveMiss()}}
+  var last=z.i===z.qs.length-1;
+  document.getElementById('fb').innerHTML='<div class="fb '+(ok?'ok':'ko')+'"><b>'+(ok?'Exact.':'Pas tout à fait.')+'</b>'+(ok?'':'<p class="ans">Bonne réponse : '+Q.opts[Q.a]+'</p>')+'<p>'+Q.e+'</p><button class="btn" id="nx" data-act="next">'+(last?'Voir mon score':'Question suivante')+'</button></div>';
+  var nx=document.getElementById('nx');
+  try{nx.scrollIntoView({block:'nearest',behavior:'smooth'});nx.focus({preventScroll:true})}catch(e){}
+}
+function nextQ(){
+  var z=S.quiz;if(!z.answered)return;
+  z.answered=false;
+  if(z.i<z.qs.length-1){z.i++;renderQ()}else{result()}
+}
+function result(){
+  var z=S.quiz,n=z.qs.length,s=z.score;z.done=true;top();
+  if(z.key){var b=best[z.key];if(!b||s/n>b.s/b.n){best[z.key]={s:s,n:n};store('cv-best',best)}}
+  var pct=s/n,msg=pct>=0.85?'Très bon niveau.':pct>=0.65?'Presque. Relis les fiches des parties manquées.':'Reprends les fiches, puis refais le quiz.';
+  var sub=z.key==='exam'?'Note : '+fmt(Math.round(pct*200)/10,1)+' / 20':fmt(Math.round(pct*100),0)+' % de bonnes réponses';
+  var h='<div class="res"><div class="eyebrow">'+z.title+'</div><div class="mark">'+s+'/'+n+'</div><h1>'+msg+'</h1><p class="sub">'+sub+'</p><div class="acts">';
+  if(z.wrong.length)h+='<button class="btn" data-act="redo">Refaire les '+z.wrong.length+' erreur'+(z.wrong.length>1?'s':'')+'</button>';
+  h+='<button class="btn alt" data-act="again">Recommencer</button><button class="btn alt" data-act="home">Accueil</button></div></div>';
+  if(z.wrong.length){
+    h+='<div class="revw"><h2>À revoir</h2>';
+    z.wrong.forEach(function(Q){h+='<div class="ri"><span class="rq">'+Q.q+'</span><span class="ra">'+Q.opts[Q.a]+'</span><span class="re">'+Q.e+'</span></div>'});
+    h+='</div>';
+  }
+  app.innerHTML=h;
+}
+function weakSet(){return shuffle(miss.map(function(id){return BYID[id]}).filter(Boolean))}
+
+app.addEventListener('click',function(e){
+  var el=e.target.closest('[data-act]');if(!el)return;
+  var a=el.dataset.act,g=el.dataset.arg;
+  if(a==='home')home();
+  else if(a==='exam')startQuiz(examSet(),'Évaluation blanche','exam');
+  else if(a==='weak'){var w=weakSet();if(w.length)startQuiz(w,'Points faibles',null);else{miss=[];saveMiss();home()}}
+  else if(a==='theme')theme(g);
+  else if(a==='quizTheme')startQuiz(themeSet(g),themeName(g),g);
+  else if(a==='pick')pickOpt(+g);
+  else if(a==='next')nextQ();
+  else if(a==='quit')home();
+  else if(a==='again'){var z=S.quiz;if(z.key==='exam')startQuiz(examSet(),z.title,'exam');else if(z.key)startQuiz(themeSet(z.key),z.title,z.key);else{var w2=weakSet();if(w2.length)startQuiz(w2,z.title,null);else home()}}
+  else if(a==='redo'){var z2=S.quiz;startQuiz(z2.wrong.map(function(Q){return Q.o.dyn?(Q.o.c.indexOf('µm')>-1?genGross():genEch()):Q.o}),'Mes erreurs',null)}
+});
+document.addEventListener('keydown',function(e){
+  if(S.view!=='quiz'||!S.quiz||S.quiz.done)return;
+  var z=S.quiz,k='1234abcd'.indexOf(e.key.toLowerCase());
+  if(k>-1&&e.key.length===1&&!z.answered){pickOpt(k%4)}
+  else if(e.key==='ArrowRight'&&z.answered){nextQ()}
+});
+
+home();
+})();
+</script>
+
+</body></html>
