@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Le génome humain — Révisions SVT</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F2F5EF; --surface:#FFFFFF; --surface-2:#E9F0E8; --ink:#17251F; --muted:#56665E;
+  --line:#D3DDD5; --accent:#1E6B4F; --accent-ink:#FFFFFF; --accent-soft:#DCEDE3;
+  --exon:#1E8A5E; --exon-soft:#D6F0E2; --intron:#C4502E; --intron-soft:#FBE3DA;
+  --ok:#2E7D4F; --ok-soft:#E1F2E7; --ko:#B3412F; --ko-soft:#F8E4DF; --hl:#FFF0B3;
+  --cyto:#F7F1DF; --nuc:#E3EEF7; --shadow:0 10px 28px rgba(23,37,31,.08);
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#0F1613; --surface:#18221D; --surface-2:#1F2C26; --ink:#E4ECE7; --muted:#97A89F;
+    --line:#2C3B33; --accent:#6FCB9F; --accent-ink:#0C1511; --accent-soft:#1E3529;
+    --exon:#6FCB9F; --exon-soft:#1B3528; --intron:#F08C6E; --intron-soft:#3A241D;
+    --ok:#6FCB94; --ok-soft:#1B3326; --ko:#F08C7A; --ko-soft:#3A221E; --hl:#4A4220;
+    --cyto:#2A271D; --nuc:#1C2A35; --shadow:0 10px 28px rgba(0,0,0,.35);
+  }
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:'Atkinson Hyperlegible',system-ui,sans-serif;font-size:16px;line-height:1.55;padding:26px 14px 64px}
+.wrap{max-width:780px;margin:0 auto}
+.eyebrow{font-size:13px;color:var(--muted);letter-spacing:.04em}
+h1{font-family:'Fraunces',serif;font-weight:700;font-size:clamp(28px,6vw,40px);line-height:1.1;margin:4px 0 6px}
+.sub{color:var(--muted);font-size:15px}
+nav.tabs{display:flex;gap:6px;flex-wrap:wrap;margin:18px 0 20px;border-bottom:1px solid var(--line);padding-bottom:10px}
+.tab{border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;font-size:15px;padding:8px 15px;border-radius:999px;cursor:pointer}
+.tab[aria-selected="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:700}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;box-shadow:var(--shadow);margin-bottom:16px}
+h2{font-family:'Fraunces',serif;font-weight:600;font-size:22px;margin:0 0 10px}
+h3{font-size:16px;margin:16px 0 6px;color:var(--accent)}
+h3:first-child{margin-top:0}
+p{margin:8px 0}
+ul,ol{padding-left:22px;margin:8px 0}
+li{margin:4px 0}
+.muted{color:var(--muted)}
+.small{font-size:14px}
+.box{border-radius:10px;padding:10px 14px;margin:10px 0;font-size:15px}
+.retenir{background:var(--accent-soft);border-left:4px solid var(--accent)}
+.retenir b.t,.piege b.t,.methode b.t{display:block;margin-bottom:2px}
+.piege{background:var(--hl)}
+.methode{background:var(--surface-2);border:1px dashed var(--accent)}
+.seq{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:15px;letter-spacing:.06em;word-break:break-all;line-height:1.9;background:var(--surface-2);border-radius:8px;padding:8px 12px;margin:6px 0}
+.seq .in{color:var(--intron);font-weight:700;background:var(--intron-soft);border-radius:3px}
+.seq .ex{color:var(--exon);font-weight:700}
+.seq .start{background:var(--exon-soft);color:var(--exon);font-weight:700;border-radius:3px}
+.seq .stop{background:var(--ko-soft);color:var(--ko);font-weight:700;border-radius:3px}
+.lab{font-size:13px;color:var(--muted);margin-top:10px}
+table.t{border-collapse:collapse;width:100%;font-size:15px;margin:8px 0}
+table.t th,table.t td{border:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+table.t th{background:var(--surface-2)}
+.scroll{overflow-x:auto}
+.btn{border:none;background:var(--accent);color:var(--accent-ink);font:inherit;font-weight:700;font-size:15px;padding:9px 18px;border-radius:999px;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--accent);border:1px solid var(--accent)}
+.btn.small{padding:6px 12px;font-size:14px}
+.btn:disabled{opacity:.4;cursor:default}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;background:var(--surface);flex-wrap:wrap}
+.seg button{border:none;background:transparent;color:var(--ink);font:inherit;font-size:14px;padding:7px 13px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--accent-soft);color:var(--accent);font-weight:700}
+.center{text-align:center}
+details{margin:10px 0}
+summary{cursor:pointer;font-weight:700;color:var(--accent)}
+/* flashcards */
+.flash{perspective:1200px;min-height:260px;cursor:pointer;margin-bottom:12px}
+.flash-in{position:relative;min-height:260px;transition:transform .5s cubic-bezier(.4,.2,.2,1);transform-style:preserve-3d}
+.flash.flipped .flash-in{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:14px;border:1px solid var(--line);background:var(--surface);box-shadow:var(--shadow);padding:28px 22px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center}
+.face.back{transform:rotateY(180deg);background:var(--accent-soft)}
+.face .tag{position:absolute;top:12px;left:16px;font-size:12px;color:var(--muted);letter-spacing:.06em}
+.face p{margin:0;font-size:19px}
+.face .exp{font-size:15px;color:var(--muted);margin-top:10px}
+/* quiz */
+.opt{display:block;width:100%;text-align:left;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;padding:11px 14px;border-radius:10px;margin:8px 0;cursor:pointer}
+.opt:hover:not(:disabled){border-color:var(--accent)}
+.opt.good{background:var(--ok-soft);border-color:var(--ok);font-weight:700}
+.opt.bad{background:var(--ko-soft);border-color:var(--ko);font-weight:700}
+.opt:disabled{cursor:default}
+.fb{border-radius:10px;padding:10px 14px;margin-top:10px;font-size:15px}
+.fb.good{background:var(--ok-soft)} .fb.bad{background:var(--ko-soft)}
+.fb b.t{display:block}
+.progress{font-size:14px;color:var(--muted);margin-bottom:8px}
+.big{font-family:'Fraunces',serif;font-size:52px;font-weight:700;color:var(--accent);margin:4px 0}
+/* atelier */
+.qline{border-top:1px dashed var(--line);padding:14px 0 6px}
+.qline:first-of-type{border-top:none}
+.qnum{display:inline-block;min-width:26px;height:26px;border-radius:50%;background:var(--accent-soft);color:var(--accent);font-weight:700;text-align:center;line-height:26px;font-size:14px;margin-right:6px}
+.qline.done .qnum{background:var(--ok);color:var(--surface)}
+input.ans,textarea.ans{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:15px;width:100%;padding:8px 10px;border-radius:8px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);letter-spacing:.05em}
+input.ans:focus,textarea.ans:focus{outline:2px solid var(--accent);outline-offset:1px}
+textarea.ans{min-height:64px;resize:vertical}
+.hintbox{background:var(--surface-2);border-radius:8px;padding:8px 12px;margin-top:8px;font-size:15px}
+/* code génétique */
+table.code{border-collapse:collapse;font-size:12.5px;margin:6px 0;min-width:520px;width:100%}
+table.code th,table.code td{border:1px solid var(--line);padding:4px 5px;text-align:left;vertical-align:top}
+table.code th{background:var(--accent-soft);color:var(--accent);text-align:center}
+table.code td span{display:block;font-family:'JetBrains Mono',monospace;white-space:nowrap}
+table.code td span.s{color:var(--ko);font-weight:700}
+table.code td span.m{color:var(--exon);font-weight:700}
+/* schéma */
+.schema svg{width:100%;height:auto;display:block}
+.schema text{font-family:'Atkinson Hyperlegible',sans-serif;fill:var(--ink)}
+.cap{min-height:66px;font-size:15px;margin-top:8px}
+/* DS */
+.ds h2{margin-top:4px}
+.bareme{float:right;font-size:13px;color:var(--muted);font-weight:400;font-family:'Atkinson Hyperlegible',sans-serif}
+.corr{border-left:4px solid var(--ok);background:var(--ok-soft);border-radius:8px;padding:10px 14px;margin:10px 0}
+.corr h4{margin:10px 0 4px;font-size:15px}
+.corr h4:first-child{margin-top:0}
+.doc{border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:10px 0;background:var(--surface-2)}
+.doc .dt{font-weight:700;font-size:14px;margin-bottom:4px}
+.tree svg{max-width:100%;height:auto;display:block}
+.tree text{font-family:'Atkinson Hyperlegible',sans-serif;fill:var(--ink);font-size:14px}
+.tree .ac{fill:var(--intron);font-weight:700;font-size:12px}
+footer{margin-top:30px;font-size:13px;color:var(--muted);text-align:center}
+@media (max-width:560px){ .card{padding:16px 13px} .face p{font-size:17px} .seq{font-size:14px} }
+@media print{ nav.tabs,.noprint,footer{display:none!important} body{background:#fff;padding:0} .card{box-shadow:none;break-inside:avoid} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">SVT · PREMIÈRE SPÉCIALITÉ · CHAPITRE II</div>
+    <h1>Le génome humain et son expression</h1>
+    <div class="sub">Le cours expliqué pas à pas, des cartes, un quiz noté, un atelier « ADN → protéine » à l'infini et un DS blanc corrigé.</div>
+  </header>
+  <nav class="tabs" role="tablist">
+    <button class="tab" data-tab="fiche" role="tab">Fiche de cours</button>
+    <button class="tab" data-tab="flash" role="tab">Flashcards</button>
+    <button class="tab" data-tab="quiz" role="tab">Quiz noté</button>
+    <button class="tab" data-tab="atelier" role="tab">Atelier ADN → protéine</button>
+    <button class="tab" data-tab="ds" role="tab">DS blanc</button>
+  </nav>
+  <main id="view"></main>
+  <footer>D'après le cours et le cahier de TP · introns en <b style="color:var(--intron)">orange</b>, exons en <b style="color:var(--exon)">vert</b></footer>
+</div>
+
+<script>
+/* ================= OUTILS ================= */
+const $ = s => document.querySelector(s);
+const pick = a => a[Math.floor(Math.random() * a.length)];
+const rint = n => Math.floor(Math.random() * n);
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = rint(i + 1); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const store = {
+  get(k, d){ try { const v = localStorage.getItem('genome_' + k); return v === null ? d : JSON.parse(v); } catch(e){ return d; } },
+  set(k, v){ try { localStorage.setItem('genome_' + k, JSON.stringify(v)); } catch(e){} }
+};
+
+/* ================= CODE GÉNÉTIQUE ================= */
+const B = 'UCAG';
+const AA1 = 'FFLLSSSSYY**CC*WLLLLPPPPHHQQRRRRIIIMTTTTNNKKSSRRVVVVAAAADDEEGGGG';
+const tr = c => AA1[16 * B.indexOf(c[0]) + 4 * B.indexOf(c[1]) + B.indexOf(c[2])];
+const AAN = {F:['Phe','Phénylalanine'],L:['Leu','Leucine'],I:['Ile','Isoleucine'],M:['Met','Méthionine'],V:['Val','Valine'],
+  S:['Ser','Sérine'],P:['Pro','Proline'],T:['Thr','Thréonine'],A:['Ala','Alanine'],Y:['Tyr','Tyrosine'],H:['His','Histidine'],
+  Q:['Gln','Glutamine'],N:['Asn','Asparagine'],K:['Lys','Lysine'],D:['Asp','Acide aspartique'],E:['Glu','Acide glutamique'],
+  C:['Cys','Cystéine'],W:['Trp','Tryptophane'],R:['Arg','Arginine'],G:['Gly','Glycine'],'*':['STOP','Stop']};
+const ab = l => AAN[l][0];
+const protStr = letters => letters.map(ab).join(' – ');
+function codeTable(){
+  let h = '<div class="scroll"><table class="code"><tr><th rowspan="2">1<sup>re</sup><br>lettre</th><th colspan="4">2<sup>e</sup> lettre</th></tr><tr>' + [...B].map(b => `<th>${b}</th>`).join('') + '</tr>';
+  for (const a of B){
+    h += `<tr><th>${a}</th>`;
+    for (const b of B){
+      h += '<td>' + [...B].map(c => { const k = a + b + c, l = tr(k); return `<span class="${l === '*' ? 's' : k === 'AUG' ? 'm' : ''}">${k} ${ab(l)}</span>`; }).join('') + '</td>';
+    }
+    h += '</tr>';
+  }
+  return h + '</table></div><p class="small muted">AUG (Met) = codon initiateur · UAA, UAG, UGA = codons stop. Noms : Phe phénylalanine, Leu leucine, Ile isoleucine, Met méthionine, Val valine, Ser sérine, Pro proline, Thr thréonine, Ala alanine, Tyr tyrosine, His histidine, Gln glutamine, Asn asparagine, Lys lysine, Asp acide aspartique, Glu acide glutamique, Cys cystéine, Trp tryptophane, Arg arginine, Gly glycine.</p>';
+}
+const COMP = {A:'T', T:'A', C:'G', G:'C'};
+const complement = s => [...s].map(x => COMP[x]).join('');
+/* parts: [{s, in:bool}] -> html */
+const seqHTML = (parts, cls = 'in') => parts.map(p => p.in ? `<span class="${cls}">${p.s}</span>` : p.s).join('');
+function codonsHTML(mrna, startIdx){
+  // affiche l'ARNm en triplets à partir de AUG, avec mise en valeur
+  const lead = mrna.slice(0, startIdx), rest = mrna.slice(startIdx);
+  let out = lead ? lead + ' ' : '', stopped = false;
+  for (let i = 0; i < rest.length; i += 3){
+    const c = rest.slice(i, i + 3);
+    if (c.length < 3 || stopped){ out += c + ' '; continue; }
+    const l = tr(c);
+    if (i === 0) out += `<span class="start">${c}</span> `;
+    else if (l === '*'){ out += `<span class="stop">${c}</span> `; stopped = true; }
+    else out += c + ' ';
+  }
+  return out.trim();
+}
+
+/* ================= ARBRES (SVG) ================= */
+function ladderTree(leaves, acLabels){
+  const rowH = 34, step = 46, xLeaf = 30 + step * (leaves.length - 1), W = xLeaf + 170, H = leaves.length * rowH + 10;
+  const ys = leaves.map((_, i) => 18 + i * rowH);
+  let out = '', prev = { x: xLeaf, y: ys[0] };
+  for (let k = 0; k < leaves.length - 1; k++){
+    const child2 = { x: xLeaf, y: ys[k + 1] };
+    const nx = xLeaf - step * (k + 1), ny = (prev.y + child2.y) / 2;
+    out += `<path d="M${prev.x} ${prev.y} H${nx} V${child2.y} H${child2.x}" fill="none" stroke="currentColor" stroke-width="1.6"/>`;
+    out += `<circle cx="${nx}" cy="${ny}" r="4" fill="var(--intron)"/>`;
+    if (acLabels) out += `<text class="ac" x="${nx + 6}" y="${ny - 6}">${acLabels[k]}</text>`;
+    prev = { x: nx, y: ny };
+  }
+  out += `<path d="M${prev.x} ${prev.y} H${prev.x - 18}" stroke="currentColor" stroke-width="1.6"/>`;
+  leaves.forEach((l, i) => out += `<text x="${xLeaf + 8}" y="${ys[i] + 5}">${l}</text>`);
+  return `<div class="tree" style="color:var(--ink)"><svg viewBox="0 0 ${W} ${H}" width="${W}" role="img" aria-label="Arbre de parenté">${out}</svg></div>`;
+}
+
+/* ================= SCHÉMA ANIMÉ ================= */
+const STEPS = [
+  ['1. Le gène, dans le noyau', "L'ADN est dans le <b>noyau</b> et ne peut pas en sortir. Un <b>gène</b> est une portion de cet ADN : sa séquence de nucléotides porte l'information pour fabriquer une protéine."],
+  ['2. Transcription', "L'<b>ARN polymérase</b> ouvre l'ADN et assemble des nucléotides libres en suivant le <b>brin transcrit</b> (complémentarité, avec U à la place de T). On obtient l'<b>ARN pré-messager</b>, aussi long que le gène : il contient des <b style=\"color:var(--exon)\">exons</b> et des <b style=\"color:var(--intron)\">introns</b>."],
+  ['3. Maturation : l\'épissage', "Toujours dans le noyau, les <b style=\"color:var(--intron)\">introns</b> sont éliminés et les <b style=\"color:var(--exon)\">exons</b> sont raboutés : c'est l'<b>épissage</b>. On obtient l'<b>ARN messager</b>, plus court."],
+  ['4. Sortie du noyau', "L'ARNm quitte le noyau par les <b>pores nucléaires</b> et passe dans le <b>cytoplasme</b>."],
+  ['5. Traduction', "Dans le cytoplasme, des <b>ribosomes</b> se fixent sur l'ARNm et le lisent codon par codon (3 nucléotides = 1 acide aminé) de AUG jusqu'au codon stop. Plusieurs ribosomes lisent le même ARNm en même temps : plusieurs protéines sont fabriquées simultanément."]
+];
+let schemaStep = 0;
+function schemaSVG(s){
+  let g = '';
+  g += `<rect x="4" y="4" width="352" height="232" rx="40" fill="var(--cyto)" stroke="var(--muted)" stroke-width="1.5"/>`;
+  g += `<text x="300" y="28" font-size="11" text-anchor="middle" fill="var(--muted)">cytoplasme</text>`;
+  g += `<circle cx="112" cy="120" r="90" fill="var(--nuc)" stroke="var(--muted)" stroke-width="1.5"/>`;
+  [[202,120],[193.6,82],[193.6,158]].forEach(([x,y]) => g += `<circle cx="${x}" cy="${y}" r="5" fill="var(--cyto)"/>`);
+  g += `<text x="112" y="44" font-size="11" text-anchor="middle" fill="var(--muted)">noyau</text>`;
+  // ADN
+  g += `<line x1="40" y1="70" x2="185" y2="70" stroke="var(--muted)" stroke-width="3"/><line x1="40" y1="80" x2="185" y2="80" stroke="var(--muted)" stroke-width="3"/>`;
+  for (let x = 44; x < 185; x += 8) g += `<line x1="${x}" y1="70" x2="${x}" y2="80" stroke="var(--muted)" stroke-width="1"/>`;
+  g += `<rect x="78" y="66" width="84" height="18" rx="3" fill="none" stroke="var(--accent)" stroke-width="2"/>`;
+  g += `<text x="120" y="62" font-size="11" text-anchor="middle" font-weight="700" fill="var(--accent)">gène</text>`;
+  if (s === 1){
+    g += `<rect x="78" y="102" width="22" height="7" fill="var(--exon)"/><rect x="100" y="102" width="12" height="7" fill="var(--intron)"/><rect x="112" y="102" width="20" height="7" fill="var(--exon)"/><rect x="132" y="102" width="10" height="7" fill="var(--intron)"/><rect x="142" y="102" width="20" height="7" fill="var(--exon)"/>`;
+    g += `<path d="M120 86 V98" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#ar)"/>`;
+    g += `<text x="120" y="126" font-size="11" text-anchor="middle">ARN pré-messager</text>`;
+    g += `<ellipse cx="150" cy="75" rx="12" ry="9" fill="var(--accent)" opacity=".35"/><text x="150" y="98" font-size="9" text-anchor="middle" fill="var(--accent)">ARN polymérase</text>`;
+  }
+  if (s === 2){
+    g += `<rect x="88" y="132" width="62" height="7" fill="var(--exon)"/>`;
+    g += `<text x="119" y="155" font-size="11" text-anchor="middle">ARNm (exons raboutés)</text>`;
+    g += `<rect x="50" y="168" width="12" height="6" fill="var(--intron)" transform="rotate(-20 56 171)"/><rect x="72" y="182" width="10" height="6" fill="var(--intron)" transform="rotate(25 77 185)"/>`;
+    g += `<text x="66" y="202" font-size="10" text-anchor="middle" fill="var(--intron)">introns éliminés</text>`;
+  }
+  if (s === 3){
+    g += `<path d="M160 120 H232" stroke="var(--exon)" stroke-width="7"/><path d="M236 120 l-8 -6 v12z" fill="var(--exon)"/>`;
+    g += `<text x="200" y="140" font-size="11" text-anchor="middle">pore nucléaire</text>`;
+  }
+  if (s === 4){
+    g += `<rect x="225" y="172" width="115" height="7" fill="var(--exon)"/><text x="282" y="196" font-size="11" text-anchor="middle">ARNm</text>`;
+    [[248,3],[282,6],[316,9]].forEach(([x,n]) => {
+      g += `<ellipse cx="${x}" cy="164" rx="13" ry="10" fill="var(--accent)" opacity=".85"/>`;
+      for (let i = 0; i < n; i++) g += `<circle cx="${x + Math.sin(i) * 5}" cy="${150 - i * 8}" r="3.6" fill="${['#E0A23B','#7D6BD1','#3BA3B8'][i % 3]}"/>`;
+    });
+    g += `<text x="282" y="214" font-size="11" text-anchor="middle">ribosomes → chaînes d'acides aminés</text>`;
+  }
+  return `<svg viewBox="0 0 360 240" role="img" aria-label="Schéma de l'expression d'un gène"><defs><marker id="ar" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10z" fill="var(--accent)"/></marker></defs>${g}</svg>`;
+}
+function renderSchema(){
+  const el = $('#schema'); if (!el) return;
+  el.innerHTML = `<div class="schema">${schemaSVG(schemaStep)}</div>
+    <div class="cap"><b>${STEPS[schemaStep][0]}</b><br>${STEPS[schemaStep][1]}</div>
+    <div class="row" style="justify-content:center;margin-top:6px">
+      <button class="btn ghost small" id="sp" ${schemaStep === 0 ? 'disabled' : ''}>‹ Étape précédente</button>
+      <button class="btn small" id="sn" ${schemaStep === STEPS.length - 1 ? 'disabled' : ''}>Étape suivante ›</button>
+    </div>`;
+  $('#sp').onclick = () => { schemaStep--; renderSchema(); };
+  $('#sn').onclick = () => { schemaStep++; renderSchema(); };
+}
+
+/* ================= FICHE ================= */
+const OCY = [{s:'TTT',in:1},{s:'AAAATGTGC'},{s:'CCC',in:1},{s:'TACATCCAGAACTGCCCCCTGGGC'},{s:'GGA',in:1},{s:'TAGTTACGT'}];
+const VAS = [{s:'AAA',in:1},{s:'TTTTACACG'},{s:'GGG',in:1},{s:'ATGAAGGTCTTGACGGGTAATTCT'},{s:'CCT',in:1},{s:'ATCAATGCA'}];
+const toRNA = parts => parts.map(p => ({ s: p.s.replace(/T/g, 'U'), in: p.in }));
+const compParts = parts => parts.map(p => ({ s: complement(p.s), in: p.in }));
+function renderFiche(){
+  const ocyPre = toRNA(OCY), vasPre = toRNA(compParts(VAS));
+  const ocyM = ocyPre.filter(p => !p.in).map(p => p.s).join(''), vasM = vasPre.filter(p => !p.in).map(p => p.s).join('');
+  $('#view').innerHTML = `
+  <div class="card">
+    <h2>Les questions du chapitre</h2>
+    <ol><li>Qu'est-ce qu'un génome ?</li><li>Comment l'histoire humaine peut-elle être lue dans un génome ?</li><li>Comment ce génome s'exprime-t-il ?</li></ol>
+    <div class="box retenir"><b class="t">L'idée centrale</b>Le <b>gène</b> (séquence d'ADN) permet de fabriquer une <b>protéine</b> (suite ordonnée d'acides aminés). C'est l'<b>expression génétique</b>. Les protéines déterminent en partie le <b>phénotype</b>.</div>
+    <h3>Vocabulaire de base</h3>
+    <table class="t"><tr><th>Mot</th><th>Définition</th></tr>
+    <tr><td><b>Génome</b></td><td>Ensemble de l'information génétique (l'ADN) d'un individu.</td></tr>
+    <tr><td><b>Gène</b></td><td>Portion d'ADN qui code une protéine.</td></tr>
+    <tr><td><b>Allèle</b></td><td>Une version d'un gène. Les allèles diffèrent par quelques nucléotides.</td></tr>
+    <tr><td><b>Génotype</b></td><td>Les allèles que possède un individu.</td></tr>
+    <tr><td><b>Phénotype</b></td><td>Les caractères observables (à l'échelle de l'organisme, de la cellule ou des molécules).</td></tr></table>
+  </div>
+
+  <div class="card">
+    <h2>I. Les caractéristiques du génome humain</h2>
+    <h3>A. Le séquençage</h3>
+    <ul>
+      <li>En <b>2004</b>, le génome humain a été séquencé en entier : environ <b>3 milliards de paires de bases</b>.</li>
+      <li>Cette séquence sert de <b>référence</b>. En comparant un génome à la référence, on peut identifier de <b>nouveaux allèles</b> et rechercher des <b>gènes de prédisposition</b> à certaines maladies (cancers du sein).</li>
+      <li>Plus deux individus partagent d'<b>allèles communs</b>, plus ils sont <b>proches parents</b> (et inversement).</li>
+    </ul>
+    <h3>B. L'histoire humaine à travers le génome</h3>
+    <ul>
+      <li>Chaque être humain est <b>unique</b>, comme ses empreintes digitales (sauf les vrais jumeaux).</li>
+      <li>On sait reconstituer l'ADN d'individus disparus à partir de fragments trouvés dans des <b>fossiles</b> : on peut ainsi reconstituer <b>notre histoire</b>.</li>
+      <li>L'homme de <b>Néandertal</b> et <b>Homo sapiens</b> sont <b>deux espèces distinctes</b>. Pourtant, des gènes ont été <b>échangés</b> entre les deux populations entre <b>−45 000 et −33 000 ans</b> : le génome des populations asiatiques actuelles contient <b>1 à 3 %</b> de gènes néandertaliens. Il y a donc eu <b>métissage</b>.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>Ce qu'il faut savoir des TP 1</h2>
+    <h3>Comparer des génomes : le % de similitude</h3>
+    <p>Pour un même gène, on compare l'Homme à d'autres êtres vivants. Plus le % de similitude est élevé, plus l'espèce est proche de l'Homme.</p>
+    <div class="scroll"><table class="t"><tr><th>Rat</th><th>Xénope</th><th>Poisson</th><th>Grenouille</th><th>Oursin</th><th>Drosophile</th><th>Blé</th></tr>
+    <tr><td>84 %</td><td>73 %</td><td>72 %</td><td>70 %</td><td>63 %</td><td>62 %</td><td>60 %</td></tr></table></div>
+    ${ladderTree(['Homme','Rat','Xénope','Poisson','Grenouille','Oursin','Drosophile','Blé'])}
+    <p class="small muted">Méthode : on range les espèces de la plus semblable à la moins semblable, et chacune se branche un peu plus loin de l'Homme.</p>
+
+    <h3>La persistance de la lactase</h3>
+    <p>La lactase est l'enzyme qui digère le sucre du lait. Les deux individus du TP diffèrent par <b>un seul nucléotide</b> dans la région qui contrôle le gène : l'individu 1 porte l'allèle <b>T</b> et garde la lactase à l'âge adulte ; l'individu 2 a l'allèle <b>C</b> sur ses deux chromosomes et n'en fabrique plus.</p>
+    <div class="box retenir"><b class="t">À retenir</b>Le phénotype « digérer le lait à l'âge adulte » dépend : <br>– de la <b>génétique</b> (facteur interne : l'allèle porté) ;<br>– de l'<b>environnement</b> (facteur externe) : dans les populations qui consomment beaucoup de lait, le % de persistance de la lactase est plus élevé.</div>
+
+    <h3>Le nombre théorique d'ancêtres</h3>
+    <p>Chaque personne a 2 parents, 4 grands-parents, 8 arrière-grands-parents… Après <b>n</b> générations : <b>2<sup>n</sup></b> ancêtres (une génération ≈ 29 ans).</p>
+    <table class="t"><tr><th>Temps écoulé</th><td>87 ans</td><td>522 ans</td><td>870 ans</td></tr>
+    <tr><th>Générations</th><td>3</td><td>18</td><td>30</td></tr>
+    <tr><th>Ancêtres théoriques</th><td>2<sup>3</sup> = 8</td><td>2<sup>18</sup> = 262 144</td><td>2<sup>30</sup> ≈ 1 milliard</td></tr></table>
+    <div class="box retenir"><b class="t">Conclusion</b>Il y a 870 ans, la Terre comptait bien moins d'un milliard d'habitants. Les mêmes ancêtres apparaissent donc plusieurs fois dans un arbre généalogique : <b>tous les humains partagent des ancêtres communs</b>.</div>
+
+    <h3>L'arbre construit avec une matrice de distances</h3>
+    <p>La matrice donne le nombre de différences entre deux séquences : plus il est petit, plus les deux individus sont proches.</p>
+    <div class="scroll"><table class="t small"><tr><th></th><th>Italien</th><th>Français</th><th>Anglais</th><th>Néandertal</th><th>Denisova</th><th>Bonobo (Pan paniscus)</th></tr>
+    <tr><th>Italien</th><td>0</td><td>25</td><td>27</td><td>207</td><td>390</td><td>1460</td></tr>
+    <tr><th>Français</th><td></td><td>0</td><td><b>12</b></td><td>197</td><td>384</td><td>1450</td></tr>
+    <tr><th>Anglais</th><td></td><td></td><td>0</td><td>201</td><td>385</td><td>1460</td></tr>
+    <tr><th>Néandertal</th><td></td><td></td><td></td><td>0</td><td>377</td><td>1430</td></tr>
+    <tr><th>Denisova</th><td></td><td></td><td></td><td></td><td>0</td><td>1460</td></tr></table></div>
+    ${ladderTree(['Français','Anglais','Italien','Néandertal','Denisova','Bonobo'], ['AC1','AC2','AC3','AC4','AC5'])}
+    <div class="box methode"><b class="t">Méthode pour construire l'arbre</b>1) Chercher la plus petite distance (Français–Anglais : 12) : ils partagent l'ancêtre commun le plus récent (AC1). 2) Rattacher ensuite l'individu le plus proche de ce groupe (Italien), puis Néandertal, Denisova, et enfin le bonobo, le plus éloigné.</div>
+    <div class="box piege"><b class="t">Limite à citer</b>Cet arbre a été construit avec l'<b>ADN mitochondrial</b>, transmis <b>uniquement par la mère</b>. Il est moins fiable qu'un arbre construit avec l'<b>ADN nucléaire</b>, qui provient des <b>deux parents</b>.</div>
+  </div>
+
+  <div class="card">
+    <h2>II. L'expression du patrimoine génétique</h2>
+    <p>Le film de l'expression d'un gène, en 5 étapes :</p>
+    <div id="schema"></div>
+  </div>
+
+  <div class="card">
+    <h2>A. La transcription</h2>
+    <p>L'ADN ne peut pas quitter le noyau. Le gène est donc <b>copié</b> sous forme d'<b>ARN messager</b> (ARNm, acide ribonucléique messager) : c'est la <b>transcription</b>.</p>
+    <h3>ADN et ARN : 3 différences</h3>
+    <table class="t"><tr><th></th><th>ADN</th><th>ARN</th></tr>
+    <tr><td>Nucléotides</td><td>A, <b>T</b>, C, G</td><td>A, <b>U</b> (uracile), C, G</td></tr>
+    <tr><td>Sucre</td><td>désoxyribose</td><td><b>ribose</b></td></tr>
+    <tr><td>Structure</td><td>2 brins</td><td><b>1 seul brin</b></td></tr></table>
+    <div class="box piege"><b class="t">Piège</b>Il n'y a <b>pas de thymine dans l'ARN</b> : ses 4 nucléotides sont A, U, C, G.</div>
+    <h3>1) Les étapes de la transcription</h3>
+    <ol>
+      <li><b>Ouverture</b> de la molécule d'ADN ; les nucléotides d'ARN sont libres dans le noyau.</li>
+      <li><b>Synthèse de l'ARN</b> : les nucléotides s'associent en face du <b>brin transcrit</b>, qui sert de <b>matrice</b> (A en face de T, U en face de A, C en face de G, G en face de C).</li>
+      <li><b>Fin</b> : l'ARN obtenu est une copie du gène.</li>
+    </ol>
+    <p>Ces étapes sont réalisées par des enzymes : les <b>ARN polymérases</b>. La transcription a lieu dans le <b>noyau</b>.</p>
+    <div class="lab">Exemple du cahier</div>
+    <div class="seq">brin non transcrit : ATCGTAAGG<br>brin transcrit &nbsp;&nbsp;&nbsp;: TAGCATTCC<br>ARN &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <span class="ex">AUCGUAAGG</span></div>
+    <div class="box retenir"><b class="t">La règle d'or</b>L'ARN est <b>complémentaire du brin transcrit</b>. Il a donc la <b>même séquence que le brin non transcrit</b>, avec U à la place de T.</div>
+    <h3>2) La maturation de l'ARN : l'épissage</h3>
+    <ul>
+      <li>Chez les eucaryotes, il se forme d'abord un <b>ARN pré-messager</b>, aussi long que le gène.</li>
+      <li>Il contient des séquences codantes, les <b style="color:var(--exon)">exons</b>, et des séquences non codantes, les <b style="color:var(--intron)">introns</b>.</li>
+      <li>L'<b>épissage</b> élimine les introns et réassemble les exons : on obtient l'<b>ARN messager</b>, plus court.</li>
+      <li>L'épissage peut être <b>simple</b> ou <b>alternatif</b> : en gardant des exons différents, un même gène peut donner plusieurs ARNm, donc plusieurs protéines.</li>
+      <li>L'ARNm quitte ensuite le noyau par les <b>pores nucléaires</b>.</li>
+    </ul>
+    <div class="seq">ARN pré-messager : <span class="in">intron</span>–<span class="ex">EXON 1</span>–<span class="in">intron</span>–<span class="ex">EXON 2</span>–<span class="in">intron</span>–<span class="ex">EXON 3</span><br>ARN messager &nbsp;&nbsp;&nbsp;: <span class="ex">EXON 1</span>–<span class="ex">EXON 2</span>–<span class="ex">EXON 3</span></div>
+  </div>
+
+  <div class="card">
+    <h2>B. La traduction</h2>
+    <ul>
+      <li>Dans le <b>cytoplasme</b>, l'ARNm est lu par les <b>ribosomes</b>, qui se déplacent le long de la molécule.</li>
+      <li>En avançant, le ribosome met en place les <b>acides aminés</b> un par un.</li>
+      <li>Plusieurs ribosomes lisent le même ARNm en même temps : plusieurs protéines sont formées simultanément.</li>
+    </ul>
+    <div class="box retenir"><b class="t">Le code génétique</b>C'est le système de correspondance <b>universel</b> entre l'ARNm et la protéine.<br>• 3 nucléotides de l'ARNm = <b>1 codon</b> = <b>1 acide aminé</b>.<br>• La lecture commence toujours au codon initiateur <b>AUG</b> (méthionine).<br>• Elle s'arrête à un des 3 <b>codons stop</b> (UAA, UAG, UGA) : la protéine est libérée dans le cytoplasme.<br>• Le code est <b>redondant</b> : plusieurs codons peuvent coder le même acide aminé (CCC, CCA, CCG, CCU = Pro).</div>
+    <div class="lab">Exemple du TP (logiciel)</div>
+    <div class="seq">${codonsHTML('AUGGCCGAGGUGUUGCGG', 0)}<br>Met – Ala – Glu – Val – Leu – Arg</div>
+    <details><summary>Afficher le tableau du code génétique</summary>${codeTable()}</details>
+  </div>
+
+  <div class="card">
+    <h2>C. Le phénotype</h2>
+    <ul>
+      <li>Le phénotype dépend du <b>patrimoine génétique</b> et de <b>son expression</b>.</li>
+      <li>Le génotype détermine les protéines fabriquées.</li>
+      <li>L'activité des gènes est régulée par des facteurs <b>internes</b> (le développement) et <b>externes</b> (l'environnement).</li>
+    </ul>
+    <div class="box retenir"><b class="t">Conclusion du chapitre</b>L'expression génétique se fait grâce à deux mécanismes distincts : la <b>transcription</b> (dans le noyau) puis la <b>traduction</b> (dans le cytoplasme). Les gènes (génotype) conditionnent le phénotype de la cellule et de l'individu. L'expression génétique est modulée par l'<b>environnement</b>.</div>
+  </div>
+
+  <div class="card">
+    <h2>Méthode : de l'ADN à la protéine en 4 étapes</h2>
+    <div class="box methode"><b class="t">À appliquer à chaque fois</b>
+      <b>1. Quel brin m'a-t-on donné ?</b><br>– brin <b>non transcrit</b> : je recopie en remplaçant T par U ;<br>– brin <b>transcrit</b> : j'écris le complémentaire (A→U, T→A, C→G, G→C).<br>
+      → J'obtiens l'<b>ARN pré-messager</b> (étape nommée : <b>transcription</b>, dans le noyau).<br>
+      <b>2. J'enlève les introns</b> (en gras dans l'énoncé) → <b>ARN messager</b> (étape : <b>épissage</b>).<br>
+      <b>3. Je cherche le premier AUG</b> et je découpe en codons de 3 à partir de lui.<br>
+      <b>4. Je traduis</b> chaque codon avec le tableau, jusqu'au codon stop (étape : <b>traduction</b>, dans le cytoplasme, par les ribosomes).</div>
+    <h3>Exemple corrigé : le devoir ocytocine / vasopressine</h3>
+    <p><b>Ocytocine</b> — on donne le <b>brin non transcrit</b> (introns en gras) :</p>
+    <div class="seq">${seqHTML(OCY)}</div>
+    <p>1. <b>Transcription</b> : je remplace T par U.</p>
+    <div class="seq">${seqHTML(ocyPre)}</div>
+    <p>2. <b>Épissage</b> : j'enlève UUU, CCC et GGA.</p>
+    <div class="seq">${codonsHTML(ocyM, 3)}</div>
+    <p>3–4. <b>Traduction</b> à partir de AUG, jusqu'à UAG :</p>
+    <div class="seq">Met – Cys – Tyr – Ile – Gln – Asn – Cys – Pro – Leu – Gly</div>
+    <p><b>Vasopressine</b> — on donne le <b>brin transcrit</b>, donc on écrit le <b>complémentaire</b> :</p>
+    <div class="seq">${seqHTML(VAS)}</div>
+    <div class="seq">${seqHTML(vasPre)}</div>
+    <p class="small muted">Sur la photo du sujet, le surlignage de la fin déborde : le 3<sup>e</sup> intron est bien <b>CCT</b> (il se trouve au même endroit que GGA chez l'ocytocine).</p>
+    <div class="seq">${codonsHTML(vasM, 3)}</div>
+    <div class="seq">Met – Cys – Tyr – Phe – Gln – Asn – Cys – Pro – Leu – Arg</div>
+    <p><b>Question 2.</b> Entre les deux brins, on compte <b>6 nucléotides différents</b>, mais seulement <b>2 acides aminés différents</b> (Ile/Phe et Gly/Arg). Explication : le code génétique est <b>redondant</b>. CCC et CCA codent tous les deux Pro ; CUG et UUA codent tous les deux Leu. Une différence de nucléotide ne change donc pas toujours l'acide aminé.</p>
+    <div class="box piege"><b class="t">Pièges repérés dans le cahier</b>
+      • <b>Asn</b> = asparagine ; <b>Asp</b> = acide aspartique : ce n'est pas le même acide aminé.<br>
+      • <b>CAG = Gln</b> (glutamine), pas Glu (acide glutamique).<br>
+      • <b>UUA = Leu</b> (leucine).<br>
+      • On ne traduit <b>rien avant AUG</b> et on s'arrête <b>au codon stop</b>, qu'on ne traduit pas.</div>
+  </div>`;
+  renderSchema();
+}
+
+/* ================= FLASHCARDS ================= */
+const CARDS = [
+  ["Qu'est-ce que le génome ?", "L'ensemble de l'information génétique (l'ADN) d'un individu.", "Chez l'Homme : environ 3 milliards de paires de bases."],
+  ["Gène ou allèle ?", "Gène : portion d'ADN qui code une protéine. Allèle : une version de ce gène.", "Les allèles d'un gène diffèrent par quelques nucléotides."],
+  ["À quoi sert la séquence de référence du génome humain ?", "À comparer un génome individuel pour trouver de nouveaux allèles et des gènes de prédisposition.", "Exemple : prédisposition au cancer du sein."],
+  ["Deux personnes partagent beaucoup d'allèles communs. Que peut-on en dire ?", "Elles sont proches parents.", "Et inversement : peu d'allèles communs, parenté éloignée."],
+  ["Nombre théorique d'ancêtres après n générations ?", "2<sup>n</sup>", "30 générations (≈ 870 ans) : 2<sup>30</sup> ≈ 1 milliard d'ancêtres."],
+  ["Pourquoi tous les humains sont-ils apparentés ?", "2<sup>n</sup> dépasse vite la population de l'époque : les mêmes ancêtres reviennent plusieurs fois.", "Nous partageons donc des ancêtres communs."],
+  ["Néandertal et Homo sapiens : même espèce ?", "Non, deux espèces distinctes… mais il y a eu métissage.", "Entre −45 000 et −33 000 ans : 1 à 3 % de gènes néandertaliens chez les Asiatiques actuels."],
+  ["Limite d'un arbre construit avec l'ADN mitochondrial ?", "Cet ADN n'est transmis que par la mère.", "L'ADN nucléaire, qui vient des deux parents, est plus fiable."],
+  ["Les 3 différences entre ADN et ARN ?", "T → U ; désoxyribose → ribose ; 2 brins → 1 brin.", "Les nucléotides de l'ARN : A, U, C, G."],
+  ["Qu'est-ce que la transcription ?", "La fabrication d'un ARN qui est une copie d'un gène.", "Dans le noyau, grâce à l'ARN polymérase."],
+  ["Quel brin d'ADN sert de matrice ?", "Le brin transcrit.", "L'ARN a la même séquence que le brin non transcrit, avec U à la place de T."],
+  ["Exon ou intron ?", "Exon : séquence codante, conservée. Intron : séquence non codante, éliminée.", "L'ARN pré-messager contient les deux."],
+  ["Qu'est-ce que l'épissage ?", "L'élimination des introns et le raboutage des exons.", "ARN pré-messager → ARN messager, dans le noyau."],
+  ["Intérêt de l'épissage alternatif ?", "Un même gène peut donner plusieurs ARNm, donc plusieurs protéines.", "On garde des combinaisons d'exons différentes."],
+  ["Où et par quoi se fait la traduction ?", "Dans le cytoplasme, par les ribosomes.", "Plusieurs ribosomes lisent le même ARNm en même temps."],
+  ["Qu'est-ce que le code génétique ?", "La correspondance universelle entre codons de l'ARNm et acides aminés.", "1 codon = 3 nucléotides = 1 acide aminé."],
+  ["Codon initiateur et codons stop ?", "AUG (méthionine) ; UAA, UAG, UGA.", "On ne traduit rien avant AUG, et on ne traduit pas le stop."],
+  ["Deux ADN différents donnent la même protéine. Pourquoi ?", "Le code génétique est redondant.", "Exemple : CCC et CCA codent tous les deux la proline."],
+  ["De quoi dépend le phénotype ?", "Du génotype (facteurs internes) et de l'environnement (facteurs externes).", "L'environnement module l'expression des gènes."],
+  ["L'exemple de la lactase en une phrase ?", "L'allèle T permet de garder la lactase à l'âge adulte.", "Dans les populations qui consomment beaucoup de lait, ce phénotype est plus fréquent."],
+];
+let fOrder = CARDS.map((_, i) => i), fi = 0, flipped = false;
+function renderFlash(){
+  const [f, b, e] = CARDS[fOrder[fi]];
+  $('#view').innerHTML = `
+    <div class="progress center">Carte ${fi + 1} / ${CARDS.length}</div>
+    <div class="flash${flipped ? ' flipped' : ''}" id="fc" role="button" tabindex="0" aria-label="Retourner la carte">
+      <div class="flash-in">
+        <div class="face"><span class="tag">QUESTION</span><p>${f}</p></div>
+        <div class="face back"><span class="tag">RÉPONSE</span><p><b>${b}</b></p><div class="exp">${e}</div></div>
+      </div>
+    </div>
+    <p class="center muted small">${flipped ? '&nbsp;' : 'Touche la carte pour voir la réponse'}</p>
+    <div class="row" style="justify-content:center">
+      <button class="btn ghost small" id="fp" ${fi === 0 ? 'disabled' : ''}>‹ Précédente</button>
+      <button class="btn ghost small" id="fs">Mélanger</button>
+      <button class="btn small" id="fn" ${fi === CARDS.length - 1 ? 'disabled' : ''}>Suivante ›</button>
+    </div>`;
+  const flip = () => { flipped = !flipped; $('#fc').classList.toggle('flipped', flipped); };
+  $('#fc').onclick = flip;
+  $('#fc').onkeydown = e => { if (e.key === ' ' || e.key === 'Enter'){ e.preventDefault(); flip(); } };
+  $('#fp').onclick = () => { fi--; flipped = false; renderFlash(); };
+  $('#fn').onclick = () => { fi++; flipped = false; renderFlash(); };
+  $('#fs').onclick = () => { fOrder = shuffle(fOrder); fi = 0; flipped = false; renderFlash(); };
+}
+
+/* ================= QUIZ ================= */
+const QUIZ = [
+  { q: "Le génome humain compte environ :", o: ["3 milliards de paires de bases", "3 millions de paires de bases", "46 paires de bases", "20 000 paires de bases"], c: 0, e: "≈ 3 milliards de paires de bases, séquencées en entier en 2004." },
+  { q: "Deux individus partagent un grand nombre d'allèles communs. On peut en déduire qu'ils :", o: ["sont proches parents", "sont de deux espèces différentes", "ont le même phénotype", "sont forcément jumeaux"], c: 0, e: "Plus on partage d'allèles communs, plus on est proches parents." },
+  { q: "Combien d'ancêtres théoriques a-t-on il y a 20 générations ?", o: ["2<sup>20</sup> ≈ 1 million", "40", "400", "20"], c: 0, e: "On double à chaque génération : 2<sup>20</sup> = 1 048 576." },
+  { q: "Matrice du TP : Français–Anglais = 12, Français–Italien = 25, Anglais–Italien = 27. Qui partage l'ancêtre commun le plus récent ?", o: ["Français et Anglais", "Français et Italien", "Anglais et Italien", "Les trois en même temps"], c: 0, e: "La plus petite distance (12) indique la parenté la plus proche." },
+  { q: "Les Asiatiques actuels possèdent 1 à 3 % de gènes néandertaliens. Cela prouve :", o: ["qu'il y a eu métissage entre Néandertal et Sapiens", "que Néandertal est notre ancêtre direct", "que Néandertal et Sapiens sont la même espèce", "que ces gènes sont apparus par hasard"], c: 0, e: "Deux espèces distinctes ont échangé des gènes entre −45 000 et −33 000 ans : c'est un métissage." },
+  { q: "Pourquoi un arbre construit avec l'ADN mitochondrial est-il moins fiable ?", o: ["Cet ADN n'est transmis que par la mère", "Cet ADN change à chaque génération", "Cet ADN n'existe pas chez Néandertal", "Cet ADN est trop long"], c: 0, e: "L'ADN nucléaire, hérité des deux parents, donne une image plus complète." },
+  { q: "Les nucléotides de l'ARN sont :", o: ["A, U, C, G", "A, T, C, G", "A, T, U, C, G", "A, T, C, U"], c: 0, e: "Dans l'ARN, l'uracile (U) remplace la thymine (T)." },
+  { q: "Brin transcrit : TAC GGA. Quel est l'ARN obtenu ?", o: ["AUG CCU", "UAC GGA", "ATG CCT", "AUG CCA"], c: 0, e: "On écrit le complémentaire : T→A, A→U, C→G, G→C. TAC → AUG, GGA → CCU." },
+  { q: "Brin non transcrit : ATG CCT. Quel est l'ARN obtenu ?", o: ["AUG CCU", "UAC GGA", "TAC GGA", "UAC GGU"], c: 0, e: "L'ARN a la même séquence que le brin non transcrit, avec U à la place de T." },
+  { q: "Où se déroule la transcription ?", o: ["Dans le noyau", "Dans le cytoplasme", "Dans les ribosomes", "Dans les pores nucléaires"], c: 0, e: "L'ADN ne sort pas du noyau : la copie se fait sur place." },
+  { q: "L'ARN pré-messager est plus long que l'ARN messager parce que :", o: ["il contient des introns, éliminés par l'épissage", "il contient de la thymine", "il a deux brins", "il porte déjà les acides aminés"], c: 0, e: "L'épissage retire les introns et raboute les exons." },
+  { q: "Combien de nucléotides codent un acide aminé ?", o: ["3", "1", "2", "4"], c: 0, e: "Un codon = 3 nucléotides = 1 acide aminé." },
+  { q: "Traduis l'ARNm : GCA AUG AAA UUU UGA", o: ["Met – Lys – Phe", "Ala – Met – Lys – Phe", "Ala – Met – Lys – Phe – Stop", "Met – Lys – Phe – Trp"], c: 0, e: "On commence à AUG (Met) : AAA = Lys, UUU = Phe, UGA = stop." },
+  { q: "Dans l'ARNm, le codon CCC devient CCA. Que devient la protéine ?", o: ["Elle ne change pas", "Un acide aminé change", "Elle est plus courte", "Elle n'est plus fabriquée"], c: 0, e: "CCC et CCA codent tous les deux la proline : le code génétique est redondant." },
+  { q: "Où se déroule la traduction ?", o: ["Dans le cytoplasme, au niveau des ribosomes", "Dans le noyau", "Dans l'ADN", "Dans les pores nucléaires"], c: 0, e: "L'ARNm sort par les pores nucléaires et est lu par les ribosomes dans le cytoplasme." },
+  { q: "Le phénotype « digérer le lait à l'âge adulte » dépend :", o: ["du génotype et de l'environnement", "seulement du génotype", "seulement de l'alimentation", "seulement de l'âge"], c: 0, e: "Facteur interne (allèle T ou C) et facteur externe (consommation de lait dans la population)." },
+];
+let qz = null;
+function newQuiz(){ qz = { list: shuffle(QUIZ).map(it => { const idx = shuffle(it.o.map((_, i) => i)); return { q: it.q, o: idx.map(i => it.o[i]), c: idx.indexOf(it.c), e: it.e }; }), i: 0, score: 0, answered: false, done: false }; }
+function renderQuiz(){
+  if (!qz) newQuiz();
+  if (qz.done){
+    const n = qz.list.length, sur20 = Math.round(qz.score / n * 200) / 10, best = store.get('best', 0);
+    if (qz.score > best) store.set('best', qz.score);
+    $('#view').innerHTML = `<div class="card center">
+      <div class="muted">Score final</div><div class="big">${qz.score} / ${n}</div>
+      <p>soit <b>${String(sur20).replace('.', ',')} / 20</b> · meilleur score : ${Math.max(best, qz.score)} / ${n}</p>
+      <p class="muted">${qz.score === n ? 'Parfait ! Passe au DS blanc.' : qz.score >= n * 0.7 ? 'Bien ! Revois dans la fiche les questions ratées.' : 'Relis la fiche de cours, puis recommence.'}</p>
+      <button class="btn" id="qr">Recommencer</button></div>`;
+    $('#qr').onclick = () => { newQuiz(); renderQuiz(); };
+    return;
+  }
+  const it = qz.list[qz.i];
+  $('#view').innerHTML = `
+    <div class="progress">Question ${qz.i + 1} / ${qz.list.length} · Score : ${qz.score}</div>
+    <div class="card">
+      <p style="font-size:18px;margin-top:0">${it.q}</p>
+      <div>${it.o.map((o, i) => `<button class="opt" data-i="${i}">${o}</button>`).join('')}</div>
+      <div id="qfb"></div>
+      <div class="row" style="justify-content:flex-end;margin-top:12px"><button class="btn" id="qn" disabled>${qz.i === qz.list.length - 1 ? 'Voir le score' : 'Question suivante'}</button></div>
+    </div>`;
+  document.querySelectorAll('.opt').forEach(b => b.onclick = () => {
+    if (qz.answered) return; qz.answered = true;
+    const i = +b.dataset.i, ok = i === it.c; if (ok) qz.score++;
+    document.querySelectorAll('.opt').forEach((x, j) => { x.disabled = true; if (j === it.c) x.classList.add('good'); else if (j === i) x.classList.add('bad'); });
+    $('#qfb').innerHTML = `<div class="fb ${ok ? 'good' : 'bad'}"><b class="t">${ok ? 'Exact !' : 'Pas tout à fait.'}</b>${it.e}</div>`;
+    $('#qn').disabled = false;
+  });
+  $('#qn').onclick = () => { qz.answered = false; if (qz.i === qz.list.length - 1) qz.done = true; else qz.i++; renderQuiz(); };
+}
+
+/* ================= ATELIER ================= */
+const rb = () => 'ACGU'[rint(4)];
+const rcodon = () => rb() + rb() + rb();
+function senseCodon(){ let c; do { c = rcodon(); } while (tr(c) === '*' || c === 'AUG'); return c; }
+let at = { brin: store.get('brin', 'hasard'), nin: store.get('nin', 2), ex: null, ok: store.get('ok', 0), tot: store.get('tot', 0) };
+function genEx(){
+  const n = 4 + rint(3);
+  const coding = ['AUG', ...Array.from({ length: n }, senseCodon), pick(['UAA', 'UAG', 'UGA'])];
+  let lead; do { lead = rcodon(); } while (lead === 'AUG');
+  let trail = ''; for (let i = 0, L = 3 + rint(3); i < L; i++) trail += rb();
+  const segs = [lead, ...coding, trail];
+  // emplacements possibles d'introns : avant le début (0) ou après le segment k (k = 0..coding.length-1)
+  const nin = at.nin === 'hasard' ? rint(3) : at.nin;
+  const slots = shuffle([-1, ...Array.from({ length: coding.length }, (_, k) => k)]).slice(0, nin);
+  const parts = [];
+  segs.forEach((s, k) => {
+    if (k === 0 && slots.includes(-1)) parts.push({ s: rcodon(), in: 1 });
+    parts.push({ s });
+    if (slots.includes(k)) parts.push({ s: rcodon(), in: 1 });
+  });
+  // fusionne les segments exoniques consécutifs
+  const merged = [];
+  parts.forEach(p => { const last = merged[merged.length - 1]; if (last && !last.in && !p.in) last.s += p.s; else merged.push({ s: p.s, in: p.in }); });
+  const pre = merged.map(p => p.s).join('');
+  const mrna = merged.filter(p => !p.in).map(p => p.s).join('');
+  const brin = at.brin === 'hasard' ? pick(['T', 'NT']) : at.brin;
+  const dnaNT = merged.map(p => ({ s: p.s.replace(/U/g, 'T'), in: p.in }));
+  const given = brin === 'T' ? dnaNT.map(p => ({ s: complement(p.s), in: p.in })) : dnaNT;
+  const prot = coding.slice(0, -1).map(tr);
+  // mutation bonus
+  const j = 1 + rint(n), oldC = coding[j], pos = rint(3);
+  let nb; do { nb = 'ACGU'[rint(4)]; } while (nb === oldC[pos]);
+  const newC = oldC.slice(0, pos) + nb + oldC.slice(pos + 1);
+  const la = tr(oldC), lb = tr(newC);
+  const mutType = lb === la ? 0 : lb === '*' ? 2 : 1;
+  const preProtUnspliced = (() => { const s = pre.indexOf('AUG'); const out = []; for (let i = s; i + 3 <= pre.length; i += 3){ const l = tr(pre.slice(i, i + 3)); if (l === '*') break; out.push(l); } return out; })();
+  return { merged, pre, mrna, brin, given, prot, start: lead.length, nin, mut: { j, oldC, newC, la, lb, type: mutType }, preProtUnspliced,
+    state: [0, 1, 2, 3].map(() => ({ done: false, tries: 0, show: false, hint: false, fb: '' })) };
+}
+const clean = s => (s || '').toUpperCase().replace(/[^ACGTU]/g, '');
+const deacc = s => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+const NAME2L = (() => { const m = {}; for (const [l, [a, nm]] of Object.entries(AAN)){ if (l === '*') continue; m[deacc(a)] = l; m[deacc(nm)] = l; } m['phe'] = 'F'; m['acide aspartique'] = 'D'; m['acide glutamique'] = 'E'; m['aspartate'] = 'D'; m['glutamate'] = 'E'; return m; })();
+function parseProt(s){
+  let t = deacc(s || '').replace(/acide\s+aspartique/g, 'asp').replace(/acide\s+glutamique/g, 'glu');
+  const toks = t.split(/[^a-z]+/).filter(Boolean);
+  const out = [];
+  for (const k of toks){ if (k === 'stop') break; if (!(k in NAME2L)) return { err: k }; out.push(NAME2L[k]); }
+  return { list: out };
+}
+function checkSeq(i, raw){
+  const ex = at.ex, ans = clean(raw);
+  const target = i === 0 ? ex.pre : ex.mrna;
+  if (!ans) return { ok: false, msg: "Écris une séquence de lettres A, U, C, G." };
+  if (ans === target) return { ok: true };
+  if (/T/.test(ans)) return { ok: false, msg: "Il y a des <b>T</b> dans ta réponse : dans l'ARN, il n'y a pas de thymine, on met <b>U</b>." };
+  if (i === 0){
+    const wrongWay = ex.brin === 'T' ? ex.given.map(p => p.s).join('').replace(/T/g, 'U') : complement(ex.given.map(p => p.s).join('')).replace(/T/g, 'U');
+    if (ans === wrongWay) return { ok: false, msg: ex.brin === 'T' ? "On t'a donné le <b>brin transcrit</b> : il faut écrire le <b>complémentaire</b>, pas le recopier." : "On t'a donné le <b>brin non transcrit</b> : il suffit de le <b>recopier</b> en remplaçant T par U." };
+  }
+  if (i === 1 && ans === ex.pre) return { ok: false, msg: "Tu as recopié l'ARN pré-messager : il faut <b>enlever les introns</b> (en orange)." };
+  if (ans.length !== target.length) return { ok: false, msg: `Ta séquence fait ${ans.length} lettres, la bonne en fait ${target.length}.` };
+  let k = 0; while (ans[k] === target[k]) k++;
+  return { ok: false, msg: `Le début est juste jusqu'à la lettre n°${k}. Erreur à partir de la lettre n°${k + 1}.` };
+}
+function checkProt(raw){
+  const ex = at.ex, r = parseProt(raw);
+  if (r.err) return { ok: false, msg: `Je ne reconnais pas « ${r.err} ». Utilise les abréviations : Met, Cys, Tyr…` };
+  if (!r.list.length) return { ok: false, msg: "Écris les acides aminés séparés par des tirets, par exemple : Met-Cys-Tyr" };
+  const t = ex.prot;
+  if (r.list.join() === t.join()) return { ok: true };
+  if (r.list[0] !== 'M') return { ok: false, msg: "La protéine commence toujours par <b>Met</b> : la traduction démarre au codon <b>AUG</b>." };
+  if (r.list.join() === ex.preProtUnspliced.join()) return { ok: false, msg: "Tu as traduit l'ARN pré-messager : il faut traduire l'<b>ARNm</b>, sans les introns." };
+  let k = 0; while (r.list[k] === t[k]) k++;
+  if (k === t.length) return { ok: false, msg: "Tu as continué après le codon stop : on s'arrête dès qu'on le rencontre." };
+  if (k === r.list.length) return { ok: false, msg: `Les ${k} premiers sont justes, mais il en manque : continue jusqu'au codon stop.` };
+  return { ok: false, msg: `Les ${k} premiers acides aminés sont justes. Vérifie le codon n°${k + 1} dans le tableau.` };
+}
+function renderAtelier(){
+  if (!at.ex) at.ex = genEx();
+  const ex = at.ex;
+  const brinName = ex.brin === 'T' ? 'brin transcrit' : 'brin non transcrit';
+  const Q = [
+    { t: `Écris l'<b>ARN pré-messager</b>. Nomme le mécanisme.`, kind: 'seq',
+      h: ex.brin === 'T' ? "C'est le brin <b>transcrit</b> : écris le complémentaire (A→U, T→A, C→G, G→C). Garde les introns pour l'instant." : "C'est le brin <b>non transcrit</b> : recopie-le en remplaçant T par U. Garde les introns pour l'instant.",
+      e: `<b>Transcription</b> (dans le noyau, par l'ARN polymérase) :<div class="seq">${seqHTML(ex.merged)}</div>` },
+    { t: `Écris l'<b>ARN messager</b>. Nomme le mécanisme.`, kind: 'seq',
+      h: ex.nin ? `Enlève les ${ex.nin} intron${ex.nin > 1 ? 's' : ''} (en orange) et colle les morceaux restants.` : "Il n'y a pas d'intron ici : l'ARNm est identique à l'ARN pré-messager.",
+      e: `<b>Épissage</b> (dans le noyau) : on élimine les introns.<div class="seq">${codonsHTML(ex.mrna, ex.start)}</div>` },
+    { t: `Écris la <b>séquence d'acides aminés</b> (abréviations séparées par des tirets).`, kind: 'prot',
+      h: "Repère le premier AUG, découpe en codons de 3 lettres à partir de lui, traduis chaque codon jusqu'au stop.",
+      e: `<b>Traduction</b> (dans le cytoplasme, par les ribosomes) :<div class="seq">${codonsHTML(ex.mrna, ex.start)}<br>${protStr(ex.prot)}</div>` },
+    { t: `<b>Bonus — mutation.</b> Chez un autre individu, le codon n°${ex.mut.j + 1} de l'ARNm (en comptant AUG comme n°1), <b>${ex.mut.oldC}</b>, devient <b>${ex.mut.newC}</b>. Conséquence sur la protéine ?`, kind: 'mut',
+      h: "Cherche les deux codons dans le tableau et compare les acides aminés.",
+      e: `${ex.mut.oldC} = ${ab(ex.mut.la)} et ${ex.mut.newC} = ${ab(ex.mut.lb)}. ` + (ex.mut.type === 0 ? "Même acide aminé : la protéine est <b>inchangée</b>, car le code génétique est <b>redondant</b>." : ex.mut.type === 1 ? "Un acide aminé est <b>remplacé</b> par un autre : la protéine est modifiée." : "C'est un <b>codon stop</b> : la traduction s'arrête plus tôt, la protéine est <b>raccourcie</b>.") }
+  ];
+  $('#view').innerHTML = `
+    <div class="card">
+      <div class="row" style="justify-content:space-between;gap:10px">
+        <div><div class="small muted">Brin donné</div><div class="seg" role="group">
+          <button data-brin="hasard" aria-pressed="${at.brin === 'hasard'}">Au hasard</button>
+          <button data-brin="NT" aria-pressed="${at.brin === 'NT'}">Non transcrit</button>
+          <button data-brin="T" aria-pressed="${at.brin === 'T'}">Transcrit</button></div></div>
+        <div><div class="small muted">Introns</div><div class="seg" role="group">
+          ${[0, 1, 2, 'hasard'].map(v => `<button data-nin="${v}" aria-pressed="${at.nin === v}">${v === 'hasard' ? '?' : v}</button>`).join('')}</div></div>
+      </div>
+      <p class="small muted" style="margin:10px 0 0">Bonnes réponses du premier coup : ${at.ok} / ${at.tot}</p>
+    </div>
+    <div class="card">
+      <h2>Énoncé</h2>
+      <p>Voici une portion du <b>${brinName}</b> d'un gène. Les introns sont en <b style="color:var(--intron)">orange</b>.</p>
+      <div class="seq">${seqHTML(ex.given)}</div>
+      <details><summary>Rappel de la méthode</summary><div class="box methode">1. Brin non transcrit → je remplace T par U. Brin transcrit → j'écris le complémentaire.<br>2. J'enlève les introns.<br>3. Je cherche le premier AUG et je découpe en codons.<br>4. Je traduis jusqu'au codon stop.</div></details>
+      <details><summary>Tableau du code génétique</summary>${codeTable()}</details>
+    </div>
+    <div class="card" id="qs"><h2>Questions</h2>
+      ${Q.map((q, i) => {
+        const s = ex.state[i];
+        const input = q.kind === 'seq' ? `<textarea class="ans" autocapitalize="characters" autocomplete="off" spellcheck="false" placeholder="ta séquence…"></textarea>`
+          : q.kind === 'prot' ? `<input class="ans" autocomplete="off" spellcheck="false" placeholder="Met-…">` : '';
+        const mutBtns = q.kind === 'mut' && !s.done && !s.show ? `<div>${['La protéine est inchangée', 'Un acide aminé est remplacé par un autre', 'La protéine est raccourcie (codon stop)'].map((o, k) => `<button class="opt" type="button" data-mut="${k}">${o}</button>`).join('')}</div>` : '';
+        return `<div class="qline${s.done ? ' done' : ''}">
+          <div><span class="qnum">${s.done ? '✓' : i + 1}</span>${q.t}</div>
+          ${s.done || s.show ? '' : q.kind === 'mut' ? mutBtns + `<div class="row"><button class="btn ghost small" type="button" data-hint="${i}">Indice</button></div>` : `<form data-i="${i}" style="margin-top:8px">${input}
+            <div class="row" style="margin-top:6px"><button class="btn small" type="submit">Vérifier</button>
+            <button class="btn ghost small" type="button" data-hint="${i}">Indice</button>
+            ${s.tries ? `<button class="btn ghost small" type="button" data-show="${i}">Voir la correction</button>` : ''}</div></form>`}
+          ${s.hint && !s.done && !s.show ? `<div class="hintbox">💡 ${q.h}</div>` : ''}
+          ${s.fb}
+          ${s.done || s.show ? `<div class="fb ${s.done ? 'good' : 'bad'}"><b class="t">${s.done ? (s.tries ? 'Exact !' : 'Exact du premier coup !') : 'Correction'}</b>${q.e}</div>` : ''}
+        </div>`;
+      }).join('')}
+      <div class="row" style="justify-content:flex-end;margin-top:14px"><button class="btn" id="nx">Nouvel exercice</button></div>
+    </div>`;
+  document.querySelectorAll('[data-brin]').forEach(b => b.onclick = () => { at.brin = b.dataset.brin; store.set('brin', at.brin); at.ex = genEx(); renderAtelier(); });
+  document.querySelectorAll('[data-nin]').forEach(b => b.onclick = () => { const v = b.dataset.nin; at.nin = v === 'hasard' ? v : +v; store.set('nin', at.nin); at.ex = genEx(); renderAtelier(); });
+  $('#nx').onclick = () => { at.ex = genEx(); renderAtelier(); window.scrollTo({ top: 0, behavior: 'smooth' }); };
+  document.querySelectorAll('[data-hint]').forEach(b => b.onclick = () => { ex.state[+b.dataset.hint].hint = true; renderAtelier(); });
+  document.querySelectorAll('[data-show]').forEach(b => b.onclick = () => { const s = ex.state[+b.dataset.show]; s.show = true; s.fb = ''; renderAtelier(); });
+  const record = (s, ok) => { if (s.tries === 0){ at.tot++; if (ok) at.ok++; store.set('ok', at.ok); store.set('tot', at.tot); } };
+  document.querySelectorAll('[data-mut]').forEach(b => b.onclick = () => {
+    const s = ex.state[3], ok = +b.dataset.mut === ex.mut.type; record(s, ok);
+    if (ok){ s.done = true; s.fb = ''; } else { s.tries++; s.show = true; s.fb = `<div class="fb bad"><b class="t">Non.</b></div>`; }
+    renderAtelier();
+  });
+  document.querySelectorAll('#qs form').forEach(f => f.onsubmit = e => {
+    e.preventDefault();
+    const i = +f.dataset.i, s = ex.state[i], raw = f.querySelector('.ans').value;
+    const r = Q[i].kind === 'seq' ? checkSeq(i, raw) : checkProt(raw);
+    if (!clean(raw) && Q[i].kind === 'seq'){ s.fb = `<div class="fb bad">${r.msg}</div>`; renderAtelier(); return; }
+    record(s, r.ok);
+    if (r.ok){ s.done = true; s.fb = ''; } else { s.tries++; s.fb = `<div class="fb bad"><b class="t">Pas encore.</b>${r.msg}</div>`; }
+    renderAtelier();
+  });
+}
+
+/* ================= DS BLANC ================= */
+const DS_PARTS = [{s:'CGTTAC'},{s:'AGA'},{s:'CCT',in:1},{s:'TTTACCCCG'},{s:'GAA',in:1},{s:'GTAATTGC'}];
+let dsShow = store.get('dsShow', {});
+function corrBtn(k){ return `<div class="noprint" style="margin-top:8px"><button class="btn ghost small" data-corr="${k}">${dsShow[k] ? 'Masquer le corrigé' : 'Afficher le corrigé'}</button></div>`; }
+function renderDS(){
+  const pre = toRNA(compParts(DS_PARTS));
+  const mrna = pre.filter(p => !p.in).map(p => p.s).join('');
+  const preStr = pre.map(p => p.s).join('');
+  $('#view').innerHTML = `
+  <div class="card ds">
+    <div class="eyebrow">DEVOIR SURVEILLÉ · SVT SPÉCIALITÉ · PREMIÈRE</div>
+    <h2>Le génome humain et son expression</h2>
+    <p><b>Durée : 1 heure</b> · Noté sur 20 · Le code génétique est fourni en annexe (en bas de page).</p>
+    <p class="small muted noprint">Conseil : fais le DS sur une copie, en temps limité, sans regarder la fiche. Puis corrige-toi exercice par exercice avec les boutons « Afficher le corrigé ».</p>
+  </div>
+
+  <div class="card ds">
+    <h2>Exercice 1 — Connaissances <span class="bareme">6 points</span></h2>
+    <p><b>Partie A — QCM (3 pts).</b> Pour chaque question, une seule réponse est juste (0,5 pt chacune).</p>
+    <ol>
+      <li>Le génome humain compte environ : a) 3 millions de paires de bases ; b) 3 milliards de paires de bases ; c) 46 paires de bases ; d) 3 000 paires de bases.</li>
+      <li>L'ARN se distingue de l'ADN car : a) il possède de la thymine ; b) il est formé de deux brins ; c) il contient de l'uracile et du ribose et n'a qu'un brin ; d) il contient du désoxyribose.</li>
+      <li>La transcription se déroule : a) dans le cytoplasme ; b) dans les ribosomes ; c) dans le noyau ; d) dans les pores nucléaires.</li>
+      <li>L'enzyme qui réalise la transcription est : a) l'ARN polymérase ; b) la lactase ; c) le ribosome ; d) l'ADN.</li>
+      <li>L'épissage consiste à : a) copier l'ADN en ARN ; b) éliminer les introns et rabouter les exons ; c) traduire l'ARNm en protéine ; d) ouvrir la molécule d'ADN.</li>
+      <li>Un codon est : a) un acide aminé ; b) une suite de 3 nucléotides de l'ARNm qui code un acide aminé ; c) un gène ; d) un intron.</li>
+    </ol>
+    <p><b>Partie B — Synthèse (3 pts).</b> Dans un texte structuré d'une quinzaine de lignes, accompagné d'un schéma, explique comment l'information portée par un gène permet la fabrication d'une protéine dans une cellule eucaryote.</p>
+    ${corrBtn('e1')}
+    ${dsShow.e1 ? `<div class="corr">
+      <h4>Partie A</h4><p>1 : b · 2 : c · 3 : c · 4 : a · 5 : b · 6 : b</p>
+      <h4>Partie B — exemple de réponse</h4>
+      <p><i>Introduction :</i> un gène est une portion d'ADN située dans le noyau. Sa séquence de nucléotides permet de fabriquer une protéine, suite d'acides aminés. Comment ?</p>
+      <p><i>1. La transcription (noyau).</i> L'ADN ne peut pas sortir du noyau. L'ARN polymérase ouvre la molécule d'ADN et assemble des nucléotides libres face au brin transcrit, par complémentarité (U face à A). On obtient un ARN pré-messager, copie du gène.</p>
+      <p><i>2. La maturation (noyau).</i> L'ARN pré-messager contient des exons (codants) et des introns (non codants). L'épissage élimine les introns et raboute les exons : on obtient l'ARN messager, qui sort par les pores nucléaires.</p>
+      <p><i>3. La traduction (cytoplasme).</i> Les ribosomes lisent l'ARNm codon par codon (3 nucléotides = 1 acide aminé), selon le code génétique universel, du codon initiateur AUG jusqu'à un codon stop. Plusieurs ribosomes lisent le même ARNm : plusieurs protéines sont produites en même temps.</p>
+      <p><i>Conclusion :</i> la séquence du gène détermine la séquence des acides aminés de la protéine, qui participe au phénotype.</p>
+      <p class="small"><b>Barème :</b> transcription avec lieu et enzyme (0,75) · épissage, exons/introns (0,75) · traduction, ribosomes, codon, code génétique, AUG/stop (0,75) · schéma titré et légendé : noyau, ADN, ARNm, pore, ribosomes, protéine (0,75).</p>
+    </div>` : ''}
+  </div>
+
+  <div class="card ds">
+    <h2>Exercice 2 — De l'ADN à la protéine <span class="bareme">7 points</span></h2>
+    <div class="doc"><div class="dt">Document 1 — Portion du brin transcrit d'un gène humain (les introns sont en gras)</div>
+      <div class="seq">${seqHTML(DS_PARTS)}</div></div>
+    <ol>
+      <li>Nomme et localise dans la cellule le mécanisme qui permet d'obtenir l'ARN pré-messager à partir de ce brin. Écris la séquence de l'ARN pré-messager. <span class="muted small">(1,5 pt)</span></li>
+      <li>Explique ce que devient l'ARN pré-messager avant de quitter le noyau. Écris la séquence de l'ARN messager. <span class="muted small">(1,5 pt)</span></li>
+      <li>À l'aide du code génétique, donne la séquence d'acides aminés de la protéine. Nomme le mécanisme et précise où il se déroule. <span class="muted small">(2 pts)</span></li>
+      <li>Un élève a oublié l'épissage et traduit directement l'ARN pré-messager. Quelle protéine obtient-il ? Conclus sur l'importance de la maturation. <span class="muted small">(1 pt)</span></li>
+      <li>Chez un autre individu, le codon CAU de l'ARNm est remplacé par CAC. Quelle est la conséquence sur la protéine ? Explique. <span class="muted small">(1 pt)</span></li>
+    </ol>
+    ${corrBtn('e2')}
+    ${dsShow.e2 ? `<div class="corr">
+      <h4>1. (1,5 pt)</h4><p>C'est la <b>transcription</b>, qui a lieu dans le <b>noyau</b> grâce à l'<b>ARN polymérase</b>. On donne le brin transcrit : l'ARN est son <b>complémentaire</b> (A→U, T→A, C→G, G→C).</p>
+      <div class="seq">${seqHTML(pre)}</div>
+      <h4>2. (1,5 pt)</h4><p>L'ARN pré-messager subit une <b>maturation par épissage</b> : les <b>introns</b> (GGA et CUU) sont éliminés et les <b>exons</b> sont raboutés. On obtient l'ARNm, qui sort par les pores nucléaires.</p>
+      <div class="seq">${codonsHTML(mrna, 3)}</div>
+      <h4>3. (2 pts)</h4><p>C'est la <b>traduction</b>, dans le <b>cytoplasme</b>, au niveau des <b>ribosomes</b>. On commence au codon AUG et on s'arrête au codon stop UAA :</p>
+      <div class="seq">AUG UCU AAA UGG GGC CAU UAA<br>Met – Ser – Lys – Trp – Gly – His</div>
+      <h4>4. (1 pt)</h4><p>En traduisant l'ARN pré-messager à partir de AUG : AUG UCU <span style="color:var(--intron)">GGA</span> AAA UGG GGC <span style="color:var(--intron)">CUU</span> CAU UAA, on obtient <b>Met – Ser – Gly – Lys – Trp – Gly – Leu – His</b>. Cette protéine est différente et plus longue. Sans épissage, les introns seraient traduits : la maturation est indispensable pour obtenir la bonne protéine.</p>
+      <h4>5. (1 pt)</h4><p>CAU et CAC codent tous les deux l'<b>histidine</b> (His). La protéine est donc <b>inchangée</b>. Cela s'explique par la <b>redondance du code génétique</b> : plusieurs codons peuvent coder le même acide aminé.</p>
+    </div>` : ''}
+  </div>
+
+  <div class="card ds">
+    <h2>Exercice 3 — L'histoire humaine lue dans le génome <span class="bareme">4 points</span></h2>
+    <div class="doc"><div class="dt">Document 2 — Le nombre théorique d'ancêtres</div>
+      Chaque individu a 2 parents, 4 grands-parents, etc. On estime qu'une génération dure environ 29 ans. Vers l'an 900, la population mondiale était inférieure à 300 millions d'habitants.</div>
+    <div class="doc"><div class="dt">Document 3 — Matrice des distances (nombre de différences sur une même séquence d'ADN, données simplifiées)</div>
+      <div class="scroll"><table class="t small"><tr><th></th><th>Français</th><th>Japonais</th><th>Yoruba (Nigeria)</th><th>Néandertal</th><th>Chimpanzé</th></tr>
+      <tr><th>Français</th><td>0</td><td>18</td><td>30</td><td>205</td><td>1450</td></tr>
+      <tr><th>Japonais</th><td></td><td>0</td><td>32</td><td>207</td><td>1455</td></tr>
+      <tr><th>Yoruba</th><td></td><td></td><td>0</td><td>210</td><td>1448</td></tr>
+      <tr><th>Néandertal</th><td></td><td></td><td></td><td>0</td><td>1430</td></tr></table></div></div>
+    <div class="doc"><div class="dt">Document 4</div>
+      Néandertal a vécu en Europe et en Asie jusqu'à environ −40 000 ans. Les génomes des populations européennes et asiatiques actuelles contiennent 1 à 3 % de séquences d'origine néandertalienne ; ceux des populations d'Afrique subsaharienne en contiennent très peu.</div>
+    <ol>
+      <li>Calcule le nombre théorique d'ancêtres d'un individu il y a 10 générations, puis il y a 40 générations. Compare ce dernier résultat aux données du document 2 et conclus. <span class="muted small">(1,5 pt)</span></li>
+      <li>À partir du document 3, construis l'arbre de parenté de ces cinq individus et place les ancêtres communs. Justifie ta construction. <span class="muted small">(1,5 pt)</span></li>
+      <li>Néandertal et Homo sapiens sont deux espèces distinctes. Explique les données du document 4. <span class="muted small">(1 pt)</span></li>
+    </ol>
+    ${corrBtn('e3')}
+    ${dsShow.e3 ? `<div class="corr">
+      <h4>1. (1,5 pt)</h4><p>Il y a 10 générations (≈ 290 ans) : 2<sup>10</sup> = <b>1 024 ancêtres</b>. Il y a 40 générations (≈ 1 160 ans, vers l'an 860) : 2<sup>40</sup> ≈ <b>1 100 milliards d'ancêtres</b>.</p>
+      <p>C'est bien plus que la population de l'époque (moins de 300 millions). C'est impossible : les mêmes personnes apparaissent donc plusieurs fois dans l'arbre généalogique. Tous les humains actuels partagent des <b>ancêtres communs</b> : ils sont apparentés.</p>
+      <h4>2. (1,5 pt)</h4>
+      ${ladderTree(['Français','Japonais','Yoruba','Néandertal','Chimpanzé'], ['AC1','AC2','AC3','AC4'])}
+      <p>La plus petite distance est Français–Japonais (18) : ils partagent l'ancêtre commun le plus récent (AC1). Le Yoruba est ensuite le plus proche de ce groupe (30 et 32) : AC2. Néandertal est plus éloigné (≈ 205–210) : AC3. Le chimpanzé est le plus éloigné de tous (≈ 1 450) : AC4.</p>
+      <h4>3. (1 pt)</h4><p>Les ancêtres des Européens et des Asiatiques, sortis d'Afrique, ont rencontré Néandertal en Europe et en Asie. Il y a eu des échanges de gènes entre les deux espèces (entre −45 000 et −33 000 ans environ) : c'est un <b>métissage</b>. Les populations d'Afrique subsaharienne, qui n'ont pas côtoyé Néandertal, n'ont presque pas hérité de ses gènes.</p>
+    </div>` : ''}
+  </div>
+
+  <div class="card ds">
+    <h2>Exercice 4 — Génotype, environnement et phénotype <span class="bareme">3 points</span></h2>
+    <div class="doc"><div class="dt">Document 5 — La persistance de la lactase</div>
+      La lactase est l'enzyme qui digère le lactose, le sucre du lait. Chez la plupart des mammifères, sa production s'arrête après le sevrage. Chez l'Homme, une région qui contrôle le gène de la lactase existe sous deux allèles : l'allèle <b>T</b> permet de continuer à produire la lactase à l'âge adulte ; une personne qui porte l'allèle <b>C</b> sur ses deux chromosomes cesse d'en produire.</div>
+    <div class="doc"><div class="dt">Document 6 — Pourcentage d'adultes qui digèrent le lait (valeurs arrondies)</div>
+      <div class="scroll"><table class="t small"><tr><th>Population</th><th>Tradition d'élevage laitier</th><th>Adultes digérant le lait</th></tr>
+      <tr><td>Suède</td><td>ancienne et forte</td><td>90 %</td></tr>
+      <tr><td>Peuls (éleveurs, Afrique de l'Ouest)</td><td>ancienne et forte</td><td>75 %</td></tr>
+      <tr><td>France</td><td>ancienne</td><td>65 %</td></tr>
+      <tr><td>Chine</td><td>faible</td><td>10 %</td></tr></table></div></div>
+    <p>À partir des documents, montre que le caractère « digérer le lait à l'âge adulte » dépend à la fois du génotype et de l'environnement.</p>
+    ${corrBtn('e4')}
+    ${dsShow.e4 ? `<div class="corr">
+      <h4>Réponse attendue (3 pts)</h4>
+      <p><b>Le génotype (facteur interne)</b> : je vois dans le document 5 que l'allèle T permet de garder la lactase à l'âge adulte, alors qu'une personne C/C n'en produit plus. Le phénotype dépend donc des allèles portés. <span class="muted small">(1 pt)</span></p>
+      <p><b>L'environnement (facteur externe)</b> : je vois dans le document 6 que le pourcentage d'adultes qui digèrent le lait est élevé dans les populations à forte tradition laitière (90 % en Suède, 75 % chez les Peuls) et faible quand cette tradition est faible (10 % en Chine). <span class="muted small">(1 pt)</span></p>
+      <p><b>Conclusion</b> : j'en déduis que, dans les populations qui consomment du lait, l'allèle T est un avantage et devient fréquent. Le phénotype dépend donc du <b>génotype</b> et de l'<b>environnement</b>, qui module l'expression des gènes et la fréquence des allèles. <span class="muted small">(1 pt)</span></p>
+    </div>` : ''}
+  </div>
+
+  <div class="card ds">
+    <h2>Annexe — Le code génétique</h2>
+    ${codeTable()}
+  </div>`;
+  document.querySelectorAll('[data-corr]').forEach(b => b.onclick = () => { const k = b.dataset.corr; dsShow[k] = !dsShow[k]; store.set('dsShow', dsShow); renderDS(); });
+}
+
+/* ================= ONGLETS ================= */
+const VIEWS = { fiche: renderFiche, flash: renderFlash, quiz: renderQuiz, atelier: renderAtelier, ds: renderDS };
+function show(tab){
+  if (!VIEWS[tab]) tab = 'fiche';
+  document.querySelectorAll('.tab').forEach(t => t.setAttribute('aria-selected', t.dataset.tab === tab));
+  store.set('tab', tab);
+  VIEWS[tab]();
+}
+document.querySelectorAll('.tab').forEach(t => t.onclick = () => { show(t.dataset.tab); window.scrollTo({ top: 0 }); });
+show(store.get('tab', 'fiche'));
+</script>
+</body>
+</html>
