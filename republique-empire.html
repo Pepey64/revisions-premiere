@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>De la République à l'Empire (1792-1815) — Réviser</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🦅</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,600;0,6..96,700;1,6..96,400&family=Archivo:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    box-sizing:border-box;
+    padding-top:env(safe-area-inset-top,0px);
+    padding-bottom:env(safe-area-inset-bottom,0px);
+    --bg:#E7E2D5; --bg-deep:#DAD3C2; --surface:#F4F1E8;
+    --fg:#1B2230; --fg-soft:#4E5668;
+    --blue:#27477C; --blue-soft:#DDE4F0;
+    --red:#95282B; --red-soft:#F2E0DD;
+    --green:#3E6247; --green-soft:#E0EAE0;
+    --brass:#9A7332; --brass-soft:#F0E6D2;
+    --violet:#5B3F7A; --violet-soft:#E8E0F0;
+    --rule:rgba(27,34,48,.20); --shadow:0 2px 0 rgba(27,34,48,.10);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#14171E; --bg-deep:#0E1117; --surface:#1D222C;
+      --fg:#EBE6D9; --fg-soft:#A9B0BF;
+      --blue:#8DAEE0; --blue-soft:#22304A;
+      --red:#DE8A83; --red-soft:#3A2223;
+      --green:#8FBF9B; --green-soft:#1E2E24;
+      --brass:#C9A25C; --brass-soft:#3A3020;
+      --violet:#B9A0DA; --violet-soft:#2E2540;
+      --rule:rgba(235,230,217,.20); --shadow:0 2px 0 rgba(0,0,0,.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#14171E; --bg-deep:#0E1117; --surface:#1D222C;
+    --fg:#EBE6D9; --fg-soft:#A9B0BF;
+    --blue:#8DAEE0; --blue-soft:#22304A;
+    --red:#DE8A83; --red-soft:#3A2223;
+    --green:#8FBF9B; --green-soft:#1E2E24;
+    --brass:#C9A25C; --brass-soft:#3A3020;
+    --violet:#B9A0DA; --violet-soft:#2E2540;
+    --rule:rgba(235,230,217,.20); --shadow:0 2px 0 rgba(0,0,0,.35);
+  }
+  *{box-sizing:inherit;}
+  body{margin:0;background:var(--bg);color:var(--fg);font-family:'Archivo',system-ui,sans-serif;font-size:16px;line-height:1.5;-webkit-text-size-adjust:100%;}
+  .sheet{max-width:680px;margin:0 auto;padding:22px 16px 60px;}
+  a{color:var(--blue);}
+
+  .masthead{border-top:2px solid var(--fg);border-bottom:1px solid var(--rule);padding:14px 0 12px;margin-bottom:18px;position:relative;}
+  .masthead .over{padding-right:46px;font-size:12.5px;color:var(--fg-soft);margin-bottom:6px;}
+  .masthead .over a{color:var(--fg-soft);}
+  h1{font-family:'Bodoni Moda',Georgia,serif;font-weight:700;font-size:clamp(28px,8vw,44px);line-height:1.02;margin:0 0 8px;letter-spacing:-.01em;}
+  h1 .second{display:block;font-weight:400;font-style:italic;font-size:.5em;color:var(--fg-soft);margin-top:6px;}
+  .theme-btn{position:absolute;right:0;top:12px;appearance:none;border:1px solid var(--rule);background:var(--surface);color:var(--fg);font-size:16px;width:38px;height:38px;cursor:pointer;}
+
+  nav.tabs{display:flex;border:1px solid var(--rule);background:var(--bg-deep);margin-bottom:20px;position:sticky;top:0;z-index:5;}
+  .tab{flex:1 1 0;appearance:none;border:none;border-right:1px solid var(--rule);background:transparent;color:var(--fg-soft);font-family:'Archivo',sans-serif;font-size:13.5px;font-weight:500;padding:12px 2px;cursor:pointer;min-height:46px;}
+  .tab:last-child{border-right:none;}
+  .tab[aria-selected="true"]{background:var(--fg);color:var(--bg);font-weight:600;}
+  button:focus-visible{outline:2px solid var(--brass);outline-offset:2px;}
+  .panel{display:none;}
+  .panel.on{display:block;}
+
+  h2{font-family:'Bodoni Moda',serif;font-size:26px;font-weight:700;margin:6px 0 6px;line-height:1.1;}
+  h3{font-family:'Bodoni Moda',serif;font-size:19px;font-weight:600;margin:22px 0 8px;}
+  .lede{font-size:14.5px;color:var(--fg-soft);margin:0 0 16px;max-width:60ch;}
+  .btn{appearance:none;border:1px solid var(--fg);background:var(--fg);color:var(--bg);font-family:'Archivo',sans-serif;font-size:14.5px;font-weight:600;padding:11px 18px;cursor:pointer;min-height:44px;}
+  .btn.ghost{background:transparent;color:var(--fg);}
+  .btn:disabled{opacity:.3;cursor:default;}
+  .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+  .row.end{justify-content:flex-end;}
+  .row.between{justify-content:space-between;}
+  .chips{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 14px;}
+  .chip{appearance:none;border:1px solid var(--rule);background:var(--surface);color:var(--fg-soft);font-family:inherit;font-size:13px;padding:7px 11px;cursor:pointer;min-height:36px;}
+  .chip[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg);}
+  .note{border-left:3px solid var(--brass);background:var(--brass-soft);padding:9px 12px;font-size:14px;margin:12px 0;}
+
+  /* Frise */
+  .tl{list-style:none;margin:0;padding:0 0 0 18px;border-left:2px solid var(--rule);}
+  .tl .period{margin:20px 0 8px -27px;display:flex;align-items:center;gap:8px;}
+  .tl .period .dot{width:16px;height:16px;border-radius:50%;flex:none;border:3px solid var(--bg);}
+  .tl .period b{font-family:'Bodoni Moda',serif;font-size:17px;}
+  .tl .period span{font-size:12.5px;color:var(--fg-soft);}
+  .ev{position:relative;background:var(--surface);border:1px solid var(--rule);box-shadow:var(--shadow);padding:10px 12px;margin:0 0 9px;cursor:pointer;}
+  .ev::before{content:"";position:absolute;left:-25px;top:16px;width:10px;height:10px;border-radius:50%;background:var(--c,var(--fg-soft));}
+  .ev .d{font-family:'Bodoni Moda',serif;font-weight:600;font-size:15px;color:var(--c,var(--blue));}
+  .ev .t{font-weight:600;font-size:15px;}
+  .ev .x{font-size:13.5px;color:var(--fg-soft);margin-top:3px;}
+  .ev .key{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--red);margin-left:6px;}
+  .hide-dates .ev:not(.shown) .d{color:transparent;background:var(--bg-deep);user-select:none;}
+  .hide-dates .ev:not(.shown) .d::after{content:"Touche pour voir la date";color:var(--fg-soft);font-family:'Archivo',sans-serif;font-size:12px;font-weight:500;position:absolute;left:12px;}
+
+  /* Quiz */
+  .qbox{background:var(--surface);border:1px solid var(--rule);box-shadow:var(--shadow);padding:16px;}
+  .counter{display:flex;justify-content:space-between;font-size:13px;color:var(--fg-soft);border-bottom:1px solid var(--rule);padding-bottom:6px;margin-bottom:14px;}
+  .counter b{font-family:'Bodoni Moda',serif;font-size:17px;color:var(--fg);}
+  .qtag{font-size:11.5px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--brass);}
+  .qtext{font-family:'Bodoni Moda',serif;font-size:20px;font-weight:600;line-height:1.25;margin:6px 0 14px;}
+  .opts{display:grid;gap:8px;}
+  .opt{appearance:none;text-align:left;border:1px solid var(--rule);background:var(--bg);color:var(--fg);font-family:inherit;font-size:15px;padding:12px 14px;cursor:pointer;min-height:48px;}
+  .opt.ok{background:var(--green-soft);border-color:var(--green);color:var(--fg);font-weight:600;}
+  .opt.ko{background:var(--red-soft);border-color:var(--red);}
+  .opt:disabled{cursor:default;}
+  .fb{margin-top:12px;font-size:14.5px;padding:10px 12px;display:none;}
+  .fb.on{display:block;}
+  .fb.good{background:var(--green-soft);border-left:3px solid var(--green);}
+  .fb.bad{background:var(--red-soft);border-left:3px solid var(--red);}
+  .order-list{display:grid;gap:8px;}
+  .order-pick{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 0;min-height:40px;}
+  .order-pick span{background:var(--blue-soft);border:1px solid var(--blue);padding:6px 10px;font-size:13.5px;}
+  .score-big{font-family:'Bodoni Moda',serif;font-size:56px;font-weight:700;line-height:1;margin:6px 0;}
+
+  /* Napoléon */
+  details{background:var(--surface);border:1px solid var(--rule);box-shadow:var(--shadow);margin:0 0 10px;}
+  summary{cursor:pointer;padding:13px 14px;font-weight:600;font-size:15.5px;list-style:none;display:flex;gap:10px;align-items:center;min-height:48px;}
+  summary::-webkit-details-marker{display:none;}
+  summary .n{font-family:'Bodoni Moda',serif;font-size:20px;color:var(--red);width:22px;}
+  summary::after{content:"+";margin-left:auto;font-size:20px;color:var(--fg-soft);}
+  details[open] summary::after{content:"–";}
+  .dbody{padding:0 14px 14px;font-size:15px;}
+  .dbody ul{padding-left:18px;margin:6px 0;}
+  .dbody li{margin:3px 0;}
+  .mini{width:100%;border-collapse:collapse;font-size:14px;margin:8px 0;}
+  .mini td{border-bottom:1px solid var(--rule);padding:6px 4px;vertical-align:top;}
+  .mini td:first-child{font-family:'Bodoni Moda',serif;font-weight:600;color:var(--blue);white-space:nowrap;width:1%;padding-right:10px;}
+  .win{color:var(--green);font-weight:600;}
+  .loss{color:var(--red);font-weight:600;}
+  blockquote{margin:8px 0;padding:8px 12px;border-left:3px solid var(--blue);background:var(--blue-soft);font-size:14px;font-style:italic;}
+
+  /* Schémas */
+  .schema{background:var(--surface);border:1px solid var(--rule);box-shadow:var(--shadow);padding:14px 12px;margin:0 0 18px;}
+  .schema h3{margin-top:0;}
+  .box{border:2px solid var(--c,var(--fg));background:var(--bg);padding:8px 10px;text-align:center;font-size:13.5px;}
+  .box b{display:block;font-size:14.5px;color:var(--c,var(--fg));text-transform:uppercase;letter-spacing:.03em;}
+  .box.pop{border-style:dashed;}
+  .role{font-size:13px;color:var(--fg-soft);}
+  .quizmode .role{color:transparent;background:var(--bg-deep);cursor:pointer;border-radius:2px;}
+  .quizmode .role.shown{color:var(--fg-soft);background:transparent;}
+  .arrow{text-align:center;font-size:12.5px;color:var(--fg-soft);padding:3px 0;line-height:1.2;}
+  .arrow::before{content:"↓ ";font-size:16px;color:var(--fg);}
+  .arrow.up::before{content:"↑ ";}
+  .g2{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+  .g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;}
+  .legend{display:flex;gap:12px;flex-wrap:wrap;font-size:12.5px;color:var(--fg-soft);margin-top:10px;}
+  .legend i{display:inline-block;width:12px;height:12px;border:2px solid;margin-right:4px;vertical-align:-1px;}
+  .sector{cursor:pointer;stroke:var(--bg);stroke-width:3;}
+  .hemi-info{font-size:14px;min-height:60px;background:var(--bg);border:1px solid var(--rule);padding:8px 10px;margin-top:8px;}
+
+  .granit{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+  .granit .center{grid-column:1 / -1;text-align:center;background:var(--fg);color:var(--bg);padding:10px;font-family:'Bodoni Moda',serif;font-size:17px;font-weight:600;}
+  .gcard{appearance:none;font-family:inherit;color:var(--fg);text-align:left;border:1px solid var(--rule);border-top:4px solid var(--c);background:var(--bg);padding:10px;cursor:pointer;min-height:96px;}
+  .gcard .nm{font-weight:600;font-size:15px;display:block;}
+  .gcard .yr{font-family:'Bodoni Moda',serif;font-size:22px;font-weight:700;color:var(--c);}
+  .gcard .rl{font-size:12.5px;color:var(--fg-soft);display:none;margin-top:4px;}
+  .gcard.open .rl{display:block;}
+  .granit.hide .gcard:not(.open) .yr{color:transparent;background:var(--bg-deep);}
+
+  footer{margin-top:36px;font-size:12.5px;color:var(--fg-soft);text-align:center;}
+  @media (max-width:420px){.tab{font-size:12px;} .g3{grid-template-columns:1fr;} }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <header class="masthead">
+    <div class="over"><a href="index.html">← Révisions de première</a> · Histoire · Thème 1, chapitre 1 (suite)</div>
+    <h1>De la République à l'Empire<span class="second">1792 – 1815 : République en échec, Consulat, Empire</span></h1>
+    <button class="theme-btn" id="themeBtn" aria-label="Changer de thème">◐</button>
+  </header>
+
+  <nav class="tabs" role="tablist">
+    <button class="tab" role="tab" data-p="frise" aria-selected="true">Frise</button>
+    <button class="tab" role="tab" data-p="dates" aria-selected="false">Dates</button>
+    <button class="tab" role="tab" data-p="napo" aria-selected="false">Napoléon</button>
+    <button class="tab" role="tab" data-p="schemas" aria-selected="false">Schémas</button>
+    <button class="tab" role="tab" data-p="eval" aria-selected="false">Évaluation</button>
+  </nav>
+
+  <!-- ============ FRISE ============ -->
+  <section class="panel on" id="p-frise">
+    <h2>La frise chronologique</h2>
+    <p class="lede">Toutes les dates du cours, de Valmy à Sainte-Hélène. Les dates marquées <b style="color:var(--red)">à savoir</b> tombent souvent en contrôle. Active « Cacher les dates » pour t'entraîner : touche une carte pour vérifier.</p>
+    <div class="chips" id="periodChips"></div>
+    <div class="row" style="margin-bottom:14px">
+      <button class="chip" id="hideDates" aria-pressed="false">🙈 Cacher les dates</button>
+      <button class="chip" id="onlyKey" aria-pressed="false">★ Seulement « à savoir »</button>
+    </div>
+    <ul class="tl" id="timeline"></ul>
+  </section>
+
+  <!-- ============ DATES (QUIZ) ============ -->
+  <section class="panel" id="p-dates">
+    <h2>Interrogation sur les dates</h2>
+    <p class="lede">10 questions tirées au hasard : retrouver la date d'un événement, l'événement d'une date, ou remettre des événements dans l'ordre.</p>
+    <div class="chips" id="dateMode">
+      <button class="chip" data-m="mix" aria-pressed="true">Tout mélangé</button>
+      <button class="chip" data-m="key" aria-pressed="false">★ Seulement « à savoir »</button>
+      <button class="chip" data-m="order" aria-pressed="false">Remettre dans l'ordre</button>
+    </div>
+    <div class="qbox" id="dateQuiz"></div>
+  </section>
+
+  <!-- ============ NAPOLÉON ============ -->
+  <section class="panel" id="p-napo">
+    <h2>Napoléon Bonaparte</h2>
+    <p class="lede">Du général de l'armée d'Italie à l'empereur exilé : la fiche complète, avec les documents étudiés en classe. Termine par le vrai/faux.</p>
+    <div id="napoBlocks"></div>
+    <h3>Vrai ou faux ?</h3>
+    <div class="qbox" id="vfQuiz"></div>
+  </section>
+
+  <!-- ============ SCHÉMAS ============ -->
+  <section class="panel" id="p-schemas">
+    <h2>Les schémas</h2>
+    <p class="lede">Les schémas à savoir refaire. Mode « Teste-toi » : les rôles sont masqués, touche-les un par un pour vérifier.</p>
+    <div class="chips">
+      <button class="chip" id="schemaQuiz" aria-pressed="false">🧠 Mode « Teste-toi »</button>
+    </div>
+
+    <div class="schema" id="sc-consulat">
+      <h3>1. Le Consulat (1799 – 1804)</h3>
+      <div class="box" style="--c:var(--red)"><b>Napoléon Bonaparte, Premier consul</b><span class="role">a l'initiative des lois · nomme les ministres · commande les armées (2 autres consuls sans pouvoir réel)</span></div>
+      <div class="arrow">nomme</div>
+      <div class="g2">
+        <div class="box" style="--c:var(--red)"><b>Conseil d'État</b><span class="role">prépare les projets de lois</span></div>
+        <div class="box" style="--c:var(--violet)"><b>Sénat</b><span class="role">vérifie les lois (conformité à la Constitution) et choisit les membres des 2 assemblées sur les listes</span></div>
+      </div>
+      <div class="arrow">le Sénat choisit les membres</div>
+      <div class="g2">
+        <div class="box" style="--c:var(--blue)"><b>Tribunat</b><span class="role">discute les projets de lois sans les voter</span></div>
+        <div class="box" style="--c:var(--blue)"><b>Corps législatif</b><span class="role">vote les projets de lois sans les discuter</span></div>
+      </div>
+      <div class="arrow up">élisent des listes de candidats</div>
+      <div class="box pop" style="--c:var(--green)"><b>Listes communales, départementales, nationale</b><span class="role">surtout de riches propriétaires (les « notables »)</span></div>
+      <div class="arrow up">élisent</div>
+      <div class="box pop" style="--c:var(--green)"><b>Citoyens français</b><span class="role">suffrage universel masculin (6 millions) mais très encadré · approuvent par plébiscite (1799, 1802 consul à vie)</span></div>
+      <div class="legend"><span><i style="border-color:var(--red)"></i>exécutif</span><span><i style="border-color:var(--blue)"></i>législatif (affaibli, divisé)</span><span><i style="border-color:var(--violet)"></i>contrôle</span><span><i style="border-color:var(--green);border-style:dashed"></i>citoyens</span></div>
+      <div class="note"><b>À retenir :</b> la Constitution de l'an VIII confie le pouvoir à 3 consuls, mais en réalité tout est entre les mains du Premier consul. Le législatif est faible car éclaté en 4 assemblées. Le suffrage universel est rétabli mais encadré.</div>
+    </div>
+
+    <div class="schema" id="sc-empire">
+      <h3>2. L'Empire (1804 – 1815)</h3>
+      <div class="box" style="--c:var(--red)"><b>Empereur des Français</b><span class="role">chef de l'exécutif · a aussi l'initiative des lois · la justice est rendue en son nom · conduit seul la politique extérieure</span></div>
+      <div class="arrow">nomme</div>
+      <div class="g3">
+        <div class="box" style="--c:var(--red)"><b>Ministres</b><span class="role">simples exécutants de ses volontés</span></div>
+        <div class="box" style="--c:var(--red)"><b>Conseil d'État</b><span class="role">rédige les lois : le vrai lieu du pouvoir législatif</span></div>
+        <div class="box" style="--c:var(--violet)"><b>Sénat</b><span class="role">inamovible · contrôle la constitutionnalité des lois</span></div>
+      </div>
+      <div class="arrow">nomme (système des candidatures officielles)</div>
+      <div class="box" style="--c:var(--blue)"><b>Corps législatif</b><span class="role">vote les lois et le budget (le Tribunat est supprimé en 1807)</span></div>
+      <div class="arrow up">consultation, élection très encadrée</div>
+      <div class="box pop" style="--c:var(--green)"><b>Suffrage universel masculin</b><span class="role">plébiscite de 1804 qui approuve l'Empire héréditaire</span></div>
+      <div class="note"><b>À retenir :</b> l'Empire renforce encore le pouvoir personnel : régime autoritaire, dynastie héréditaire, police omniprésente (Fouché), censure de la presse, noblesse d'Empire (1808).</div>
+    </div>
+
+    <div class="schema" id="sc-granit">
+      <h3>3. Les « masses de granit »</h3>
+      <p class="lede" style="margin-bottom:10px">Expression de Bonaparte en 1802 : les institutions civiles solides créées pour « bâtir la France moderne » et stabiliser la société après la Révolution. Touche une carte pour voir son rôle.</p>
+      <div class="chips"><button class="chip" id="granitHide" aria-pressed="false">🙈 Cacher les dates</button></div>
+      <div class="granit" id="granit"></div>
+    </div>
+
+    <div class="schema" id="sc-convention">
+      <h3>4. La Convention nationale (sept. 1792 – juin 1793)</h3>
+      <p class="lede" style="margin-bottom:6px">Touche un groupe de députés.</p>
+      <svg viewBox="0 0 320 185" width="100%" role="img" aria-label="Hémicycle de la Convention">
+        <path class="sector" data-s="m" d="M160,172 L10,172 A150,150 0 0 1 85,42.1 Z" fill="var(--red)"/>
+        <path class="sector" data-s="p" d="M160,172 L85,42.1 A150,150 0 0 1 235,42.1 Z" fill="var(--brass)"/>
+        <path class="sector" data-s="g" d="M160,172 L235,42.1 A150,150 0 0 1 310,172 Z" fill="var(--blue)"/>
+        <text x="62" y="140" fill="#fff" font-size="13" font-weight="600" text-anchor="middle" pointer-events="none">Montagnards</text>
+        <text x="160" y="95" fill="#fff" font-size="13" font-weight="600" text-anchor="middle" pointer-events="none">La Plaine</text>
+        <text x="258" y="140" fill="#fff" font-size="13" font-weight="600" text-anchor="middle" pointer-events="none">Girondins</text>
+        <text x="62" y="155" fill="#fff" font-size="10" text-anchor="middle" pointer-events="none">(à gauche, en haut)</text>
+      </svg>
+      <div class="hemi-info" id="hemiInfo">Touche un groupe.</div>
+    </div>
+
+    <div class="schema" id="sc-terreur">
+      <h3>5. Le gouvernement révolutionnaire de Robespierre (1793 – 1794)</h3>
+      <div class="box" style="--c:var(--blue)"><b>La Convention</b><span class="role">nomme les comités et le tribunal</span></div>
+      <div class="arrow">nomme</div>
+      <div class="g3">
+        <div class="box" style="--c:var(--red)"><b>Comité de salut public</b><span class="role">Robespierre · propose et applique les lois, contrôle l'armée et la police</span></div>
+        <div class="box" style="--c:var(--red)"><b>Comité de sûreté générale</b><span class="role">dirige la police</span></div>
+        <div class="box" style="--c:var(--red)"><b>Tribunal révolutionnaire</b><span class="role">juge les suspects → guillotine</span></div>
+      </div>
+      <div class="arrow up">soutiennent / s'appuie sur</div>
+      <div class="g2">
+        <div class="box pop" style="--c:var(--green)"><b>Sans-culottes</b><span class="role">soutien populaire, forment les comités</span></div>
+        <div class="box pop" style="--c:var(--green)"><b>Comités révolutionnaires</b><span class="role">envoient les suspects au tribunal (loi des suspects, sept. 1793)</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ÉVALUATION ============ -->
+  <section class="panel" id="p-eval">
+    <h2>Évaluation</h2>
+    <p class="lede">20 questions comme en contrôle : dates, chronologie, vocabulaire, schémas et documents. Note sur 20 et correction détaillée à la fin.</p>
+    <div class="qbox" id="evalBox"></div>
+  </section>
+
+  <footer>Révisions de première · Histoire · d'après le cahier et les documents de cours</footer>
+</div>
+
+<script>
+/* ---------- Thème ---------- */
+(function(){
+  const r=document.documentElement;
+  try{const t=localStorage.getItem('rp-theme'); if(t) r.dataset.theme=t;}catch(e){}
+  document.getElementById('themeBtn').onclick=()=>{
+    const dark = r.dataset.theme ? r.dataset.theme==='dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+    r.dataset.theme = dark?'light':'dark';
+    try{localStorage.setItem('rp-theme',r.dataset.theme);}catch(e){}
+  };
+})();
+
+/* ---------- Onglets ---------- */
+document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{
+  document.querySelectorAll('.tab').forEach(x=>x.setAttribute('aria-selected',x===t));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('on',p.id==='p-'+t.dataset.p));
+  window.scrollTo({top:0});
+});
+
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
+
+/* ---------- Données : frise ---------- */
+const PERIODS=[
+  {id:'gir',  name:'La Convention girondine', span:'1792 – 1793', c:'var(--blue)'},
+  {id:'ter',  name:'La Convention montagnarde : la Terreur', span:'1793 – 1794', c:'var(--red)'},
+  {id:'dir',  name:'Thermidor et le Directoire', span:'1794 – 1799', c:'var(--brass)'},
+  {id:'con',  name:'Le Consulat', span:'1799 – 1804', c:'var(--green)'},
+  {id:'emp',  name:"L'Empire", span:'1804 – 1815', c:'var(--violet)'}
+];
+// y = année pour le tri ; o = ordre fin
+const EVENTS=[
+  {p:'gir',o:1792.72,d:'20 septembre 1792',t:'Victoire de Valmy',x:"Première victoire des armées révolutionnaires contre les Prussiens. Elle sauve la Révolution.",k:1},
+  {p:'gir',o:1792.73,d:'21 septembre 1792',t:'La Convention se réunit et abolit la royauté',x:"Nouvelle assemblée élue au suffrage universel masculin. La République est proclamée (22 sept. = début de l'an I).",k:1},
+  {p:'gir',o:1792.85,d:'Novembre 1792',t:'Victoire de Jemappes',x:"Les Français battent les Autrichiens et occupent la Belgique : début de l'expansion militaire."},
+  {p:'gir',o:1792.95,d:'11 déc. 1792 – 17 janv. 1793',t:'Procès de Louis XVI',x:"Tous les députés le déclarent coupable de trahison, mais ils se divisent sur la peine. La mort est votée."},
+  {p:'gir',o:1793.05,d:'21 janvier 1793',t:'Exécution de Louis XVI',x:"Le roi est guillotiné. Conséquence : la première coalition européenne se forme contre la France.",k:1},
+  {p:'gir',o:1793.2,d:'Printemps 1793',t:'Levée en masse et début de la guerre de Vendée',x:"Obligation militaire pour les hommes célibataires de 18 à 25 ans. Dans l'Ouest, des émeutes éclatent contre ce décret : c'est le début de la guerre civile (Vendée, chouannerie)."},
+  {p:'ter',o:1793.42,d:'2 juin 1793',t:'Arrestation des députés girondins',x:"Sous la pression des sans-culottes, les Girondins (jugés trop modérés) sont éliminés : les Montagnards contrôlent la Convention. En province, révoltes fédéralistes.",k:1},
+  {p:'ter',o:1793.45,d:'Juin 1793',t:"Constitution de l'an I",x:"Constitution et déclaration des droits très démocratiques… mais elles ne seront jamais appliquées."},
+  {p:'ter',o:1793.7,d:'Septembre 1793',t:'Loi des suspects : la Terreur',x:"Mesures d'exception : multiplication des arrestations et des condamnations. Contrôle des prix (maximum) et réquisitions de grains.",k:1},
+  {p:'ter',o:1793.79,d:'16 octobre 1793',t:'Exécution de Marie-Antoinette',x:"La reine est guillotinée pendant la Terreur."},
+  {p:'ter',o:1794.1,d:'4 février 1794',t:"Abolition de l'esclavage",x:"Les insurrections aux Antilles (Saint-Domingue) précipitent l'abolition de l'esclavage dans les colonies.",k:1},
+  {p:'ter',o:1794.48,d:'26 juin 1794',t:'Victoire de Fleurus',x:"L'invasion est stoppée. La Terreur semble désormais inutile."},
+  {p:'ter',o:1794.57,d:'27 – 28 juillet 1794',t:'Chute de Robespierre (9 – 10 thermidor an II)',x:"Désigné comme un dictateur, il est arrêté le 27 juillet (9 thermidor) et guillotiné le 28 avec ses proches. Bilan de la Terreur : environ 17 000 exécutions et plus de 100 000 morts en Vendée.",k:1},
+  {p:'dir',o:1795.5,d:'1795',t:"Constitution de l'an III : le Directoire",x:"Boissy d'Anglas : « nous devons être gouvernés par les meilleurs », c'est-à-dire les propriétaires. Retour au suffrage censitaire. 5 directeurs, Conseil des Cinq-Cents, Conseil des Anciens.",k:1},
+  {p:'dir',o:1796.3,d:'1796',t:"Campagne d'Italie",x:"Le général Bonaparte, à la tête de l'armée d'Italie, remporte de brillantes victoires contre l'Autriche."},
+  {p:'dir',o:1796.5,d:'1796',t:'Conjuration des Égaux (Babeuf)',x:"Gracchus Babeuf veut une égalité réelle : suppression de la propriété individuelle. Il est arrêté et exécuté en 1797."},
+  {p:'dir',o:1798.5,d:'1798 – 1799',t:"Expédition d'Égypte",x:"Victoires contre les Mamelouks, mais flotte détruite par Nelson à Aboukir. Bonaparte abandonne son armée et rentre en France."},
+  {p:'con',o:1799.86,d:'9 novembre 1799 (18 brumaire an VIII)',t:"Coup d'État de Bonaparte",x:"Bonaparte prend le pouvoir avec l'armée, chasse les députés du Conseil des Cinq-Cents. Fin du Directoire et de la Révolution.",k:1},
+  {p:'con',o:1799.95,d:'Décembre 1799',t:"Constitution de l'an VIII : le Consulat",x:"3 consuls, mais tout le pouvoir au Premier consul. Approuvée par plébiscite."},
+  {p:'con',o:1800.1,d:'1800',t:'Banque de France et préfets',x:"Banque de France (16 nivôse an VIII) qui émet billets et monnaie ; préfets nommés à la tête de chaque département (28 pluviôse an VIII).",k:1},
+  {p:'con',o:1801.5,d:'1801',t:'Concordat avec le pape',x:"Le catholicisme est reconnu comme « religion de la grande majorité des Français », liberté de culte garantie, le clergé est payé par l'État et lui prête serment.",k:1},
+  {p:'con',o:1802.2,d:'1802',t:"Paix d'Amiens",x:"Le traité avec l'Angleterre ramène (provisoirement) la paix en Europe."},
+  {p:'con',o:1802.33,d:'1er mai 1802',t:'Création des lycées',x:"Loi du 11 floréal an X : former les futures élites, officiers et fonctionnaires.",k:1},
+  {p:'con',o:1802.38,d:'1802',t:"Légion d'honneur et rétablissement de l'esclavage",x:"La Légion d'honneur (29 floréal an X) récompense les mérites militaires ou civils. L'esclavage est rétabli dans les colonies, ce qui provoque de nouvelles révoltes.",k:1},
+  {p:'con',o:1802.6,d:'1802',t:'Bonaparte consul à vie',x:"Approuvé par plébiscite : le pouvoir devient personnel."},
+  {p:'con',o:1803.27,d:'1803',t:'Franc germinal',x:"Nouvelle monnaie stable (17 germinal an XI)."},
+  {p:'con',o:1804.0,d:'1er janvier 1804',t:"Indépendance d'Haïti",x:"Après la révolte contre le rétablissement de l'esclavage, les Français doivent quitter Haïti (ancienne Saint-Domingue)."},
+  {p:'con',o:1804.22,d:'21 mars 1804',t:'Code civil',x:"Recueil de plus de 2 000 articles qui unifie le droit (30 ventôse an XII) : égalité devant la loi, propriété, mais autorité du père et du mari.",k:1},
+  {p:'emp',o:1804.4,d:'Mai 1804',t:"Proclamation de l'Empire",x:"Le Sénat proclame Napoléon empereur des Français ; l'Empire héréditaire est approuvé par plébiscite."},
+  {p:'emp',o:1804.92,d:'2 décembre 1804',t:'Sacre de Napoléon Ier',x:"À Notre-Dame, en présence du pape, il se couronne lui-même. Il jure de maintenir l'égalité et les libertés.",k:1},
+  {p:'emp',o:1805.8,d:'21 octobre 1805',t:'Défaite de Trafalgar',x:"La flotte française est détruite par les Anglais de Nelson : la France perd la maîtrise des mers."},
+  {p:'emp',o:1805.92,d:'2 décembre 1805',t:"Victoire d'Austerlitz",x:"Contre les Russes et les Autrichiens : la « bataille des trois empereurs ».",k:1},
+  {p:'emp',o:1807,d:'1806 – 1808',t:'Université impériale et baccalauréat',x:"Monopole de l'État sur l'enseignement ; le décret de 1808 rétablit le baccalauréat. Noblesse d'Empire créée en 1808."},
+  {p:'emp',o:1812.7,d:'1812',t:'La débâcle de Russie',x:"La Grande Armée doit battre en retraite dans le froid : désastre militaire."},
+  {p:'emp',o:1814.3,d:'Avril 1814',t:"Abdication, exil à l'île d'Elbe",x:"Les coalisés entrent dans Paris. Napoléon abdique : retour du roi (Louis XVIII).",k:1},
+  {p:'emp',o:1815.46,d:'18 juin 1815',t:'Défaite de Waterloo',x:"Revenu d'Elbe (les Cent-Jours), il est battu définitivement par les Anglais et les Prussiens. Il abdique le 22 juin et est exilé à Sainte-Hélène.",k:1},
+  {p:'emp',o:1821.3,d:'5 mai 1821',t:'Mort à Sainte-Hélène',x:"Napoléon meurt sur cette île perdue au milieu de l'Atlantique."}
+];
+
+/* ---------- Frise : rendu ---------- */
+let activePeriod='all';
+function renderTL(){
+  const onlyKey=document.getElementById('onlyKey').getAttribute('aria-pressed')==='true';
+  const ul=document.getElementById('timeline'); ul.innerHTML='';
+  PERIODS.forEach(P=>{
+    if(activePeriod!=='all'&&activePeriod!==P.id) return;
+    const evs=EVENTS.filter(e=>e.p===P.id&&(!onlyKey||e.k));
+    if(!evs.length) return;
+    const h=document.createElement('li'); h.className='period';
+    h.innerHTML=`<span class="dot" style="background:${P.c}"></span><div><b>${P.name}</b><br><span>${P.span}</span></div>`;
+    ul.appendChild(h);
+    evs.forEach(e=>{
+      const li=document.createElement('li'); li.className='ev'; li.style.setProperty('--c',P.c);
+      li.innerHTML=`<div class="d">${e.d}</div><div class="t">${e.t}${e.k?'<span class="key">à savoir</span>':''}</div><div class="x">${e.x}</div>`;
+      li.onclick=()=>li.classList.toggle('shown');
+      ul.appendChild(li);
+    });
+  });
+}
+(function(){
+  const box=document.getElementById('periodChips');
+  [{id:'all',name:'Tout'}].concat(PERIODS).forEach(P=>{
+    const b=document.createElement('button'); b.className='chip'; b.textContent=P.id==='all'?'Tout':P.name.replace('La Convention ','Conv. ').replace(' : la Terreur','');
+    b.setAttribute('aria-pressed',P.id==='all');
+    b.onclick=()=>{activePeriod=P.id;box.querySelectorAll('.chip').forEach(x=>x.setAttribute('aria-pressed',x===b));renderTL();};
+    box.appendChild(b);
+  });
+  const hd=document.getElementById('hideDates');
+  hd.onclick=()=>{const on=hd.getAttribute('aria-pressed')!=='true';hd.setAttribute('aria-pressed',on);document.getElementById('timeline').classList.toggle('hide-dates',on);document.querySelectorAll('.ev.shown').forEach(e=>e.classList.remove('shown'));};
+  const ok=document.getElementById('onlyKey');
+  ok.onclick=()=>{ok.setAttribute('aria-pressed',ok.getAttribute('aria-pressed')!=='true');renderTL();};
+  renderTL();
+})();
+
+/* ---------- Moteur de quiz générique ---------- */
+function runQuiz(el, questions, opts={}){
+  let i=0, score=0, log=[];
+  function show(){
+    if(i>=questions.length) return end();
+    const q=questions[i];
+    el.innerHTML=`<div class="counter"><span>Question <b>${i+1}</b> / ${questions.length}</span><span>Score : <b>${score}</b></span></div>
+      ${q.tag?`<div class="qtag">${q.tag}</div>`:''}<div class="qtext">${q.q}</div><div class="opts"></div><div class="fb"></div>
+      <div class="row end" style="margin-top:12px"><button class="btn" data-nx="1" style="display:none">${i+1<questions.length?'Question suivante →':'Voir le résultat'}</button></div>`;
+    const box=el.querySelector('.opts'), fb=el.querySelector('.fb'), nx=el.querySelector("[data-nx]");
+    nx.onclick=()=>{i++;show();};
+    if(q.type==='order'){
+      const pick=[]; const items=shuffle(q.items);
+      const area=document.createElement('div'); area.className='order-list';
+      const sel=document.createElement('div'); sel.className='order-pick';
+      sel.innerHTML='<span style="background:none;border:none;color:var(--fg-soft);padding:6px 0">Touche les événements du plus ancien au plus récent…</span>';
+      items.forEach(it=>{
+        const b=document.createElement('button'); b.className='opt'; b.textContent=it;
+        b.onclick=()=>{ if(b.disabled) return; b.disabled=true; b.style.opacity=.4; pick.push(it);
+          sel.innerHTML=pick.map((p,k)=>`<span>${k+1}. ${esc(p)}</span>`).join('');
+          if(pick.length===items.length){
+            const good=pick.every((p,k)=>p===q.items[k]); if(good) score++;
+            log.push({q:q.q,good,ans:q.items.join(' → ')});
+            fb.className='fb on '+(good?'good':'bad');
+            fb.innerHTML=(good?'<b>Bravo, c\'est le bon ordre !</b>':'<b>Pas tout à fait.</b>')+'<br>Bon ordre : '+q.items.map((p,k)=>`${k+1}. ${esc(p)}${q.dates?' ('+q.dates[k]+')':''}`).join(' · ');
+            nx.style.display='';
+          }};
+        area.appendChild(b);
+      });
+      box.appendChild(area); box.appendChild(sel);
+      const rs=document.createElement('button'); rs.className='btn ghost'; rs.textContent='Recommencer cet ordre'; rs.style.marginTop='8px';
+      rs.onclick=()=>{ if(pick.length<items.length){ show(); } }; box.appendChild(rs);
+      return;
+    }
+    const options=q.keep?q.opts:shuffle(q.opts);
+    options.forEach(o=>{
+      const b=document.createElement('button'); b.className='opt'; b.innerHTML=o;
+      b.onclick=()=>{
+        const good=o===q.a; if(good) score++;
+        box.querySelectorAll('.opt').forEach(x=>{x.disabled=true; if(x.innerHTML===q.a) x.classList.add('ok');});
+        if(!good) b.classList.add('ko');
+        fb.className='fb on '+(good?'good':'bad');
+        fb.innerHTML=(good?'<b>Exact !</b> ':'<b>Non.</b> Réponse : '+q.a+'. ')+(q.ex||'');
+        log.push({q:q.q,good,ans:q.a,ex:q.ex});
+        nx.style.display='';
+      };
+      box.appendChild(b);
+    });
+  }
+  function end(){
+    const n=questions.length, note=opts.on20?Math.round(score/n*20*2)/2:null;
+    const pct=score/n;
+    const msg=pct>=.9?'Excellent, c\'est maîtrisé !':pct>=.7?'Bien ! Revois les erreurs ci-dessous.':pct>=.5?'C\'est en route. Relis la frise puis recommence.':'Il faut retravailler : frise et schémas, puis réessaie.';
+    el.innerHTML=`<div class="qtag">Résultat</div><div class="score-big">${opts.on20?note+' / 20':score+' / '+n}</div><p>${msg}</p>
+      ${opts.corr?`<h3>Correction</h3><table class="mini">${log.map((l,k)=>`<tr><td>${l.good?'✅':'❌'} ${k+1}</td><td>${l.q}<br><b>${l.ans}</b>${l.ex&&!l.good?'<br><span class="role">'+l.ex+'</span>':''}</td></tr>`).join('')}</table>`:''}
+      <div class="row end" style="margin-top:12px"><button class="btn" data-again="1">Recommencer</button></div>`;
+    el.querySelector("[data-again]").onclick=opts.restart;
+    if(opts.on20){try{const best=+localStorage.getItem('rp-eval-best')||0; if(note>best) localStorage.setItem('rp-eval-best',note);}catch(e){}}
+  }
+  show();
+}
+
+/* ---------- Interrogation sur les dates ---------- */
+let dateMode='mix';
+function buildDateQuiz(){
+  const pool=EVENTS.filter(e=>dateMode!=='key'||e.k);
+  const qs=[];
+  if(dateMode==='order'){
+    for(let n=0;n<6;n++){
+      const pick=shuffle(EVENTS.filter(e=>e.k)).slice(0,4).sort((a,b)=>a.o-b.o);
+      qs.push({type:'order',tag:'Chronologie',q:'Remets ces événements dans l\'ordre chronologique.',items:pick.map(e=>e.t),dates:pick.map(e=>e.d)});
+    }
+  } else {
+    shuffle(pool).slice(0,10).forEach((e,k)=>{
+      const others=EVENTS.filter(x=>x!==e&&x.d!==e.d).sort((a,b)=>Math.abs(a.o-e.o)-Math.abs(b.o-e.o)).slice(0,8);
+      const d3=shuffle(others).slice(0,3);
+      if(k%2===0) qs.push({tag:'Quelle date ?',q:`${e.t} : c'est quand ?`,opts:[e.d,...d3.map(x=>x.d)],a:e.d,ex:e.x});
+      else qs.push({tag:'Quel événement ?',q:`Que se passe-t-il : <span style="color:var(--blue)">${e.d}</span> ?`,opts:[e.t,...d3.map(x=>x.t)],a:e.t,ex:e.x});
+    });
+  }
+  runQuiz(document.getElementById('dateQuiz'),qs,{corr:true,restart:buildDateQuiz});
+}
+document.querySelectorAll('#dateMode .chip').forEach(b=>b.onclick=()=>{
+  dateMode=b.dataset.m; document.querySelectorAll('#dateMode .chip').forEach(x=>x.setAttribute('aria-pressed',x===b)); buildDateQuiz();
+});
+buildDateQuiz();
+
+/* ---------- Napoléon ---------- */
+const NAPO=[
+ {t:'Jeunesse et ascension',h:`
+  <table class="mini">
+   <tr><td>1769</td><td>Naissance en Corse (Ajaccio), un an après que l'île devient française.</td></tr>
+   <tr><td>9 ans</td><td>Études à l'école militaire de Brienne, en France.</td></tr>
+   <tr><td>16 ans</td><td>Lieutenant d'artillerie.</td></tr>
+   <tr><td>24 ans</td><td>Général (1793, après le siège de Toulon).</td></tr>
+   <tr><td>1796</td><td>Général en chef de l'armée d'Italie : brillantes victoires contre l'Autriche, il devient célèbre.</td></tr>
+   <tr><td>1798</td><td>Expédition d'Égypte : victoire contre les Mamelouks.</td></tr>
+  </table>
+  <blockquote>« Il est petit, bas sur jambes, assez musclé, sanguin et encore sec, le corps est endurant et toujours prêt… la capacité de travail illimitée, le sommeil vient au commandement. » (Georges Lefebvre)</blockquote>`},
+ {t:"L'Égypte et le coup d'État du 18 brumaire",h:`
+  <p><b>Doc. Égypte (Marc Ferro) :</b> Bonaparte abandonne son armée à Kléber et rentre en France ; il débarque à Fréjus après avoir échappé à Nelson. En France, on sait qu'il a deux fois trompé l'ennemi, conquis l'Égypte, vaincu à Aboukir… mais on ignore l'échec : la flotte est détruite. Les historiens évoquent peu le sujet.</p>
+  <p><b>Le 18 brumaire an VIII (9 novembre 1799) :</b> Bonaparte et ses troupes arrivent au Conseil des Cinq-Cents réuni à Saint-Cloud. Il est très mal reçu (« Hors-la-loi ! »). Son frère Lucien, président de l'assemblée, le sauve : les soldats chassent les députés. Le coup d'État réussit grâce à l'armée. Trois consuls provisoires préparent une nouvelle constitution.</p>
+  <p><b>Le tableau de François Bouchot (1840) :</b> Napoléon y apparaît calme et déterminé, au milieu des députés agités. C'est une image de <b>propagande / légende napoléonienne</b> : elle présente Bonaparte comme un homme providentiel, alors que le coup d'État a été violent et a failli échouer.</p>
+  <div class="note">Méthode : toujours repérer l'auteur et la date d'un document. Un tableau de 1840 est postérieur aux faits et participe à la mémoire napoléonienne.</div>`},
+ {t:'Le Consulat, une république autoritaire',h:`
+  <ul>
+   <li><b>Constitution de l'an VIII (1799) :</b> conserve la République et ses symboles (drapeau, calendrier républicain, Marseillaise) mais c'est un régime autoritaire.</li>
+   <li>Le <b>Premier consul</b> est chef de l'exécutif, a l'initiative des lois et des pouvoirs étendus.</li>
+   <li>Le <b>législatif est affaibli</b> : le Tribunat discute les lois, le Corps législatif les vote.</li>
+   <li><b>Souveraineté nationale limitée :</b> suffrage universel masculin rétabli mais encadré (vote pour des listes de notables), <b>plébiscites</b> (1799, 1802 consulat à vie).</li>
+   <li><b>Pouvoir centralisé :</b> les <b>préfets</b>, nommés par le Premier consul à la tête de chaque département, représentent l'État, encouragent l'économie, font des statistiques et des rapports sur la population.</li>
+  </ul>
+  <div class="note"><b>Plébiscite :</b> consultation directe du peuple par le vote, afin d'obtenir son adhésion à la politique d'un chef d'État.</div>`},
+ {t:'La réorganisation de la société',h:`
+  <ul>
+   <li><b>Économie :</b> Banque de France (1800), franc germinal (1803).</li>
+   <li><b>Élites :</b> lycées (1802), Légion d'honneur (1802) qui récompense le dévouement à l'État.</li>
+   <li><b>Pacification religieuse :</b> Concordat avec le pape (1801). Retour autorisé des émigrés nobles.</li>
+   <li><b>Paix extérieure :</b> traité d'Amiens (1802). Mais rétablissement de l'esclavage (1802) → révolte, indépendance d'Haïti (1804).</li>
+  </ul>
+  <h3 style="margin-top:12px">Le Code civil (21 mars 1804)</h3>
+  <p>Plus de 2 000 articles qui règlent les relations entre les individus (droit des personnes, contrats, biens). Il <b>confirme les conquêtes de la Révolution</b> (égalité devant la loi, propriété, liberté d'entreprendre) mais impose une conception <b>très autoritaire de la famille et du travail</b>.</p>
+  <table class="mini">
+   <tr><td>Art. 9</td><td>Droit du sol (l'enfant né en France d'un étranger peut réclamer la nationalité à sa majorité).</td></tr>
+   <tr><td>Art. 10</td><td>Droit du sang (enfant né d'un Français à l'étranger = Français).</td></tr>
+   <tr><td>Art. 213</td><td>Le mari doit protection à sa femme, la femme obéissance à son mari.</td></tr>
+   <tr><td>Art. 229-230</td><td>Divorce inégal : la femme ne peut le demander que si le mari a tenu sa concubine dans la maison commune.</td></tr>
+   <tr><td>Art. 373</td><td>Le père seul exerce l'autorité sur l'enfant : <b>place prépondérante du père</b>.</td></tr>
+   <tr><td>Art. 544-545</td><td>Propriété « droit de jouir et disposer des choses de la manière la plus absolue » ; inspirés de l'article 17 de la DDHC.</td></tr>
+   <tr><td>Art. 1781</td><td>Le maître (patron) est cru sur son affirmation pour le salaire : <b>inégalité patron / ouvrier</b>.</td></tr>
+  </table>
+  <p>Le Code civil s'applique à tout le territoire et est <b>diffusé en Europe</b> (royaume d'Italie, royaume de Naples, provinces Illyriennes, grand-duché de Varsovie, royaume de Westphalie…). Il remet en question la <b>société d'ordres</b> : égalité civile et fiscale, fin des privilèges.</p>`},
+ {t:'Pourquoi Napoléon a-t-il créé les lycées ?',h:`
+  <ul>
+   <li><b>Avant :</b> la Révolution supprime les collèges religieux ; les Écoles centrales du Directoire (1795) sont un relatif échec (discipline quasi inexistante, résultats faibles).</li>
+   <li><b>Loi du 1er mai 1802 (11 floréal an X) :</b> naissance des lycées (mot venu du <i>Lykeion</i> d'Aristote). 45 lycées à l'origine, dans les villes à tribunal d'appel.</li>
+   <li><b>Fonctionnement militaire :</b> internat, tambour, uniforme (veste bleue), professeurs nommés par l'État, 6 400 bourses pour les enfants méritants. Programme : latin, rhétorique, maths.</li>
+  </ul>
+  <p><b>Trois objectifs :</b></p>
+  <ol>
+   <li>Former des <b>cadres loyaux</b> (officiers, ingénieurs, fonctionnaires) : l'obéissance et le mérite.</li>
+   <li><b>Reprendre la main sur l'éducation face à l'Église</b>.</li>
+   <li><b>Unifier la France</b> par une culture commune.</li>
+  </ol>
+  <p><b>1806-1808 :</b> l'Université impériale donne à l'État le monopole de l'enseignement ; le décret de 1808 rétablit le <b>baccalauréat</b>.</p>`},
+ {t:"L'Empire (1804 – 1814/1815)",h:`
+  <ul>
+   <li><b>1804 :</b> proclamation de l'Empire puis <b>sacre (2 décembre)</b> : nouvelle dynastie héréditaire. Il se couronne lui-même.</li>
+   <li><b>Vie de cour</b> fastueuse ; appui sur une élite de la propriété et des talents, distinguée par une <b>noblesse d'Empire</b> (1808).</li>
+   <li><b>Pouvoir autoritaire :</b> plus de débat politique, censure, <b>surveillance policière omniprésente</b>, société hiérarchisée.</li>
+   <li><b>Europe napoléonienne :</b> dès 1804 il offre des trônes à sa famille ; le Code civil est diffusé dans les pays conquis.</li>
+  </ul>
+  <div class="note">Le paradoxe à retenir : par le serment du sacre, Napoléon s'engage à maintenir l'égalité et les libertés… mais la société est en réalité soumise à une stricte hiérarchie et à la surveillance.</div>`},
+ {t:'Victoires et défaites',h:`
+  <table class="mini">
+   <tr><td>1796</td><td><span class="win">Victoire</span> en Italie (contre l'Autriche).</td></tr>
+   <tr><td>1798</td><td><span class="win">Victoire</span> en Égypte contre les Mamelouks.</td></tr>
+   <tr><td>21 oct. 1805</td><td><span class="loss">Défaite</span> navale contre les Anglais à Trafalgar.</td></tr>
+   <tr><td>2 déc. 1805</td><td><span class="win">Victoire</span> contre Russes et Autrichiens à Austerlitz.</td></tr>
+   <tr><td>1812</td><td><span class="loss">Débâcle</span> de Russie.</td></tr>
+   <tr><td>18 juin 1815</td><td><span class="loss">Défaite définitive</span> à Waterloo (Anglais et Prussiens).</td></tr>
+  </table>`},
+ {t:"La fin de l'Empire",h:`
+  <ul>
+   <li><b>1814 :</b> il abdique et est exilé sur l'<b>île d'Elbe</b>.</li>
+   <li>Il s'en échappe et rentre en France (les Cent-Jours, 1815).</li>
+   <li><b>Waterloo (1815) :</b> défaite définitive. Il abdique le <b>22 juin 1815</b>.</li>
+   <li>Exilé à <b>Sainte-Hélène</b>, île perdue au milieu de l'Atlantique, où il meurt en <b>1821</b>.</li>
+  </ul>`}
+];
+(function(){
+  const box=document.getElementById('napoBlocks');
+  box.innerHTML=NAPO.map((b,k)=>`<details${k===0?' open':''}><summary><span class="n">${k+1}</span>${b.t}</summary><div class="dbody">${b.h}</div></details>`).join('');
+})();
+const VF=[
+ ['Napoléon est né en Corse en 1769.',true,'Oui, à Ajaccio.'],
+ ['Le coup d\'État du 18 brumaire a eu lieu le 9 novembre 1799.',true,'18 brumaire an VIII = 9 novembre 1799.'],
+ ['L\'expédition d\'Égypte est un succès total : la flotte française en sort intacte.',false,'La flotte est détruite par Nelson à Aboukir ; Bonaparte abandonne son armée.'],
+ ['Sous le Consulat, le Premier consul a l\'initiative des lois.',true,'Il a des pouvoirs étendus : initiative des lois, nomination des ministres, armées.'],
+ ['Le Tribunat vote les lois sans les discuter.',false,'C\'est l\'inverse : le Tribunat discute sans voter, le Corps législatif vote sans discuter.'],
+ ['Le Concordat est signé avec le pape en 1801.',true,'Il réconcilie les catholiques avec l\'État.'],
+ ['Le Code civil donne les mêmes droits à l\'homme et à la femme.',false,'La femme doit obéissance à son mari (art. 213) ; le père seul a l\'autorité (art. 373).'],
+ ['Napoléon se fait sacrer empereur le 2 décembre 1804.',true,'Un an jour pour jour avant Austerlitz (2 décembre 1805).'],
+ ['Trafalgar est une grande victoire de Napoléon.',false,'C\'est une défaite navale contre les Anglais (21 octobre 1805).'],
+ ['Les lycées sont créés en 1802 pour former les élites.',true,'Loi du 1er mai 1802 : officiers, fonctionnaires, ingénieurs.'],
+ ['Napoléon meurt sur l\'île d\'Elbe.',false,'Il meurt à Sainte-Hélène en 1821 ; Elbe est son premier exil (1814).'],
+ ['Le tableau de Bouchot sur le 18 brumaire participe à la légende napoléonienne.',true,'Peint en 1840, il montre un Bonaparte calme et héroïque.']
+];
+function buildVF(){
+  runQuiz(document.getElementById('vfQuiz'),shuffle(VF).slice(0,8).map(v=>({tag:'Vrai ou faux',q:v[0],opts:['Vrai','Faux'],a:v[1]?'Vrai':'Faux',ex:v[2],keep:true})),{corr:false,restart:buildVF});
+}
+buildVF();
+
+/* ---------- Schémas ---------- */
+const GRANIT=[
+ {n:'Les préfets',y:'1800',r:"Loi du 28 pluviôse an VIII. Représentant de l'État dans chaque département, nommé par le Premier consul.",c:'var(--blue)'},
+ {n:'La Banque de France',y:'1800',r:"Fondée le 16 nivôse an VIII. Émet les billets et la monnaie, favorise prospérité et stabilité.",c:'var(--brass)'},
+ {n:'Le Concordat',y:'1801',r:"Accord diplomatique avec le pape : rétablit la paix religieuse. Catholicisme = religion de la majorité des Français, autres cultes autorisés.",c:'var(--violet)'},
+ {n:'Les lycées',y:'1802',r:"11 floréal an X. Former les futures élites (officiers, fonctionnaires) avec une discipline militaire.",c:'var(--green)'},
+ {n:"La Légion d'honneur",y:'1802',r:"29 floréal an X. Décoration récompensant un fait militaire ou civil d'exception.",c:'var(--red)'},
+ {n:'Le franc germinal',y:'1803',r:"17 germinal an XI. Nouvelle monnaie stable.",c:'var(--brass)'},
+ {n:'Le Code civil',y:'1804',r:"30 ventôse an XII. Recueil de lois organisant la vie des individus : égalité devant la loi, propriété, liberté d'entreprendre, autorité paternelle.",c:'var(--blue)'}
+];
+(function(){
+  const g=document.getElementById('granit');
+  g.innerHTML='<div class="center">Bonaparte, Premier consul : l\'œuvre civile</div>'+GRANIT.map(x=>`<button class="gcard" style="--c:${x.c}"><span class="yr">${x.y}</span><span class="nm">${x.n}</span><span class="rl">${x.r}</span></button>`).join('')+
+   '<div class="note" style="grid-column:1 / -1;margin:0">Une année, une ou deux créations : <strong>1800</strong> préfets + Banque · <strong>1801</strong> Concordat · <strong>1802</strong> lycées + Légion d\'honneur · <strong>1803</strong> franc · <strong>1804</strong> Code civil.</div>';
+  g.querySelectorAll('.gcard').forEach(c=>c.onclick=()=>c.classList.toggle('open'));
+  const h=document.getElementById('granitHide');
+  h.onclick=()=>{const on=h.getAttribute('aria-pressed')!=='true';h.setAttribute('aria-pressed',on);g.classList.toggle('hide',on);g.querySelectorAll('.gcard').forEach(c=>c.classList.remove('open'));};
+
+  const sq=document.getElementById('schemaQuiz');
+  sq.onclick=()=>{const on=sq.getAttribute('aria-pressed')!=='true';sq.setAttribute('aria-pressed',on);
+    document.querySelectorAll('#sc-consulat,#sc-empire,#sc-terreur').forEach(s=>s.classList.toggle('quizmode',on));
+    document.querySelectorAll('.role.shown').forEach(r=>r.classList.remove('shown'));};
+  document.querySelectorAll('#sc-consulat .role,#sc-empire .role,#sc-terreur .role').forEach(r=>r.onclick=()=>r.classList.add('shown'));
+
+  const HEMI={
+    m:'<b style="color:var(--red)">Les Montagnards</b> (Robespierre, Danton, Marat) : députés radicaux, assis en haut à gauche, favorables aux revendications populaires. Soutenus par les <b>sans-culottes</b>. Ils l\'emportent en juin 1793.',
+    p:'<b style="color:var(--brass)">La Plaine</b> (ou le Marais) : la majorité des députés, au centre, sans position fixe. Elle soutient d\'abord les Girondins puis les Montagnards sous la pression populaire.',
+    g:'<b style="color:var(--blue)">Les Girondins</b> (Brissot, Mme Roland) : plus modérés, dominent la Convention jusqu\'en 1793. Jugés trop modérés, leurs députés sont arrêtés le <b>2 juin 1793</b> lors d\'un soulèvement parisien.'
+  };
+  document.querySelectorAll('.sector').forEach(s=>s.onclick=()=>{document.getElementById('hemiInfo').innerHTML=HEMI[s.dataset.s];});
+})();
+
+/* ---------- Évaluation ---------- */
+const EVAL=[
+ // Dates
+ {tag:'Dates',q:'Quand la République est-elle proclamée ?',opts:['Septembre 1792','Juillet 1789','Janvier 1793','Novembre 1799'],a:'Septembre 1792',ex:'La Convention abolit la royauté le 21 septembre 1792.'},
+ {tag:'Dates',q:'Date de l\'exécution de Louis XVI ?',opts:['21 janvier 1793','16 octobre 1793','14 juillet 1790','10 août 1792'],a:'21 janvier 1793',ex:'Le 16 octobre 1793 est l\'exécution de Marie-Antoinette.'},
+ {tag:'Dates',q:'La chute de Robespierre (9 thermidor an II) a lieu en…',opts:['Juillet 1794','Juin 1793','Septembre 1793','Novembre 1799'],a:'Juillet 1794',ex:'Arrêté le 27, guillotiné le 28 juillet 1794.'},
+ {tag:'Dates',q:'Le coup d\'État du 18 brumaire a lieu le…',opts:['9 novembre 1799','2 décembre 1804','21 mars 1804','18 juin 1815'],a:'9 novembre 1799',ex:'Il met fin au Directoire et ouvre le Consulat.'},
+ {tag:'Dates',q:'En quelle année le Code civil est-il publié ?',opts:['1804','1801','1802','1808'],a:'1804',ex:'21 mars 1804 (30 ventôse an XII).'},
+ {tag:'Dates',q:'Le sacre de Napoléon a lieu le…',opts:['2 décembre 1804','2 décembre 1805','9 novembre 1799','18 juin 1815'],a:'2 décembre 1804',ex:'Le 2 décembre 1805 est la victoire d\'Austerlitz.'},
+ // Ordre
+ {type:'order',tag:'Chronologie',q:'Remets dans l\'ordre (du plus ancien au plus récent).',items:['Valmy','Exécution de Louis XVI','Loi des suspects','Chute de Robespierre','Coup d\'État du 18 brumaire'],dates:['1792','1793','sept. 1793','1794','1799']},
+ {type:'order',tag:'Chronologie',q:'Remets dans l\'ordre les « masses de granit ».',items:['Banque de France','Concordat','Lycées','Franc germinal','Code civil'],dates:['1800','1801','1802','1803','1804']},
+ // Vocabulaire
+ {tag:'Vocabulaire',q:'« Gouvernement nommé par la Convention pour prendre des mesures rapides face aux dangers qui menacent la République » :',opts:['Le Comité de salut public','Le Directoire','Le Conseil d\'État','Le Tribunal révolutionnaire'],a:'Le Comité de salut public'},
+ {tag:'Vocabulaire',q:'« Décret qui instaure une obligation militaire exceptionnelle pour les hommes célibataires de 18 à 25 ans » :',opts:['La levée en masse','La loi des suspects','La conscription des notables','Le Concordat'],a:'La levée en masse'},
+ {tag:'Vocabulaire',q:'« Consultation directe du peuple par le vote, afin d\'obtenir son adhésion à la politique d\'un chef d\'État » :',opts:['Un plébiscite','Un suffrage censitaire','Un concordat','Un coup d\'État'],a:'Un plébiscite'},
+ {tag:'Vocabulaire',q:'Politique qui, pendant la Terreur, vise à supprimer le christianisme de la vie quotidienne :',opts:['La déchristianisation','La contre-révolution','La chouannerie','Le fédéralisme'],a:'La déchristianisation'},
+ {tag:'Vocabulaire',q:'Qui sont les sans-culottes ?',opts:['Le peuple révolutionnaire parisien (artisans, boutiquiers)','Les nobles émigrés','Les députés de la Plaine','Les soldats de l\'armée d\'Italie'],a:'Le peuple révolutionnaire parisien (artisans, boutiquiers)',ex:'Ils soutiennent les Montagnards.'},
+ // Schémas
+ {tag:'Schéma du Consulat',q:'Quelle assemblée discute les lois sans les voter ?',opts:['Le Tribunat','Le Corps législatif','Le Sénat','Le Conseil d\'État'],a:'Le Tribunat'},
+ {tag:'Schéma du Consulat',q:'Pourquoi dit-on que le pouvoir législatif est faible sous le Consulat ?',opts:['Il est divisé entre 4 assemblées et le Premier consul a l\'initiative des lois','Il n\'existe aucune assemblée','Il est élu au suffrage universel direct sans contrôle','Il est dirigé par le pape'],a:'Il est divisé entre 4 assemblées et le Premier consul a l\'initiative des lois'},
+ {tag:'Schéma de l\'Empire',q:'Sous l\'Empire, qui rédige réellement les lois ?',opts:['Le Conseil d\'État','Le Tribunat','Les préfets','Les citoyens par plébiscite'],a:'Le Conseil d\'État',ex:'C\'est le véritable lieu du pouvoir législatif.'},
+ {tag:'Convention',q:'Qui sont arrêtés le 2 juin 1793 sous la pression des sans-culottes ?',opts:['Les députés girondins','Les députés montagnards','Les députés de la Plaine','Les directeurs'],a:'Les députés girondins'},
+ // Documents
+ {tag:'Doc : Boissy d\'Anglas, 1795',q:'« Nous devons être gouvernés par les meilleurs… ceux qui possèdent une propriété. » Que justifie-t-il ?',opts:['Le suffrage censitaire : seuls les propriétaires ont des droits politiques','Le suffrage universel masculin','L\'abolition de la propriété','Le retour du roi'],a:'Le suffrage censitaire : seuls les propriétaires ont des droits politiques',ex:'La Constitution de 1795 réserve le vote à ceux qui paient l\'impôt.'},
+ {tag:'Doc : Gracchus Babeuf, 1796',q:'En quoi l\'égalité voulue par Babeuf va-t-elle plus loin que la DDHC de 1789 ?',opts:['Il veut une égalité réelle des biens, avec l\'abolition de la propriété individuelle','Il veut rétablir les privilèges','Il veut seulement l\'égalité devant l\'impôt','Il veut donner le pouvoir à un empereur'],a:'Il veut une égalité réelle des biens, avec l\'abolition de la propriété individuelle',ex:'La DDHC proclame une égalité civile et politique, et fait de la propriété un droit sacré (art. 17).'},
+ {tag:'Doc : Code civil, art. 1781',q:'« Le maître est cru sur son affirmation pour la quotité des gages. » Quelle inégalité révèle cet article ?',opts:['Entre le patron et l\'ouvrier','Entre le noble et le paysan','Entre le prêtre et le fidèle','Entre Paris et la province'],a:'Entre le patron et l\'ouvrier'}
+];
+function buildEval(){
+  runQuiz(document.getElementById('evalBox'),EVAL,{on20:true,corr:true,restart:buildEval});
+}
+(function(){
+  const el=document.getElementById('evalBox');
+  let best=null; try{best=localStorage.getItem('rp-eval-best');}catch(e){}
+  el.innerHTML=`<div class="qtag">Prêt ?</div><div class="qtext">20 questions · environ 15 minutes</div>
+   <p class="lede">Dates (6) · chronologie (2) · vocabulaire (5) · schémas (4) · documents (3). Pas de retour en arrière : réfléchis avant de répondre.${best?`<br>Ton meilleur score : <b>${best} / 20</b>`:''}</p>
+   <button class="btn" id="startEval">Commencer l'évaluation</button>`;
+  el.querySelector('#startEval').onclick=buildEval;
+})();
+</script>
+</body>
+</html>
