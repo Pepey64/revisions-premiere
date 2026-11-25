@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Food Issues in the UK — Anglais</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍎</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F6F3EC;--card:#fff;--card2:#EFEBE1;--ink:#1F2A24;--muted:#5E6A63;--line:#DCD6C8;
+  --accent:#C2452D;--accent-soft:#F8E1D9;--green:#2F7A4F;--green-soft:#E0F0E6;--ko:#B23A3A;--ko-soft:#F7E1E1;
+  --gold:#B7791F;--gold-soft:#FAEBD0;
+}
+@media (prefers-color-scheme:dark){:root{
+  --bg:#121613;--card:#1B211D;--card2:#232B26;--ink:#E7ECE8;--muted:#9DAAA2;--line:#2F3A33;
+  --accent:#F08A70;--accent-soft:#3A221C;--green:#76CC98;--green-soft:#1A3326;--ko:#EE8A8A;--ko-soft:#3A1C22;
+  --gold:#E8B45A;--gold-soft:#3A2F1A;
+}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Atkinson Hyperlegible',system-ui,sans-serif;font-size:17px;line-height:1.55;padding-bottom:env(safe-area-inset-bottom)}
+a{color:var(--accent)}
+header{padding:22px 16px 10px;max-width:820px;margin:0 auto}
+.back{font-size:14px;text-decoration:none;color:var(--muted)}
+h1{font-family:'Fraunces',serif;font-size:clamp(28px,6.5vw,44px);line-height:1.05;margin:8px 0 4px}
+.sub{color:var(--muted);margin:0;font-size:15px}
+nav.tabs{position:sticky;top:0;z-index:10;background:var(--bg);border-bottom:1px solid var(--line)}
+.tabs-in{max-width:820px;margin:0 auto;display:flex;gap:6px;padding:10px 16px;overflow-x:auto}
+.tab{flex:0 0 auto;border:1px solid var(--line);background:var(--card);color:var(--ink);font:inherit;font-size:15px;font-weight:700;padding:10px 16px;border-radius:999px;cursor:pointer;min-height:44px}
+.tab[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.tab:focus-visible,button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+main{max-width:820px;margin:0 auto;padding:18px 16px 70px}
+section[hidden]{display:none}
+h2{font-family:'Fraunces',serif;font-size:clamp(22px,4.5vw,30px);margin:6px 0 6px;line-height:1.15}
+h3{font-size:19px;margin:20px 0 8px}
+.lead{color:var(--muted);margin:0 0 16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:12px 0}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0 14px}
+.chip{border:1px solid var(--line);background:var(--card);color:var(--ink);font:inherit;font-size:14px;padding:8px 12px;border-radius:999px;cursor:pointer;min-height:40px}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.chip .ok{color:var(--green)}
+.ex{display:block;background:var(--card2);border-radius:8px;padding:8px 12px;margin:6px 0}
+.ex i{display:block;color:var(--muted);font-size:14.5px}
+.k{color:var(--accent);font-weight:700}
+.trap{background:var(--gold-soft);border-left:4px solid var(--gold);border-radius:8px;padding:10px 14px;margin:14px 0}
+.trap b.t{display:block;font-size:12px;letter-spacing:.07em;text-transform:uppercase;color:var(--gold)}
+.formula{font-size:18px;font-weight:700;background:var(--accent-soft);border-radius:8px;padding:10px 14px;margin:8px 0;text-align:center}
+.tw{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:15.5px;margin:8px 0}
+th,td{border-bottom:1px solid var(--line);padding:7px 8px;text-align:left;vertical-align:top}
+th{font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+ul{padding-left:20px;margin:6px 0} li{margin-bottom:5px}
+.q{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin:12px 0}
+.q .n{font-size:12px;color:var(--muted);letter-spacing:.05em;text-transform:uppercase}
+.q .s{margin:4px 0 10px;font-size:17.5px}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px}
+.opt{font:inherit;font-size:16px;text-align:left;border:2px solid var(--line);background:var(--card);color:var(--ink);padding:10px 12px;border-radius:10px;cursor:pointer;min-height:48px}
+.opt:hover:not(:disabled){border-color:var(--accent)}
+.opt.good{border-color:var(--green);background:var(--green-soft)}
+.opt.bad{border-color:var(--ko);background:var(--ko-soft)}
+.opt:disabled{cursor:default}
+.fb{margin-top:10px;padding:10px 12px;border-radius:8px;font-size:15.5px}
+.fb.good{background:var(--green-soft)} .fb.bad{background:var(--ko-soft)}
+.btn{font:inherit;font-weight:700;font-size:16px;border:0;background:var(--accent);color:#fff;padding:12px 18px;border-radius:10px;cursor:pointer;min-height:48px}
+.btn.alt{background:var(--card);color:var(--ink);border:1px solid var(--line)}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.score{font-variant-numeric:tabular-nums;color:var(--muted);font-weight:700}
+/* flashcards */
+.flash{perspective:1000px;margin:14px 0}
+.fc{position:relative;height:200px;cursor:pointer;transition:transform .45s;transform-style:preserve-3d}
+.fc.flip{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:18px;text-align:center;border:1px solid var(--line)}
+.front{background:var(--card)} .backf{background:var(--accent-soft);transform:rotateY(180deg)}
+.face .w{font-family:'Fraunces',serif;font-size:clamp(24px,6vw,34px);line-height:1.15}
+.face .h{font-size:14px;color:var(--muted);margin-top:10px}
+@media (prefers-reduced-motion:reduce){.fc{transition:none}}
+.vlist td:first-child{font-weight:700}
+input[type=search]{font:inherit;width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);min-height:46px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:10px 0}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.stat .big{font-family:'Fraunces',serif;font-size:28px;color:var(--accent);line-height:1.1}
+.stat span{font-size:14px;color:var(--muted)}
+.levels{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:10px 0}
+.lv{border-radius:10px;padding:10px;font-size:14px;color:#fff}
+.lv b{display:block;font-size:13px;text-transform:uppercase;letter-spacing:.04em}
+@media (max-width:560px){.levels{grid-template-columns:1fr 1fr}}
+.progress{height:8px;background:var(--card2);border-radius:99px;overflow:hidden;margin:8px 0 4px}
+.progress div{height:100%;background:var(--accent);transition:width .3s}
+.result{text-align:center;padding:24px 16px}
+.result .big{font-family:'Fraunces',serif;font-size:54px;color:var(--accent)}
+details{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:10px 0}
+summary{cursor:pointer;font-weight:700}
+</style>
+</head>
+<body>
+<header>
+  <a class="back" href="index.html">← Révisions de première</a>
+  <h1>Food Issues in the UK</h1>
+  <p class="sub">How equal are the British in their access to quality food? — Grammaire, vocabulaire, thème et QCM.</p>
+</header>
+
+<nav class="tabs" aria-label="Rubriques">
+  <div class="tabs-in" role="tablist">
+    <button class="tab" role="tab" data-tab="gram" aria-selected="true">📝 Grammaire</button>
+    <button class="tab" role="tab" data-tab="vocab" aria-selected="false">🗂️ Vocabulaire</button>
+    <button class="tab" role="tab" data-tab="theme" aria-selected="false">🇬🇧 Le thème</button>
+    <button class="tab" role="tab" data-tab="quiz" aria-selected="false">✅ QCM</button>
+  </div>
+</nav>
+
+<main>
+<!-- ================= GRAMMAIRE ================= -->
+<section id="gram">
+  <h2>Grammaire</h2>
+  <p class="lead">Choisis un point. Lis d'abord la règle, puis fais l'entraînement : la correction s'affiche tout de suite.</p>
+  <div class="chips" id="gramChips"></div>
+  <div id="gramRule"></div>
+  <div class="row" style="justify-content:space-between;margin-top:18px">
+    <h3 style="margin:0">Entraînement</h3><span class="score" id="gramScore"></span>
+  </div>
+  <div id="gramEx"></div>
+  <div class="row" style="margin-top:10px"><button class="btn alt" id="gramRetry">↻ Recommencer</button><button class="btn" id="gramNext">Point suivant →</button></div>
+</section>
+
+<!-- ================= VOCABULAIRE ================= -->
+<section id="vocab" hidden>
+  <h2>Vocabulaire</h2>
+  <p class="lead">Tous les mots de la leçon (documents, cahier et encadré « Help »). Trois façons de réviser.</p>
+  <div class="chips" id="vocabMode">
+    <button class="chip" data-m="cards" aria-pressed="true">Flashcards</button>
+    <button class="chip" data-m="list" aria-pressed="false">Liste</button>
+    <button class="chip" data-m="test" aria-pressed="false">Test express</button>
+  </div>
+  <div class="chips" id="vocabCat"></div>
+
+  <div id="vCards">
+    <div class="row"><button class="chip" id="dirBtn" aria-pressed="false">Sens : anglais → français</button><span class="score" id="cardPos"></span></div>
+    <div class="flash"><div class="fc" id="fc" tabindex="0" role="button" aria-label="Retourner la carte">
+      <div class="face front"><div class="w" id="fcFront"></div><div class="h">Touche la carte pour la retourner</div></div>
+      <div class="face backf"><div class="w" id="fcBack"></div><div class="h" id="fcEx"></div></div>
+    </div></div>
+    <div class="row"><button class="btn alt" id="cardKo">🔁 À revoir</button><button class="btn" id="cardOk">✓ Je sais</button><button class="btn alt" id="cardShuffle">🔀 Mélanger</button></div>
+    <p class="score" id="cardStat" style="margin-top:8px"></p>
+  </div>
+
+  <div id="vList" hidden>
+    <input type="search" id="vSearch" placeholder="Chercher un mot (anglais ou français)…" aria-label="Chercher un mot">
+    <div class="tw"><table class="vlist"><thead><tr><th>English</th><th>Français</th></tr></thead><tbody id="vBody"></tbody></table></div>
+  </div>
+
+  <div id="vTest" hidden></div>
+</section>
+
+<!-- ================= THEME ================= -->
+<section id="theme" hidden>
+  <h2>The big picture</h2>
+  <p class="lead">L'essentiel des documents, en anglais, avec les chiffres à retenir. Parfait pour préparer l'oral ou l'expression écrite.</p>
+
+  <div class="card">
+    <h3 style="margin-top:0">❓ The problem (problématique)</h3>
+    <p><b>How equal are the British in their access to quality food?</b><br>
+    <i style="color:var(--muted)">Les Britanniques sont-ils égaux dans leur accès à une alimentation de qualité ?</i></p>
+    <p>Short answer: <span class="k">not equal at all</span>. Millions of people cannot afford healthy food. Poor families either go hungry or eat cheap, unhealthy food — so <b>food insecurity</b> and <b>obesity</b> are two sides of the same coin.</p>
+  </div>
+
+  <h3>1. Food insecurity (Doc 1)</h3>
+  <p><b>Definition:</b> food insecurity is when people don't have access to enough healthy, nutritious, quality food — often because proper food has become <span class="k">unaffordable</span>.</p>
+  <div class="levels">
+    <div class="lv" style="background:#8AA35A"><b>Mild</b>worrying about the ability to obtain food</div>
+    <div class="lv" style="background:#C9A227"><b>Moderate</b>compromising quality and variety of food</div>
+    <div class="lv" style="background:#D9792B"><b>Moderate +</b>reducing quantities, skipping meals</div>
+    <div class="lv" style="background:#B8352A"><b>Severe</b>experiencing hunger</div>
+  </div>
+  <div class="stats">
+    <div class="stat"><div class="big">8.4 m</div><span>people in the UK are food insecure</span></div>
+    <div class="stat"><div class="big">4.7 m</div><span>are <i>severely</i> food insecure (more than half of them)</span></div>
+    <div class="stat"><div class="big">Bottom half</div><span>the UK ranks in the bottom half of EU countries (2016)</span></div>
+  </div>
+  <p>In the EU, <b>Sweden is the least affected country</b>, whereas <b>Lithuania is the most affected</b>. The UK does worse than most Western European countries.</p>
+
+  <h3>2. Consequences on children (Doc 1 — The Conversation, 2020)</h3>
+  <ul>
+    <li><b>Holiday hunger:</b> during school holidays, children go without the food normally provided at school (school meals).</li>
+    <li><b>Education losses:</b> US research showed that after the summer holidays children had lost about <span class="k">one month's worth of skills</span> — and poorer children fare worst.</li>
+    <li><b>Mental health:</b> anxiety, stress, depression, even suicidal episodes in teenagers.</li>
+    <li><b>Physical health:</b> chronic illnesses (asthma), and later cancer, diabetes, heart disease and obesity.</li>
+    <li>The government advises a <b>balanced diet</b> (the <i>Eatwell guidelines</i>, Public Health England). Children who don't eat well <b>don't perform as well at school</b>.</li>
+  </ul>
+
+  <h3>3. The obesity crisis (Doc 2 &amp; 3)</h3>
+  <div class="stats">
+    <div class="stat"><div class="big">× 2</div><span>obesity among adults in England almost doubled between 1993 and 2017</span></div>
+    <div class="stat"><div class="big">64 %</div><span>of adults in England are overweight</span></div>
+    <div class="stat"><div class="big">4 / 100</div><span>adults are morbidly obese: their health is at stake</span></div>
+  </div>
+  <p><b>Why are more and more people obese? (Cancer Research UK)</b></p>
+  <ul>
+    <li>Obesity has many root causes, and one of the biggest is <b>the world we live in</b> (our environment).</li>
+    <li>When unhealthy options are the <b>easiest, cheapest</b> or only thing available, weight gain becomes more likely.</li>
+    <li>Over time food has become <b>cheaper, larger, tastier and more calorific</b>.</li>
+    <li>Food <b>advertising and marketing</b> have become more sophisticated: millions are spent every year to make us eat unhealthily.</li>
+  </ul>
+
+  <h3>4. The government's answer (The Guardian, Nov 2020)</h3>
+  <ul>
+    <li>Downing Street unveiled plans to <b>ban online junk food advertising</b> — the toughest digital marketing restrictions in the world — to <b>tackle the obesity crisis</b>.</li>
+    <li>Targeted food: products <b>too high in fat, salt and sugar</b>.</li>
+    <li>Children under 16 were exposed to <span class="k">15 billion</span> online junk food ads in 2019, compared with 700 million two years earlier.</li>
+    <li>Digital marketing affected: ads on Facebook, paid search on Google, text message promotions, social media on Twitter and Instagram.</li>
+    <li>Matt Hancock (health secretary) wants to help families make <b>healthier choices</b>. Fran Bernhardt (Children's Food Campaign) calls it a <b>world-leading policy</b>: current regulations are inadequate to protect children.</li>
+  </ul>
+
+  <h3>5. New consumer choices</h3>
+  <div class="tw"><table>
+    <tr><th>Trend</th><th>What it means</th></tr>
+    <tr><td>Cruelty-free</td><td>sensitive to ethical concerns such as animal rights</td></tr>
+    <tr><td>Eco bags / zero plastic</td><td>using buying power to protest against the excessive use of plastic</td></tr>
+    <tr><td>Customisation</td><td>choosing brands with personalisation to own unique products</td></tr>
+    <tr><td>Express delivery</td><td>the speed of delivery is crucial</td></tr>
+    <tr><td>Second-hand</td><td>seeking bargains (second-hand clothes or furniture)</td></tr>
+    <tr><td>Online reviews</td><td>valuing the advice of peers on the Internet</td></tr>
+  </table></div>
+
+  <h3>6. Model answer (to learn for the oral)</h3>
+  <div class="card">
+    <p>The British are <b>far from equal</b> in their access to quality food. <b>More than 8 million</b> people are food insecure, which means they cannot afford enough healthy food. <b>The poorer</b> families are, <b>the more likely</b> they are to skip meals or to buy cheap junk food. As a consequence, children <b>suffer from</b> hunger during the holidays, they <b>don't perform as well</b> at school and they are <b>more prone to</b> stress and obesity. Obesity has <b>almost doubled</b> since 1993, <b>due to</b> the world we live in: food is <b>cheaper, larger and more calorific</b>, and we <b>are constantly exposed to</b> ads. That is why the government decided to ban online junk food advertising. In my opinion, this policy is a good start, but the government <b>should</b> also make healthy food more affordable.</p>
+  </div>
+  <details><summary>Useful phrases to give your opinion</summary>
+    <ul>
+      <li>In my opinion / As far as I'm concerned, …</li>
+      <li>I agree with … / I disagree with …</li>
+      <li>On the one hand … on the other hand …</li>
+      <li>What's more / Moreover / Besides …</li>
+      <li>However / Yet / Nevertheless …</li>
+      <li>To sum up / All in all …</li>
+    </ul>
+  </details>
+</section>
+
+<!-- ================= QCM ================= -->
+<section id="quiz" hidden>
+  <h2>QCM final</h2>
+  <p class="lead">15 questions tirées au hasard. Choisis le domaine, puis lance le quiz. Une explication s'affiche après chaque réponse.</p>
+  <div class="chips" id="quizCat">
+    <button class="chip" data-c="mix" aria-pressed="true">Tout mélangé</button>
+    <button class="chip" data-c="theme" aria-pressed="false">Thème &amp; documents</button>
+    <button class="chip" data-c="gram" aria-pressed="false">Grammaire</button>
+    <button class="chip" data-c="vocab" aria-pressed="false">Vocabulaire</button>
+  </div>
+  <div id="quizZone"></div>
+</section>
+</main>
+
+<script>
+/* ================= DONNÉES : GRAMMAIRE ================= */
+const GRAM = [
+{id:"comp", titre:"Comparatif & superlatif", rule:`
+<div class="card">
+<h3 style="margin-top:0">À quoi ça sert ?</h3>
+<p>À <b>comparer</b> deux choses (comparatif) ou à dire qu'une chose est <b>au maximum</b> dans un groupe (superlatif). C'est ce qu'on demande pour commenter l'infographie : « <i>Use comparative and superlative forms</i> ».</p>
+<h3>1. Adjectifs courts (1 syllabe, ou 2 syllabes terminées par -y)</h3>
+<div class="formula">adj + ER + than &nbsp;|&nbsp; the + adj + EST</div>
+<span class="ex">Food has become <span class="k">cheaper</span>. — Unhealthy food is <span class="k">the cheapest</span> option.</span>
+<p><b>Orthographe :</b></p>
+<ul>
+<li>consonne-voyelle-consonne → on double : big → <b>bigger</b>, fat → <b>fatter</b></li>
+<li>-e final → on ajoute -r / -st : large → <b>larger</b> → the <b>largest</b></li>
+<li>-y → -ier / -iest : tasty → <b>tastier</b>, easy → <b>the easiest</b>, healthy → <b>healthier</b></li>
+</ul>
+<h3>2. Adjectifs longs (2 syllabes ou plus)</h3>
+<div class="formula">MORE + adj + than &nbsp;|&nbsp; the MOST + adj</div>
+<span class="ex">Food has become <span class="k">more calorific</span>. — Lithuania is <span class="k">the most affected</span> country in the EU.</span>
+<h3>3. Infériorité</h3>
+<div class="formula">LESS + adj + than &nbsp;|&nbsp; the LEAST + adj</div>
+<span class="ex">Sweden is <span class="k">the least affected</span> country by food insecurity.</span>
+<h3>4. Les irréguliers (à connaître par cœur)</h3>
+<div class="tw"><table><tr><th>Adjectif</th><th>Comparatif</th><th>Superlatif</th></tr>
+<tr><td>good</td><td>better</td><td>the best</td></tr>
+<tr><td>bad</td><td>worse</td><td>the worst</td></tr>
+<tr><td>far</td><td>farther / further</td><td>the farthest / furthest</td></tr>
+<tr><td>little</td><td>less</td><td>the least</td></tr>
+<tr><td>much / many</td><td>more</td><td>the most</td></tr></table></div>
+<span class="ex">Poorer children may fare <span class="k">worst</span>. <i>Les enfants pauvres s'en sortent le plus mal.</i></span>
+<div class="trap"><b class="t">⚠ Pièges</b>
+<ul><li><s>more cheaper</s> → <b>cheaper</b> (jamais more + -er)</li>
+<li><s>cheaper that</s> → cheaper <b>than</b></li>
+<li>Superlatif + lieu : <b>in</b>, pas <i>of</i> : the most affected country <b>in</b> the EU</li>
+<li>Superlatif = toujours <b>the</b> : <s>Sweden is least affected</s></li></ul></div>
+</div>`,
+ex:[
+["Over time, food has become ___ . (cheap)",["cheaper","more cheap","more cheaper","cheapest"],0,"cheap = 1 syllabe → cheap + er."],
+["Food advertising has become ___ .",["more sophisticated","sophisticateder","the more sophisticated","most sophisticated"],0,"Adjectif long (5 syllabes) → more + adjectif."],
+["Lithuania is ___ affected country in the EU.",["the most","the more","most","more"],0,"Superlatif d'un adjectif long : the most + adj."],
+["Sweden is the least affected country ___ the EU.",["in","of","than","at"],0,"Superlatif + lieu ou groupe → in."],
+["Unhealthy food is often ___ option. (easy)",["the easiest","the easyest","the most easy","easier"],0,"2 syllabes en -y → -iest, avec the."],
+["Poorer children may fare ___ of all.",["worst","baddest","most bad","worse"],0,"bad → worse → the worst (irrégulier). « of all » demande le superlatif."],
+["Portions are ___ than they used to be. (big)",["bigger","biger","more big","biggest"],0,"big : consonne-voyelle-consonne → on double le g : bigger."]
+]},
+{id:"nuance", titre:"Nuancer : far, slightly, as…as, twice", rule:`
+<div class="card">
+<h3 style="margin-top:0">Pourquoi nuancer ?</h3>
+<p>Pour commenter des chiffres, il ne suffit pas de dire « plus » : il faut dire <b>beaucoup plus</b>, <b>un peu plus</b>, <b>deux fois plus</b>… C'est ce qui fait la différence dans une copie.</p>
+<h3>1. Renforcer : beaucoup plus</h3>
+<div class="formula">FAR / MUCH / A LOT + comparatif</div>
+<span class="ex">There are <span class="k">far more</span> food insecure people in Latvia than in the Netherlands.</span>
+<h3>2. Atténuer : un peu plus</h3>
+<div class="formula">SLIGHTLY / A LITTLE / A BIT + comparatif</div>
+<span class="ex"><span class="k">Slightly more than</span> 10% of adults are food insecure in Ireland.</span>
+<h3>3. Égalité / non-égalité</h3>
+<div class="formula">AS + adj + AS &nbsp;|&nbsp; NOT AS (SO) + adj + AS</div>
+<span class="ex">Children who don't eat well will <span class="k">not</span> perform <span class="k">as well as</span> those who are well nourished.</span>
+<h3>4. Multiplier : deux fois plus…</h3>
+<div class="formula">TWICE / THREE TIMES + AS + adj + AS</div>
+<span class="ex">The food insecurity rate in Cyprus is <span class="k">twice as high as</span> in Malta.</span>
+<span class="ex">In 2017 the obesity rate was <span class="k">twice as high as</span> in 1993.</span>
+<p>On peut aussi dire <b>three times higher than</b>, mais pour « deux fois », on dit <b>twice as … as</b>.</p>
+<h3>5. Progression : de plus en plus</h3>
+<div class="formula">comparatif + AND + comparatif</div>
+<span class="ex">There are <span class="k">more and more</span> food insecure people. — It's <span class="k">harder and harder</span> to be healthy. — Food is getting <span class="k">cheaper and cheaper</span>.</span>
+<div class="trap"><b class="t">⚠ Pièges</b>
+<ul><li><s>very more</s> → <b>much / far</b> more (very ne s'emploie pas devant un comparatif)</li>
+<li><s>twice more high than</s> → <b>twice as high as</b></li>
+<li><s>more and more hard</s> → <b>harder and harder</b> (adjectif court)</li></ul></div>
+</div>`,
+ex:[
+["There are ___ more food insecure people in Latvia than in the Netherlands. (grosse différence)",["far","very","too","such"],0,"far / much / a lot renforcent un comparatif. Jamais very."],
+["___ more than 10% of adults are food insecure in Ireland. (juste au-dessus)",["Slightly","Much","Far","Very"],0,"slightly = légèrement → petite différence."],
+["The food insecurity rate in Cyprus is ___ in Malta.",["twice as high as","twice more high than","two times higher as","as twice high as"],0,"Deux fois plus = twice as + adj + as."],
+["The UK is not ___ affected as Lithuania.",["as","more","than","less"],0,"Non-égalité : not as … as."],
+["It is getting ___ to be healthy.",["harder and harder","more and more hard","hardest and hardest","the harder"],0,"Progression avec un adjectif court : harder and harder."],
+["Children who eat badly don't perform ___ well at school ___ the others.",["as … as","so … than","more … as","as … than"],0,"Comparaison d'égalité : as … as (pas than)."]
+]},
+{id:"themore", titre:"The more…, the more…", rule:`
+<div class="card">
+<h3 style="margin-top:0">Le sens</h3>
+<p>Le « double comparatif » traduit <b>plus… plus…</b> / <b>moins… plus…</b> : deux choses évoluent ensemble. Très utile pour expliquer une <b>cause</b> et sa <b>conséquence</b>.</p>
+<div class="formula">THE + comparatif + sujet + verbe, THE + comparatif + sujet + verbe</div>
+<h3>Avec des adjectifs</h3>
+<span class="ex"><span class="k">The cheaper</span> it is, <span class="k">the more addictive</span> it is.<i>Plus c'est bon marché, plus c'est addictif.</i></span>
+<span class="ex"><span class="k">The tastier</span> it is, <span class="k">the more calorific</span> it is.</span>
+<span class="ex"><span class="k">The better</span> nourished they are, <span class="k">the better</span> they do at school.</span>
+<h3>Avec un nom ou un verbe</h3>
+<span class="ex"><span class="k">The more</span> junk food we purchase, <span class="k">the more</span> addicted we get.</span>
+<span class="ex"><span class="k">The more</span> exposed we are to ads, <span class="k">the more</span> tempted we are to purchase junk food.</span>
+<h3>Avec « moins »</h3>
+<span class="ex"><span class="k">The less</span> money families have, <span class="k">the more</span> food insecure they are.</span>
+<h3>Méthode en 3 étapes</h3>
+<ul><li>1. Je commence chaque moitié par <b>THE</b>.</li>
+<li>2. Je mets le <b>comparatif</b> juste après (cheaper, more stressed, better…).</li>
+<li>3. Je termine par <b>sujet + verbe</b> (they are, it is, we get).</li></ul>
+<div class="trap"><b class="t">⚠ Pièges</b>
+<ul><li>Oublier <b>the</b> : <s>More food insecure they are, more stressed…</s></li>
+<li>Mauvais ordre : <s>the more they are stressed</s> → <b>the more stressed they are</b> (l'adjectif reste collé à more)</li>
+<li>Jamais de superlatif : <s>the most…, the most…</s></li></ul></div>
+</div>`,
+ex:[
+["___ food insecure they are, the more stressed they will be.",["The more","More","The most","Most"],0,"Chaque moitié commence par THE + comparatif."],
+["The more junk food we purchase, ___ we get.",["the more addicted","more addicted","the most addicted","the addicteder"],0,"Deuxième moitié : the + comparatif (addicted est long → more)."],
+["The cheaper it is, ___ .",["the more addictive it is","the more it is addictive","more addictive it is","it is more addictive"],0,"L'adjectif reste collé à more, puis sujet + verbe."],
+["___ nourished they are, the better they do at school.",["The better","The best","Better","The more good"],0,"well → better (irrégulier). Pas de superlatif."],
+["The more exposed we are to ads, ___ we are to purchase junk food.",["the more tempted","the most tempted","more tempted","the temptest"],0,"the + more + adjectif long."],
+["The ___ money families have, the more food insecure they are.",["less","least","fewer","littler"],0,"Moins d'argent → the less (money est indénombrable)."]
+]},
+{id:"modals", titre:"Modaux : should, had better, must, have to", rule:`
+<div class="card">
+<h3 style="margin-top:0">Règles communes</h3>
+<ul><li>Après un modal : <b>base verbale</b> (verbe sans to) : <i>you should <b>eat</b></i>.</li>
+<li>Pas de -s à la 3ᵉ personne : <s>he shoulds</s> → he <b>should</b>.</li>
+<li>Négation : on ajoute <b>not</b> directement : should not (shouldn't), must not (mustn't).</li>
+<li>Exception : <b>have to</b> n'est pas un vrai modal → do/does : <i>they <b>don't</b> have to</i>.</li></ul>
+<div class="tw"><table><tr><th>Forme</th><th>Sens</th><th>Exemple</th></tr>
+<tr><td><b>should</b> + BV</td><td>conseil (tu devrais)</td><td>To stay fit, he <b>should practise</b> sport.</td></tr>
+<tr><td><b>had better</b> + BV<br>('d better)</td><td>conseil fort, sinon il y aura un problème (tu ferais mieux de)</td><td>You'<b>d better eat</b> more vegetables.</td></tr>
+<tr><td><b>had better not</b> + BV</td><td>tu ferais mieux de ne pas</td><td>If you don't want to gain weight, you <b>had better not eat</b> junk food.</td></tr>
+<tr><td><b>must</b> + BV</td><td>obligation qui vient de celui qui parle, forte conviction</td><td>We <b>must launch</b> more healthy food campaigns.</td></tr>
+<tr><td><b>have to</b> + BV</td><td>obligation extérieure (loi, règlement)</td><td>By law, food companies <b>have to label</b> their products.</td></tr>
+<tr><td><b>mustn't</b> + BV</td><td>interdiction</td><td>Children <b>mustn't be</b> exposed to junk food ads.</td></tr>
+<tr><td><b>don't have to</b> + BV</td><td>absence d'obligation (pas obligé)</td><td>You <b>don't have to</b> buy organic food.</td></tr></table></div>
+<div class="trap"><b class="t">⚠ Pièges</b>
+<ul><li>La négation de had better : <b>had better NOT eat</b> (et pas <s>had not better</s>, <s>had often not eat</s>).</li>
+<li>Pas de to : <s>should to buy</s>, <s>had better to eat</s>.</li>
+<li><b>mustn't ≠ don't have to</b> : « il ne faut pas » ≠ « on n'est pas obligé ».</li></ul></div>
+</div>`,
+ex:[
+["If you don't want to gain weight, you ___ junk food.",["had better not eat","had not better eat","had better not to eat","hadn't better eating"],0,"had better NOT + base verbale, sans to."],
+["To stay fit, he ___ sport. (conseil)",["should practise","should to practise","should practises","should practising"],0,"Modal + base verbale : pas de to, pas de -s."],
+["By law, food companies ___ label their products.",["have to","should","had better","mustn't"],0,"La loi impose = obligation extérieure → have to."],
+["Children ___ be exposed to junk food ads: it's forbidden.",["mustn't","don't have to","haven't to","shouldn't to"],0,"Interdiction → mustn't."],
+["You ___ cook every day: you can buy fresh food at the market. (tu n'es pas obligé)",["don't have to","mustn't","had better not","shouldn't to"],0,"Absence d'obligation → don't have to."],
+["\"We ___ launch more healthy food campaigns!\" said the minister.",["must","have","should to","had better to"],0,"Obligation que le locuteur s'impose / forte conviction → must + BV."]
+]},
+{id:"cause", titre:"Cause, conséquence, opposition", rule:`
+<div class="card">
+<h3 style="margin-top:0">1. Exprimer la cause</h3>
+<div class="tw"><table><tr><th>Mot</th><th>Suivi de…</th><th>Exemple</th></tr>
+<tr><td><b>because</b></td><td>sujet + verbe</td><td>People buy junk food <b>because it is</b> cheap.</td></tr>
+<tr><td><b>because of</b></td><td>nom</td><td>Children get fat <b>because of</b> big portions.</td></tr>
+<tr><td><b>due to</b></td><td>nom ou V-ing</td><td>Obesity is <b>due to</b> the world we live in / the purchasing of unhealthy food.</td></tr>
+<tr><td><b>as / since</b></td><td>sujet + verbe</td><td><b>As</b> food is cheaper, people eat more.</td></tr></table></div>
+<h3>2. Exprimer la conséquence</h3>
+<ul>
+<li><b>lead to + nom / V-ing</b> (to est une préposition !) : Big portions <b>lead to weight gain</b>.</li>
+<li><b>result in / cause + nom</b> : Hunger can <b>result in</b> depression.</li>
+<li><b>so / that's why / therefore</b> + phrase : Food is cheap, <b>so</b> people eat more.</li>
+<li><b>make + quelqu'un + base verbale</b> (sans to) : Cheap junk food <b>makes people buy</b> more.</li>
+<li><b>make + quelqu'un + adjectif</b> : Ads <b>make children hungry</b>.</li>
+</ul>
+<h3>3. Exprimer la probabilité</h3>
+<ul>
+<li><b>be likely to + BV</b> : Children affected by food insecurity <b>are likely to be</b> stressed.</li>
+<li><b>be more likely to + BV</b> : They <b>are more likely to suffer</b> from anxiety.</li>
+<li><b>be prone to + nom / BV</b> (être sujet à) : They are more <b>prone to</b> obesity.</li>
+</ul>
+<h3>4. Opposer deux idées</h3>
+<p><b>whereas / while</b> (alors que) : Sweden is the least affected country, <b>whereas</b> Lithuania is the most affected.</p>
+<div class="trap"><b class="t">⚠ Pièges</b>
+<ul><li><s>due to people buy</s> → <b>because</b> people buy / <b>due to</b> the purchase of…</li>
+<li><s>makes people to buy</s> → makes people <b>buy</b></li>
+<li><s>lead to gain weight</s> → lead to <b>gaining</b> weight / lead to <b>weight gain</b></li></ul></div>
+</div>`,
+ex:[
+["Obesity is due ___ the world we live in.",["to","of","at","because"],0,"due to + nom."],
+["Many people eat junk food ___ it is cheap.",["because","because of","due to","owing to"],0,"Derrière : sujet + verbe (it is) → because."],
+["Big portions lead to ___ weight.",["gaining","gain","to gain","gained"],0,"lead to : to est une préposition → V-ing."],
+["Cheap junk food makes people ___ more.",["buy","to buy","buying","bought"],0,"make + quelqu'un + base verbale, sans to."],
+["Children affected by food insecurity are likely ___ stressed.",["to be","being","be","to being"],0,"be likely to + base verbale."],
+["Sweden is the least affected country, ___ Lithuania is the most affected.",["whereas","because","due to","so"],0,"Opposition entre deux idées → whereas (alors que)."]
+]},
+{id:"passive", titre:"Passif & prépositions (exposed to…)", rule:`
+<div class="card">
+<h3 style="margin-top:0">1. La voix passive</h3>
+<p>On l'utilise quand on s'intéresse à <b>celui qui subit</b> l'action (les enfants, les consommateurs) plutôt qu'à celui qui la fait.</p>
+<div class="formula">BE (au bon temps) + participe passé (+ BY + agent)</div>
+<div class="tw"><table><tr><th>Temps</th><th>Exemple</th></tr>
+<tr><td>présent</td><td>We <b>are influenced</b> by ads.</td></tr>
+<tr><td>prétérit</td><td>Children <b>were exposed</b> to 15 billion ads in 2019.</td></tr>
+<tr><td>present perfect</td><td>Plans <b>have been unveiled</b>.</td></tr>
+<tr><td>futur</td><td>Junk food ads <b>will be banned</b> online.</td></tr>
+<tr><td>conditionnel</td><td>Digital marketing <b>would be affected</b>.</td></tr></table></div>
+<p>Le complément d'agent est introduit par <b>by</b> : affected <b>by</b> food insecurity.</p>
+<h3>2. Adjectifs + préposition à apprendre par cœur</h3>
+<div class="tw"><table>
+<tr><td><b>exposed to</b></td><td>exposé à</td></tr>
+<tr><td><b>addicted to</b></td><td>accro à</td></tr>
+<tr><td><b>linked to</b></td><td>lié à</td></tr>
+<tr><td><b>affected by</b></td><td>touché par</td></tr>
+<tr><td><b>influenced by</b></td><td>influencé par</td></tr>
+<tr><td><b>worried about</b></td><td>inquiet de</td></tr>
+<tr><td><b>high in</b> (fat, salt, sugar)</td><td>riche en</td></tr>
+<tr><td><b>tempted to</b> + BV</td><td>tenté de</td></tr>
+<tr><td><b>suffer from</b></td><td>souffrir de</td></tr></table></div>
+<div class="trap"><b class="t">⚠ Pièges</b>
+<ul><li><s>influenced of</s> → influenced <b>by</b></li>
+<li><s>will banned</s> → will <b>be</b> banned (n'oublie pas BE)</li>
+<li>« riche en sucre » : high <b>in</b> sugar (pas <s>rich of</s>)</li></ul></div>
+</div>`,
+ex:[
+["We are influenced ___ advertising.",["by","of","from","with"],0,"Complément d'agent du passif → by."],
+["Children under 16 were exposed ___ 15 billion junk food ads.",["to","at","by","of"],0,"exposed to."],
+["Online junk food ads ___ soon.",["will be banned","will ban","are banning","will banned"],0,"Futur passif : will + be + participe passé."],
+["Hunger in childhood is linked ___ depression.",["to","at","of","for"],0,"linked to."],
+["These foods are too high ___ fat, salt and sugar.",["in","of","on","with"],0,"high in = riche en."],
+["Many teenagers are addicted ___ fast food.",["to","by","of","at"],0,"addicted to."]
+]},
+{id:"figures", titre:"Parler des chiffres", rule:`
+<div class="card">
+<h3 style="margin-top:0">1. Les proportions</h3>
+<ul>
+<li><b>4 people out of 100</b> / <b>4 in 100</b> are morbidly obese.</li>
+<li><b>64 per cent of</b> adults are overweight.</li>
+<li><b>half of</b> (la moitié), <b>a third of</b> (un tiers), <b>a quarter of</b> (un quart), <b>two thirds of</b> (deux tiers).</li>
+<li>Pour nuancer : <b>almost / nearly</b> (presque), <b>roughly / about</b> (environ), <b>over / more than</b> (plus de), <b>under / less than</b> (moins de).</li>
+</ul>
+<h3>2. L'évolution</h3>
+<div class="tw"><table><tr><th>⬆ Hausse</th><th>⬇ Baisse</th></tr>
+<tr><td>rise, increase, go up, grow</td><td>fall, decrease, drop, go down</td></tr>
+<tr><td>double (doubler), soar (s'envoler)</td><td>halve (diviser par deux)</td></tr>
+<tr><td>an upward trend / an uptrend</td><td>a downward trend</td></tr></table></div>
+<h3>3. Prétérit ou present perfect ?</h3>
+<ul>
+<li><b>Prétérit</b> avec une date ou une période terminée : <i>Between 1993 and 2017, the obesity rate <b>doubled</b>.</i></li>
+<li><b>Present perfect</b> pour un bilan qui va jusqu'à aujourd'hui (souvent avec since) : <i>Since 1993, the obesity rate <b>has almost doubled</b>.</i></li>
+</ul>
+<h3>4. Commenter</h3>
+<p>The figures are <b>appalling / alarming</b>. It is a <b>worrying trend</b>. Their health <b>is at stake</b>.</p>
+<div class="trap"><b class="t">⚠ Pièges</b>
+<ul><li><s>There are far more 64% of adults</s> → <b>Over 64% of</b> adults are overweight.</li>
+<li><s>4 people on 100</s> → 4 people <b>out of</b> 100</li>
+<li><s>Since 1993 the rate doubled</s> → since + <b>present perfect</b> : has doubled</li></ul></div>
+</div>`,
+ex:[
+["4 ___ 100 adults in England are morbidly obese.",["out of","on","of","over"],0,"Proportion : X out of 100 (ou X in 100)."],
+["Between 1993 and 2017, the obesity rate ___ .",["doubled","has doubled","is doubling","doubles"],0,"Période terminée avec des dates → prétérit."],
+["Since 1993, the obesity rate ___ .",["has almost doubled","almost doubles","almost double","is almost doubled"],0,"since + bilan jusqu'à aujourd'hui → present perfect."],
+["___ 64% of adults in England are overweight.",["Over","There are far more","More of","Above of"],0,"Over (= more than) + pourcentage."],
+["4.7 million out of 8.4 million is ___ .",["more than half","a quarter","a third","twice as much"],0,"4,7 / 8,4 ≈ 56 % → plus de la moitié."],
+["Online junk food ads ___ from 700 million to 15 billion in two years.",["soared","dropped","decreased","halved"],0,"Hausse énorme → soar (s'envoler)."]
+]}
+];
+
+/* ================= DONNÉES : VOCABULAIRE ================= */
+const VOCAB = [
+// cat, en, fr
+["Food insecurity","food insecurity","l'insécurité alimentaire"],
+["Food insecurity","to be food insecure","être en situation d'insécurité alimentaire"],
+["Food insecurity","severely","gravement, sévèrement"],
+["Food insecurity","hunger","la faim"],
+["Food insecurity","to experience hunger","connaître la faim"],
+["Food insecurity","to skip meals","sauter des repas"],
+["Food insecurity","to eat one's fill","manger à sa faim"],
+["Food insecurity","to worry about","s'inquiéter de"],
+["Food insecurity","to obtain food","se procurer de la nourriture"],
+["Food insecurity","scarce","rare, peu abondant"],
+["Food insecurity","affordable","abordable (prix)"],
+["Food insecurity","unaffordable","inabordable, trop cher"],
+["Food insecurity","disadvantaged / deprived","défavorisé"],
+["Food insecurity","undernourished / underfed","sous-alimenté"],
+["Food insecurity","well nourished","bien nourri"],
+["Food insecurity","a lack of / a deficiency","un manque de / une carence"],
+["Food insecurity","to lack","manquer de"],
+["Food insecurity","holiday hunger","la faim pendant les vacances scolaires"],
+["Food insecurity","school term time","la période scolaire"],
+["Food insecurity","to fare worst","s'en sortir le plus mal"],
+["Food insecurity","a food bank","une banque alimentaire"],
+["Health","health","la santé"],
+["Health","a balanced diet","une alimentation équilibrée"],
+["Health","nutrition / nutritious","la nutrition / nutritif"],
+["Health","anxiety","l'anxiété"],
+["Health","stress / stressed","le stress / stressé"],
+["Health","depression","la dépression"],
+["Health","a chronic illness","une maladie chronique"],
+["Health","heart disease","les maladies cardiaques"],
+["Health","diabetes","le diabète"],
+["Health","obesity / obese","l'obésité / obèse"],
+["Health","overweight","en surpoids"],
+["Health","morbidly obese","obèse morbide"],
+["Health","to gain weight / weight gain","prendre du poids / la prise de poids"],
+["Health","a side effect","un effet secondaire"],
+["Health","harmful","nocif, dangereux"],
+["Health","to be in good shape","être en forme"],
+["Health","well-being","le bien-être"],
+["Health","to be at stake","être en jeu"],
+["Health","to suffer from","souffrir de"],
+["Health","to be prone to","être sujet à"],
+["Food & marketing","junk food","la malbouffe"],
+["Food & marketing","fatty / sugary / salty","gras / sucré / salé"],
+["Food & marketing","high in fat, salt and sugar","riche en graisses, sel et sucre"],
+["Food & marketing","ready-to-eat food / ready meals","les plats préparés"],
+["Food & marketing","calorific","calorique"],
+["Food & marketing","tasty","savoureux"],
+["Food & marketing","organic","bio"],
+["Food & marketing","to purchase","acheter (= to buy)"],
+["Food & marketing","an ad / an advert","une pub"],
+["Food & marketing","advertising","la publicité (le secteur)"],
+["Food & marketing","a commercial","une pub télé"],
+["Food & marketing","to be exposed to","être exposé à"],
+["Food & marketing","to be tempted to","être tenté de"],
+["Food & marketing","to be addicted to","être accro à"],
+["Food & marketing","to go shopping","faire les magasins"],
+["Food & marketing","to do the shopping","faire les courses"],
+["Food & marketing","labelling","l'étiquetage"],
+["Figures","a rate","un taux"],
+["Figures","figures / numbers","les chiffres"],
+["Figures","appalling / alarming","effarant / alarmant"],
+["Figures","a worrying trend","une tendance inquiétante"],
+["Figures","an uptrend / an upward trend","une tendance à la hausse"],
+["Figures","to double","doubler"],
+["Figures","to soar","s'envoler, monter en flèche"],
+["Figures","slightly","légèrement"],
+["Figures","twice as high as","deux fois plus élevé que"],
+["Figures","out of 100","sur 100"],
+["Politics","a policy","une politique, une mesure politique"],
+["Politics","to implement","mettre en œuvre, appliquer"],
+["Politics","to ban / a ban","interdire / une interdiction"],
+["Politics","legislation","la législation"],
+["Politics","to tackle","s'attaquer à"],
+["Politics","to curb","freiner, limiter"],
+["Politics","to unveil a plan","dévoiler un projet"],
+["Politics","the health secretary","le ministre de la Santé"],
+["Politics","10 Downing Street","la résidence officielle du Premier ministre"],
+["Politics","to protect","protéger"],
+["Politics","drought","la sécheresse"],
+["Consumers","a consumer","un consommateur"],
+["Consumers","cruelty-free","non testé sur les animaux"],
+["Consumers","ethically / sustainably","de façon éthique / durable"],
+["Consumers","second-hand","d'occasion"],
+["Consumers","a bargain","une bonne affaire"],
+["Consumers","peers","les pairs (personnes du même âge)"],
+["Consumers","delivery","la livraison"],
+["Consumers","buying power","le pouvoir d'achat"],
+["Consumers","bullying","le harcèlement"]
+];
+
+/* ================= DONNÉES : QCM THÈME ================= */
+const THEME_Q = [
+["What is food insecurity?",["Not having access to enough healthy, quality food","Being afraid of eating new food","Eating too much healthy food","Having food allergies"],0,"Food insecurity = ne pas avoir accès à une nourriture suffisante, saine et de qualité."],
+["How many people in the UK are food insecure?",["8.4 million","4.7 million","840,000","84 million"],0,"8,4 millions de personnes ; 4,7 millions de façon sévère."],
+["How many people in the UK are severely food insecure?",["4.7 million","8.4 million","1 million","15 billion"],0,"4,7 millions = insécurité alimentaire sévère."],
+["What is the most severe level of food insecurity?",["Experiencing hunger","Worrying about the ability to obtain food","Compromising quality and variety","Buying organic food"],0,"Les niveaux : worrying → compromising quality → skipping meals → experiencing hunger."],
+["What is the mildest level of food insecurity?",["Worrying about the ability to obtain food","Experiencing hunger","Skipping meals","Reducing quantities"],0,"Mild food insecurity = s'inquiéter de pouvoir se nourrir."],
+["Where does the UK rank among EU countries (2016)?",["In the bottom half","At the very top","First","In the top three"],0,"The UK is in the bottom half of all EU countries."],
+["Which EU country is the least affected by food insecurity?",["Sweden","Lithuania","Romania","Greece"],0,"Sweden is the least affected, whereas Lithuania is the most affected."],
+["Which EU country is the most affected by food insecurity?",["Lithuania","Sweden","Germany","Denmark"],0,"Lithuania is the most affected country."],
+["What is 'holiday hunger'?",["Children going without school food during the holidays","Eating too much during Christmas","Being hungry on a trip abroad","A TV cooking show"],0,"Pendant les vacances, les enfants n'ont plus les repas fournis par l'école."],
+["What did the American research show?",["Children lost about a month's worth of school skills after the summer","Children learn more during the holidays","Rich children fare worst","Holidays have no effect"],0,"After the summer holidays, children had lost one month's worth of skills, and poorer children may fare worst."],
+["Which mental health problem is linked to hunger in childhood?",["Depression","Asthma","Diabetes","Short-sightedness"],0,"Hunger is linked to anxiety, stress, depression; asthma is a chronic (physical) illness."],
+["What are the Eatwell guidelines?",["Advice for a balanced diet from Public Health England","A fast food menu","A law banning sugar","A school timetable"],0,"Les recommandations officielles pour une alimentation équilibrée."],
+["By how much did obesity among adults in England increase between 1993 and 2017?",["It almost doubled","It was divided by two","It stayed the same","It increased tenfold"],0,"The obesity rate almost doubled: twice as high in 2017 as in 1993."],
+["What percentage of adults in England are overweight?",["64%","10%","4%","34%"],0,"64 % des adultes sont en surpoids."],
+["According to Cancer Research UK, one of the biggest influences on obesity is…",["the world we live in","genetics only","lack of sleep","school uniforms"],0,"Obesity has many root causes, and one of the biggest is the world we live in."],
+["How has food changed over time (Doc 3)?",["Cheaper, larger, tastier and more calorific","More expensive and smaller","Healthier and lighter","Less advertised"],0,"Food has become cheaper, larger, tastier and more calorific."],
+["What did Downing Street plan in November 2020?",["To ban online junk food advertising","To ban all fast food restaurants","To make school meals compulsory","To raise the price of fruit"],0,"Ban online junk food ads to tackle the obesity crisis."],
+["Which foods were targeted by the plan?",["Foods too high in fat, salt and sugar","All imported food","Fruit and vegetables","Organic products"],0,"HFSS : high in fat, salt and sugar."],
+["How many online junk food ads were children under 16 exposed to in 2019?",["15 billion","700 million","8.4 million","64 million"],0,"15 milliards en 2019, contre 700 millions deux ans plus tôt."],
+["Who was Matt Hancock in 2020?",["The health secretary","The Prime Minister","A chef","A football player"],0,"Matt Hancock était ministre de la Santé (health secretary)."],
+["How does Fran Bernhardt describe the plan?",["A world-leading policy to improve children's health","A useless measure","An attack on companies","A tax on sugar"],0,"Fran Bernhardt (Children's Food Campaign) : 'a world-leading policy'."],
+["Which of these would be affected by the ban?",["Paid search ads on Google","TV news","School canteens","Newspapers' crosswords"],0,"Facebook ads, paid search on Google, text message promotions, social media on Twitter and Instagram."],
+["A 'cruelty-free' product…",["is not tested on animals","is very cheap","is delivered fast","is second-hand"],0,"Cruelty-free = ethical concerns such as animal rights."],
+["Why are food insecurity and obesity linked?",["Poor families often buy the cheapest food, which is often unhealthy","Rich people eat more junk food","Obesity is only genetic","Food insecure people never eat"],0,"Food insecure people can either suffer from hunger or obesity: unhealthy food is the cheapest option."]
+];
+
+/* ================= UTILITAIRES ================= */
+const $ = s => document.querySelector(s);
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const store = {
+  get(k, d) { try { const v = localStorage.getItem("food-uk-" + k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem("food-uk-" + k, JSON.stringify(v)); } catch (e) {} }
+};
+const esc = s => String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;");
+
+/* Rend une question QCM ; q = [énoncé, options, indexBonne, explication] */
+function renderQ(container, q, num, onAnswer, label) {
+  const div = document.createElement("div");
+  div.className = "q";
+  const order = shuffle(q[1].map((t, i) => i));
+  div.innerHTML = `<div class="n">${label || "Question " + num}</div><div class="s">${esc(q[0]).replace(/___/g, "<b>____</b>")}</div><div class="opts"></div>`;
+  const opts = div.querySelector(".opts");
+  order.forEach(i => {
+    const b = document.createElement("button");
+    b.className = "opt"; b.textContent = q[1][i];
+    b.onclick = () => {
+      const ok = i === q[2];
+      opts.querySelectorAll(".opt").forEach((o, k) => { o.disabled = true; if (order[k] === q[2]) o.classList.add("good"); });
+      if (!ok) b.classList.add("bad");
+      const fb = document.createElement("div");
+      fb.className = "fb " + (ok ? "good" : "bad");
+      fb.innerHTML = (ok ? "✅ <b>Bravo !</b> " : "❌ <b>Réponse : " + esc(q[1][q[2]]) + ".</b> ") + esc(q[3]);
+      div.appendChild(fb);
+      onAnswer && onAnswer(ok, div);
+    };
+    opts.appendChild(b);
+  });
+  container.appendChild(div);
+  return div;
+}
+
+/* ================= ONGLETS ================= */
+document.querySelectorAll(".tab").forEach(t => t.onclick = () => {
+  document.querySelectorAll(".tab").forEach(x => x.setAttribute("aria-selected", x === t));
+  document.querySelectorAll("main > section").forEach(s => s.hidden = s.id !== t.dataset.tab);
+  store.set("tab", t.dataset.tab);
+  window.scrollTo({ top: 0 });
+});
+
+/* ================= GRAMMAIRE ================= */
+let gi = 0, gScore = 0, gDone = 0;
+const gBest = store.get("gram", {});
+function drawGramChips() {
+  $("#gramChips").innerHTML = GRAM.map((g, i) =>
+    `<button class="chip" data-i="${i}" aria-pressed="${i === gi}">${i + 1}. ${g.titre}${gBest[g.id] === g.ex.length ? ' <span class="ok">✓</span>' : ""}</button>`).join("");
+  $("#gramChips").querySelectorAll(".chip").forEach(c => c.onclick = () => { gi = +c.dataset.i; showGram(); });
+}
+function showGram() {
+  const g = GRAM[gi];
+  drawGramChips();
+  $("#gramRule").innerHTML = `<h3>${gi + 1}. ${g.titre}</h3>` + g.rule;
+  gScore = 0; gDone = 0;
+  const ex = $("#gramEx"); ex.innerHTML = "";
+  updGram();
+  shuffle(g.ex).forEach((q, k) => renderQ(ex, q, k + 1, ok => {
+    gDone++; if (ok) gScore++; updGram();
+    if (gDone === g.ex.length && gScore > (gBest[g.id] || 0)) { gBest[g.id] = gScore; store.set("gram", gBest); drawGramChips(); }
+  }));
+  $("#gramNext").textContent = gi < GRAM.length - 1 ? "Point suivant →" : "Revenir au point 1";
+}
+function updGram() {
+  const g = GRAM[gi];
+  $("#gramScore").textContent = `${gScore} / ${g.ex.length}` + (gBest[g.id] ? `  · record ${gBest[g.id]}` : "");
+}
+$("#gramRetry").onclick = () => { showGram(); $("#gramEx").scrollIntoView({ behavior: "smooth" }); };
+$("#gramNext").onclick = () => { gi = (gi + 1) % GRAM.length; showGram(); window.scrollTo({ top: 0, behavior: "smooth" }); };
+
+/* ================= VOCABULAIRE ================= */
+const CATS = ["Tout", ...new Set(VOCAB.map(v => v[0]))];
+let vCat = "Tout", vMode = "cards", deck = [], di = 0, dir = 0, known = new Set(store.get("known", []));
+function vWords() { return VOCAB.filter(v => vCat === "Tout" || v[0] === vCat); }
+function drawCats() {
+  $("#vocabCat").innerHTML = CATS.map(c => `<button class="chip" data-c="${c}" aria-pressed="${c === vCat}">${c}</button>`).join("");
+  $("#vocabCat").querySelectorAll(".chip").forEach(b => b.onclick = () => { vCat = b.dataset.c; drawCats(); refreshVocab(); });
+}
+function refreshVocab() {
+  $("#vCards").hidden = vMode !== "cards"; $("#vList").hidden = vMode !== "list"; $("#vTest").hidden = vMode !== "test";
+  if (vMode === "cards") { deck = shuffle(vWords()); di = 0; showCard(); }
+  if (vMode === "list") drawList();
+  if (vMode === "test") startVTest();
+}
+$("#vocabMode").querySelectorAll(".chip").forEach(b => b.onclick = () => {
+  vMode = b.dataset.m;
+  $("#vocabMode").querySelectorAll(".chip").forEach(x => x.setAttribute("aria-pressed", x === b));
+  refreshVocab();
+});
+function showCard() {
+  const fc = $("#fc"); fc.classList.remove("flip");
+  if (!deck.length) { $("#fcFront").textContent = "Bravo !"; $("#fcBack").textContent = "Paquet terminé"; $("#cardPos").textContent = ""; return; }
+  const w = deck[di];
+  setTimeout(() => {
+    $("#fcFront").textContent = dir ? w[2] : w[1];
+    $("#fcBack").textContent = dir ? w[1] : w[2];
+    $("#fcEx").textContent = w[0];
+  }, 120);
+  $("#cardPos").textContent = `Carte ${di + 1} / ${deck.length}`;
+  const total = vWords().length, k = vWords().filter(v => known.has(v[1])).length;
+  $("#cardStat").textContent = `Mots sus dans cette catégorie : ${k} / ${total}`;
+}
+$("#fc").onclick = () => $("#fc").classList.toggle("flip");
+$("#fc").onkeydown = e => { if (e.key === " " || e.key === "Enter") { e.preventDefault(); $("#fc").classList.toggle("flip"); } };
+$("#cardOk").onclick = () => {
+  if (!deck.length) return;
+  known.add(deck[di][1]); store.set("known", [...known]);
+  deck.splice(di, 1); if (di >= deck.length) di = 0; showCard();
+};
+$("#cardKo").onclick = () => {
+  if (!deck.length) return;
+  known.delete(deck[di][1]); store.set("known", [...known]);
+  const w = deck.splice(di, 1)[0]; deck.push(w); if (di >= deck.length) di = 0; showCard();
+};
+$("#cardShuffle").onclick = () => { deck = shuffle(vWords()); di = 0; showCard(); };
+$("#dirBtn").onclick = () => {
+  dir = 1 - dir;
+  $("#dirBtn").textContent = dir ? "Sens : français → anglais" : "Sens : anglais → français";
+  $("#dirBtn").setAttribute("aria-pressed", !!dir); showCard();
+};
+function drawList() {
+  const s = ($("#vSearch").value || "").toLowerCase();
+  const rows = vWords().filter(v => !s || v[1].toLowerCase().includes(s) || v[2].toLowerCase().includes(s));
+  let html = "", cur = "";
+  rows.forEach(v => {
+    if (v[0] !== cur) { cur = v[0]; html += `<tr><th colspan="2" style="padding-top:16px;color:var(--accent)">${cur}</th></tr>`; }
+    html += `<tr><td>${esc(v[1])}${known.has(v[1]) ? " ✓" : ""}</td><td>${esc(v[2])}</td></tr>`;
+  });
+  $("#vBody").innerHTML = html || `<tr><td colspan="2">Aucun mot trouvé.</td></tr>`;
+}
+$("#vSearch").oninput = drawList;
+function vocabQuestion(w, pool) {
+  const toFr = Math.random() < .5;
+  const others = shuffle(pool.filter(v => v !== w)).slice(0, 3);
+  if (toFr) return [`What does « ${w[1]} » mean?`, [w[2], ...others.map(o => o[2])], 0, `« ${w[1]} » = ${w[2]}.`];
+  return [`Comment dit-on « ${w[2]} » en anglais ?`, [w[1], ...others.map(o => o[1])], 0, `« ${w[2]} » = ${w[1]}.`];
+}
+function startVTest() {
+  const z = $("#vTest"); const pool = vWords().length >= 4 ? vWords() : VOCAB;
+  const qs = shuffle(pool).slice(0, 10).map(w => vocabQuestion(w, VOCAB));
+  let sc = 0, done = 0;
+  z.innerHTML = `<div class="row" style="justify-content:space-between"><h3 style="margin:0">10 mots au hasard</h3><span class="score" id="vtScore">0 / ${qs.length}</span></div>`;
+  qs.forEach((q, k) => renderQ(z, q, k + 1, ok => {
+    done++; if (ok) sc++; $("#vtScore").textContent = `${sc} / ${qs.length}`;
+    if (done === qs.length) {
+      const e = document.createElement("div"); e.className = "row"; e.style.marginTop = "12px";
+      e.innerHTML = `<b>Résultat : ${sc} / ${qs.length}</b> <button class="btn">Nouveau test</button>`;
+      e.querySelector("button").onclick = () => { startVTest(); z.scrollIntoView({ behavior: "smooth" }); };
+      z.appendChild(e);
+    }
+  }));
+}
+
+/* ================= QCM FINAL ================= */
+let qCat = "mix";
+$("#quizCat").querySelectorAll(".chip").forEach(b => b.onclick = () => {
+  qCat = b.dataset.c;
+  $("#quizCat").querySelectorAll(".chip").forEach(x => x.setAttribute("aria-pressed", x === b));
+  quizIntro();
+});
+function buildPool(c) {
+  const g = GRAM.flatMap(x => x.ex.map(q => [...q, "Grammaire · " + x.titre]));
+  const t = THEME_Q.map(q => [...q, "Thème & documents"]);
+  const v = shuffle(VOCAB).slice(0, 15).map(w => [...vocabQuestion(w, VOCAB), "Vocabulaire"]);
+  if (c === "gram") return shuffle(g).slice(0, 15);
+  if (c === "theme") return shuffle(t).slice(0, 15);
+  if (c === "vocab") return v;
+  return shuffle([...shuffle(t).slice(0, 6), ...shuffle(g).slice(0, 5), ...v.slice(0, 4)]);
+}
+function quizIntro() {
+  const best = store.get("best-" + qCat, null);
+  $("#quizZone").innerHTML = `<div class="card result"><div style="font-size:44px">🍎</div>
+    <p>15 questions · ${({mix:"tout mélangé",theme:"thème & documents",gram:"grammaire",vocab:"vocabulaire"})[qCat]}</p>
+    ${best !== null ? `<p class="score">Meilleur score : ${best} / 15</p>` : ""}
+    <button class="btn" id="qStart">Lancer le QCM</button></div>`;
+  $("#qStart").onclick = runQuiz;
+}
+function runQuiz() {
+  const qs = buildPool(qCat); let i = 0, sc = 0;
+  const z = $("#quizZone");
+  function step() {
+    z.innerHTML = `<div class="row" style="justify-content:space-between"><span class="score">Question ${i + 1} / ${qs.length}</span><span class="score">Score : ${sc}</span></div>
+      <div class="progress"><div style="width:${i / qs.length * 100}%"></div></div><div id="qHold"></div>`;
+    const q = qs[i];
+    renderQ($("#qHold"), q, i + 1, (ok, div) => {
+      if (ok) sc++;
+      const b = document.createElement("button"); b.className = "btn"; b.style.marginTop = "12px";
+      b.textContent = i < qs.length - 1 ? "Question suivante →" : "Voir mon résultat";
+      b.onclick = () => { i++; i < qs.length ? step() : end(); };
+      div.appendChild(b); b.focus();
+    }, q[4]);
+  }
+  function end() {
+    const k = "best-" + qCat, best = store.get(k, 0);
+    if (sc > best) store.set(k, sc);
+    const msg = sc >= 13 ? "Excellent, c'est maîtrisé ! 🏆" : sc >= 10 ? "Très bien, encore un petit effort." : sc >= 7 ? "Pas mal : revois les règles où tu t'es trompé." : "Relis les onglets Grammaire et Thème, puis retente.";
+    z.innerHTML = `<div class="card result"><div class="big">${sc} / ${qs.length}</div><p>${msg}</p>
+      <p class="score">Meilleur score : ${Math.max(sc, best)} / 15</p>
+      <div class="row" style="justify-content:center"><button class="btn" id="qAgain">Rejouer</button><button class="btn alt" id="qBack">Changer de domaine</button></div></div>`;
+    $("#qAgain").onclick = runQuiz; $("#qBack").onclick = quizIntro;
+  }
+  step();
+}
+
+/* ================= INIT ================= */
+showGram(); drawCats(); refreshVocab(); quizIntro();
+const lastTab = store.get("tab", "gram");
+const tb = document.querySelector(`.tab[data-tab="${lastTab}"]`); if (tb && lastTab !== "gram") tb.click();
+</script>
+</body>
+</html>
