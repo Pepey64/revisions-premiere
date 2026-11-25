@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DS Trigonométrie — Première spécialité</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📝</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F5F3EC;--paper:#fff;--ink:#1D2733;--muted:#5B6776;--line:#D9DEE6;--accent:#2457A6;--ok:#2E7D4F;--ok-soft:#E4F2E9;--sin:#B3412F}
+@media (prefers-color-scheme:dark){:root{--bg:#11161D;--paper:#19212B;--ink:#E6EAEF;--muted:#9AA6B4;--line:#2D3946;--accent:#7EA6EE;--ok:#6FCB94;--ok-soft:#1C3328;--sin:#F08C7A}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Atkinson Hyperlegible',system-ui,sans-serif;font-size:16px;line-height:1.6;padding:24px 14px 60px}
+.wrap{max-width:780px;margin:0 auto}
+.bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
+.bar a{color:var(--accent);font-size:14px;margin-right:auto}
+.btn{border:none;background:var(--accent);color:#fff;font:inherit;font-weight:700;font-size:15px;padding:9px 18px;border-radius:999px;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--accent);border:1px solid var(--accent)}
+.paper{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:28px 30px;margin-bottom:20px}
+.head{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;border-bottom:2px solid var(--ink);padding-bottom:10px;margin-bottom:14px}
+h1{font-family:'Fraunces',serif;font-size:28px;margin:0;line-height:1.15}
+.meta{font-size:14px;color:var(--muted)}
+.name{font-size:15px;margin:8px 0 4px}
+h2{font-size:17px;margin:22px 0 6px;display:flex;justify-content:space-between;gap:10px}
+h2 .pts{font-weight:400;color:var(--muted);font-size:15px;white-space:nowrap}
+ol{margin:4px 0;padding-left:24px} li{margin:4px 0}
+.fr{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;font-size:.92em;line-height:1.1;margin:0 2px}
+.fr>span:first-child{border-bottom:1.3px solid currentColor;padding:0 3px}
+.fr>span:last-child{padding:0 3px}
+.circ{display:block;width:260px;max-width:100%;margin:8px auto}
+.circ text{font-family:'Atkinson Hyperlegible',sans-serif}
+.note{font-size:14px;color:var(--muted)}
+#corrige{display:none}
+body.showc #corrige{display:block}
+.sol{background:var(--ok-soft);border-radius:8px;padding:10px 14px;margin:6px 0 10px}
+.sol p{margin:4px 0}
+.bareme{font-size:13px;color:var(--muted)}
+@media print{
+  body{background:#fff;color:#000;padding:0;font-size:12pt}
+  .bar,.noprint{display:none!important}
+  .paper{border:none;padding:0;margin:0}
+  :root{--ink:#000;--muted:#333;--paper:#fff;--ok-soft:#f0f0f0;--accent:#000}
+  #corrige{page-break-before:always}
+  h2{page-break-after:avoid}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="bar">
+    <a href="trigonometrie.html">← Appli trigonométrie</a>
+    <button class="btn ghost" id="tc">Afficher le corrigé</button>
+    <button class="btn" onclick="window.print()">Imprimer</button>
+  </div>
+
+  <div class="paper" id="sujet">
+    <div class="head">
+      <div><h1>Devoir surveillé — Trigonométrie</h1><div class="meta">Première spécialité mathématiques · Durée : 1 h · Calculatrice interdite</div></div>
+      <div class="meta" style="text-align:right">Note :<br><b style="font-size:20px;color:var(--ink)">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/ 20</b></div>
+    </div>
+    <div class="name">Nom : ................................................ &nbsp; Prénom : ....................................</div>
+    <p class="note">Toutes les réponses doivent être justifiées. Les valeurs demandées sont des valeurs exactes.</p>
+
+    <h2>Exercice 1 — Radians et cercle trigonométrique <span class="pts">4 points</span></h2>
+    <ol>
+      <li>Convertir en radians : 120° et 225°.</li>
+      <li>Convertir en degrés : <span class="fr"><span>5π</span><span>6</span></span> et <span class="fr"><span>7π</span><span>12</span></span>.</li>
+      <li>Placer sur le cercle trigonométrique ci-dessous les points A, B, C et D associés aux réels :<br>
+        <span class="fr"><span>π</span><span>3</span></span> ; &nbsp;−<span class="fr"><span>3π</span><span>4</span></span> ; &nbsp;<span class="fr"><span>7π</span><span>6</span></span> ; &nbsp;<span class="fr"><span>11π</span><span>2</span></span>.</li>
+    </ol>
+    <svg class="circ" viewBox="0 0 260 260" id="blank"></svg>
+
+    <h2>Exercice 2 — Mesure principale et valeurs exactes <span class="pts">4,5 points</span></h2>
+    <p>Pour chacun des réels suivants, déterminer la mesure principale, puis la valeur exacte de son cosinus et de son sinus.</p>
+    <p style="text-align:center">a) <span class="fr"><span>17π</span><span>6</span></span> &nbsp;&nbsp;&nbsp; b) −<span class="fr"><span>13π</span><span>4</span></span> &nbsp;&nbsp;&nbsp; c) <span class="fr"><span>2026π</span><span>3</span></span></p>
+
+    <h2>Exercice 3 — Angles associés <span class="pts">4 points</span></h2>
+    <ol>
+      <li>Simplifier, pour tout réel x : &nbsp;A(x) = cos(π − x) + cos(−x) + sin(<span class="fr"><span>π</span><span>2</span></span> − x).</li>
+      <li>Simplifier, pour tout réel x : &nbsp;B(x) = sin(π + x) − sin(−x) + cos(<span class="fr"><span>π</span><span>2</span></span> + x).</li>
+      <li>Sans calculatrice, calculer : &nbsp;C = cos(<span class="fr"><span>π</span><span>5</span></span>) + cos(<span class="fr"><span>2π</span><span>5</span></span>) + cos(<span class="fr"><span>3π</span><span>5</span></span>) + cos(<span class="fr"><span>4π</span><span>5</span></span>).</li>
+    </ol>
+
+    <h2>Exercice 4 — Relation cos² + sin² = 1 <span class="pts">3,5 points</span></h2>
+    <ol>
+      <li>On sait que sin x = <span class="fr"><span>3</span><span>5</span></span> et que x ∈ [<span class="fr"><span>π</span><span>2</span></span> ; π]. Calculer cos x.</li>
+      <li>On sait que cos x = −<span class="fr"><span>1</span><span>3</span></span> et que x ∈ [−π ; 0]. Calculer sin x.</li>
+    </ol>
+
+    <h2>Exercice 5 — Équations trigonométriques <span class="pts">4 points</span></h2>
+    <ol>
+      <li>Résoudre dans ]−π ; π] : &nbsp;cos x = <span class="fr"><span>√2</span><span>2</span></span>.</li>
+      <li>Résoudre dans ]−π ; π] : &nbsp;2 sin x + 1 = 0.</li>
+      <li>Résoudre dans [0 ; 2π[ : &nbsp;cos x = −<span class="fr"><span>1</span><span>2</span></span>.</li>
+      <li>Résoudre dans ℝ : &nbsp;sin x = <span class="fr"><span>√3</span><span>2</span></span>.</li>
+    </ol>
+
+    <h2>Bonus — Démonstration du cours <span class="pts">+ 1 point</span></h2>
+    <p>Démontrer que cos(<span class="fr"><span>π</span><span>3</span></span>) = <span class="fr"><span>1</span><span>2</span></span>, puis en déduire sin(<span class="fr"><span>π</span><span>3</span></span>).</p>
+  </div>
+
+  <div class="paper" id="corrige">
+    <div class="head"><div><h1>Corrigé détaillé</h1><div class="meta">DS Trigonométrie · barème indicatif entre crochets</div></div></div>
+
+    <h2>Exercice 1 <span class="pts">/ 4</span></h2>
+    <div class="sol">
+      <p>1. 120° = 120 × <span class="fr"><span>π</span><span>180</span></span> = <span class="fr"><span>2π</span><span>3</span></span> &nbsp;;&nbsp; 225° = 225 × <span class="fr"><span>π</span><span>180</span></span> = <span class="fr"><span>5π</span><span>4</span></span>. <span class="bareme">[1 pt]</span></p>
+      <p>2. <span class="fr"><span>5π</span><span>6</span></span> = <span class="fr"><span>5 × 180°</span><span>6</span></span> = 150° &nbsp;;&nbsp; <span class="fr"><span>7π</span><span>12</span></span> = <span class="fr"><span>7 × 180°</span><span>12</span></span> = 105°. <span class="bareme">[1 pt]</span></p>
+      <p>3. <span class="fr"><span>7π</span><span>6</span></span> = π + <span class="fr"><span>π</span><span>6</span></span> (en bas à gauche) ; <span class="fr"><span>11π</span><span>2</span></span> = 6π − <span class="fr"><span>π</span><span>2</span></span>, donc D est au même point que −<span class="fr"><span>π</span><span>2</span></span> (en bas). <span class="bareme">[0,5 pt par point]</span></p>
+      <svg class="circ" viewBox="0 0 260 260" id="placed"></svg>
+    </div>
+
+    <h2>Exercice 2 <span class="pts">/ 4,5</span></h2>
+    <div class="sol">
+      <p>a) <span class="fr"><span>17π</span><span>6</span></span> = <span class="fr"><span>12π</span><span>6</span></span> + <span class="fr"><span>5π</span><span>6</span></span> = 2π + <span class="fr"><span>5π</span><span>6</span></span>. Mesure principale : <b><span class="fr"><span>5π</span><span>6</span></span></b>.<br>
+      cos = cos(π − <span class="fr"><span>π</span><span>6</span></span>) = −<span class="fr"><span>√3</span><span>2</span></span> &nbsp;;&nbsp; sin = sin(π − <span class="fr"><span>π</span><span>6</span></span>) = <span class="fr"><span>1</span><span>2</span></span>. <span class="bareme">[1,5 pt]</span></p>
+      <p>b) −<span class="fr"><span>13π</span><span>4</span></span> = −<span class="fr"><span>16π</span><span>4</span></span> + <span class="fr"><span>3π</span><span>4</span></span> = −2 × 2π + <span class="fr"><span>3π</span><span>4</span></span>. Mesure principale : <b><span class="fr"><span>3π</span><span>4</span></span></b>.<br>
+      cos = −<span class="fr"><span>√2</span><span>2</span></span> &nbsp;;&nbsp; sin = <span class="fr"><span>√2</span><span>2</span></span>. <span class="bareme">[1,5 pt]</span></p>
+      <p>c) 2026 = 3 × 675 + 1, donc <span class="fr"><span>2026π</span><span>3</span></span> = 675π + <span class="fr"><span>π</span><span>3</span></span> = 674π + <span class="fr"><span>4π</span><span>3</span></span> = 337 × 2π + <span class="fr"><span>4π</span><span>3</span></span>.<br>
+      Or <span class="fr"><span>4π</span><span>3</span></span> − 2π = −<span class="fr"><span>2π</span><span>3</span></span>. Mesure principale : <b>−<span class="fr"><span>2π</span><span>3</span></span></b>.<br>
+      cos = −<span class="fr"><span>1</span><span>2</span></span> &nbsp;;&nbsp; sin = −<span class="fr"><span>√3</span><span>2</span></span>. <span class="bareme">[1,5 pt]</span></p>
+    </div>
+
+    <h2>Exercice 3 <span class="pts">/ 4</span></h2>
+    <div class="sol">
+      <p>1. A(x) = −cos x + cos x + cos x = <b>cos x</b>. <span class="bareme">[1,5 pt]</span></p>
+      <p>2. B(x) = −sin x − (−sin x) + (−sin x) = −sin x + sin x − sin x = <b>−sin x</b>. <span class="bareme">[1,5 pt]</span></p>
+      <p>3. <span class="fr"><span>4π</span><span>5</span></span> = π − <span class="fr"><span>π</span><span>5</span></span> donc cos(<span class="fr"><span>4π</span><span>5</span></span>) = −cos(<span class="fr"><span>π</span><span>5</span></span>) ; de même <span class="fr"><span>3π</span><span>5</span></span> = π − <span class="fr"><span>2π</span><span>5</span></span> donc cos(<span class="fr"><span>3π</span><span>5</span></span>) = −cos(<span class="fr"><span>2π</span><span>5</span></span>).<br>
+      Les termes s'annulent deux à deux : <b>C = 0</b>. <span class="bareme">[1 pt]</span></p>
+    </div>
+
+    <h2>Exercice 4 <span class="pts">/ 3,5</span></h2>
+    <div class="sol">
+      <p>1. cos²x = 1 − sin²x = 1 − <span class="fr"><span>9</span><span>25</span></span> = <span class="fr"><span>16</span><span>25</span></span>, donc cos x = <span class="fr"><span>4</span><span>5</span></span> ou cos x = −<span class="fr"><span>4</span><span>5</span></span>.<br>
+      Comme x ∈ [<span class="fr"><span>π</span><span>2</span></span> ; π], cos x ≤ 0, donc <b>cos x = −<span class="fr"><span>4</span><span>5</span></span></b>. <span class="bareme">[1,5 pt]</span></p>
+      <p>2. sin²x = 1 − cos²x = 1 − <span class="fr"><span>1</span><span>9</span></span> = <span class="fr"><span>8</span><span>9</span></span>, donc sin x = <span class="fr"><span>√8</span><span>3</span></span> = <span class="fr"><span>2√2</span><span>3</span></span> ou sin x = −<span class="fr"><span>2√2</span><span>3</span></span>.<br>
+      Comme x ∈ [−π ; 0], sin x ≤ 0, donc <b>sin x = −<span class="fr"><span>2√2</span><span>3</span></span></b>. <span class="bareme">[2 pts]</span></p>
+    </div>
+
+    <h2>Exercice 5 <span class="pts">/ 4</span></h2>
+    <div class="sol">
+      <p>1. cos x = cos(<span class="fr"><span>π</span><span>4</span></span>) ⇔ x = <span class="fr"><span>π</span><span>4</span></span> ou x = −<span class="fr"><span>π</span><span>4</span></span> (à 2π près). Dans ]−π ; π] : <b>S = { −<span class="fr"><span>π</span><span>4</span></span> ; <span class="fr"><span>π</span><span>4</span></span> }</b>. <span class="bareme">[1 pt]</span></p>
+      <p>2. 2 sin x + 1 = 0 ⇔ sin x = −<span class="fr"><span>1</span><span>2</span></span> = sin(−<span class="fr"><span>π</span><span>6</span></span>) ⇔ x = −<span class="fr"><span>π</span><span>6</span></span> ou x = π + <span class="fr"><span>π</span><span>6</span></span> = <span class="fr"><span>7π</span><span>6</span></span> (à 2π près).<br>
+      <span class="fr"><span>7π</span><span>6</span></span> − 2π = −<span class="fr"><span>5π</span><span>6</span></span>. Dans ]−π ; π] : <b>S = { −<span class="fr"><span>5π</span><span>6</span></span> ; −<span class="fr"><span>π</span><span>6</span></span> }</b>. <span class="bareme">[1 pt]</span></p>
+      <p>3. cos x = cos(<span class="fr"><span>2π</span><span>3</span></span>) ⇔ x = <span class="fr"><span>2π</span><span>3</span></span> ou x = −<span class="fr"><span>2π</span><span>3</span></span> (à 2π près). Dans [0 ; 2π[, −<span class="fr"><span>2π</span><span>3</span></span> devient −<span class="fr"><span>2π</span><span>3</span></span> + 2π = <span class="fr"><span>4π</span><span>3</span></span>.<br>
+      <b>S = { <span class="fr"><span>2π</span><span>3</span></span> ; <span class="fr"><span>4π</span><span>3</span></span> }</b>. <span class="bareme">[1 pt]</span></p>
+      <p>4. sin x = sin(<span class="fr"><span>π</span><span>3</span></span>) ⇔ <b>x = <span class="fr"><span>π</span><span>3</span></span> + 2kπ ou x = <span class="fr"><span>2π</span><span>3</span></span> + 2kπ, avec k ∈ ℤ</b> (car π − <span class="fr"><span>π</span><span>3</span></span> = <span class="fr"><span>2π</span><span>3</span></span>). <span class="bareme">[1 pt]</span></p>
+    </div>
+
+    <h2>Bonus <span class="pts">+ 1</span></h2>
+    <div class="sol">
+      <p>Soit M le point du cercle associé à <span class="fr"><span>π</span><span>3</span></span> et I(1 ; 0). OI = OM = 1, donc OIM est isocèle en O avec un angle au sommet de 60° : ses deux autres angles mesurent aussi 60°, il est <b>équilatéral</b>.</p>
+      <p>Le projeté H de M sur (OI) est le pied de la hauteur issue de M, qui est aussi la médiane : H est le milieu de [OI]. Donc cos(<span class="fr"><span>π</span><span>3</span></span>) = OH = <span class="fr"><span>1</span><span>2</span></span>.</p>
+      <p>Puis sin²(<span class="fr"><span>π</span><span>3</span></span>) = 1 − <span class="fr"><span>1</span><span>4</span></span> = <span class="fr"><span>3</span><span>4</span></span>, et sin(<span class="fr"><span>π</span><span>3</span></span>) &gt; 0, donc sin(<span class="fr"><span>π</span><span>3</span></span>) = <span class="fr"><span>√3</span><span>2</span></span>.</p>
+    </div>
+  </div>
+</div>
+<script>
+const C = 130, R = 95;
+function base(){
+  let s = `<line x1="15" y1="${C}" x2="245" y2="${C}" stroke="currentColor" stroke-width="1"/><line x1="${C}" y1="15" x2="${C}" y2="245" stroke="currentColor" stroke-width="1"/>
+  <circle cx="${C}" cy="${C}" r="${R}" fill="none" stroke="currentColor" stroke-width="1.6"/>
+  <text x="${C - 13}" y="${C + 15}" font-size="12" fill="currentColor">O</text><text x="${C + R + 4}" y="${C + 15}" font-size="12" fill="currentColor">I</text><text x="${C + 5}" y="${C - R - 5}" font-size="12" fill="currentColor">J</text>`;
+  for (let k = 0; k < 24; k++) { const t = k * Math.PI / 12, l = k % 2 ? 4 : 7; s += `<line x1="${C + (R - l) * Math.cos(t)}" y1="${C - (R - l) * Math.sin(t)}" x2="${C + (R + l) * Math.cos(t)}" y2="${C - (R + l) * Math.sin(t)}" stroke="currentColor" stroke-width="1"/>`; }
+  return s;
+}
+document.getElementById('blank').innerHTML = base() + '<text x="10" y="255" font-size="11" fill="currentColor">Graduations tous les π/12</text>';
+let s = base();
+[['A', Math.PI / 3], ['B', -3 * Math.PI / 4], ['C', 7 * Math.PI / 6], ['D', -Math.PI / 2]].forEach(([n, t]) => {
+  const x = C + R * Math.cos(t), y = C - R * Math.sin(t);
+  s += `<circle cx="${x}" cy="${y}" r="5" fill="#2E7D4F"/><text x="${C + (R + 18) * Math.cos(t) - 5}" y="${C - (R + 16) * Math.sin(t) + 5}" font-size="15" font-weight="700" fill="currentColor">${n}</text>`;
+});
+document.getElementById('placed').innerHTML = s;
+const tc = document.getElementById('tc');
+tc.onclick = () => { document.body.classList.toggle('showc'); const on = document.body.classList.contains('showc'); tc.textContent = on ? 'Masquer le corrigé' : 'Afficher le corrigé'; if (on) document.getElementById('corrige').scrollIntoView({ behavior: 'smooth' }); };
+</script>
+</body>
+</html>
